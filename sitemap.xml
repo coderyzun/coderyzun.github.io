@@ -1,0 +1,81 @@
+<?xml-stylesheet type="text/xsl" href="https://coderyzun.github.io/sitemap.xsl"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>https://coderyzun.github.io/categories/</loc>
+    <lastmod>2020-11-15T16:09:10+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://coderyzun.github.io/tags/n1/</loc>
+    <lastmod>2020-11-15T16:09:10+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://coderyzun.github.io/tags/opwnwrt/</loc>
+    <lastmod>2020-11-15T16:09:10+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://coderyzun.github.io/post/</loc>
+    <lastmod>2020-11-15T16:09:10+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://coderyzun.github.io/tags/</loc>
+    <lastmod>2020-11-15T16:09:10+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://coderyzun.github.io/</loc>
+    <lastmod>2020-11-15T16:09:10+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://coderyzun.github.io/post/n1-docker/</loc>
+    <lastmod>2020-11-15T16:09:10+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://coderyzun.github.io/categories/%E8%BD%AF%E8%B7%AF%E7%94%B1/</loc>
+    <lastmod>2020-11-15T16:09:10+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://coderyzun.github.io/post/some-content/</loc>
+    <lastmod>2020-11-15T14:24:42+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://coderyzun.github.io/categories/kubernetes/</loc>
+    <lastmod>2020-11-15T14:24:42+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://coderyzun.github.io/tags/linux/</loc>
+    <lastmod>2020-11-15T14:24:42+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+</urlset>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>opwnWrt on 「Yang&#39;zun」的网志博客</title>
+    <link>https://coderyzun.github.io/tags/opwnwrt/</link>
+    <description>Recent content in opwnWrt on 「Yang&#39;zun」的网志博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 15 Nov 2020 16:09:10 +0800</lastBuildDate><atom:link href="https://coderyzun.github.io/tags/opwnwrt/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>斐讯N1 docker部署 openwrt系统的使用记录</title>
+      <link>https://coderyzun.github.io/post/n1-docker/</link>
+      <pubDate>Sun, 15 Nov 2020 16:09:10 +0800</pubDate>
+      
+      <guid>https://coderyzun.github.io/post/n1-docker/</guid>
+      <description>openWRT 系统无法与宿主机通信问题解决 参考文档 环境说明 小钢炮宿主机 IP：192.168.8.102 Docker 内 openWRT macvlan ip: 192.168.8.111 主路由网关：192.168.8.1 机器</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>斐讯N1 docker部署 openwrt系统的使用记录 - 「Yang&#39;zun」的网志博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="openWRT 系统无法与宿主机通信问题解决 参考文档 环境说明 小钢炮宿主机 IP：192.168.8.102 Docker 内 openWRT macvlan ip: 192.168.8.111 主路由网关：192.168.8.1 机器" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.2 with theme even" />
+
+
+<link rel="canonical" href="https://coderyzun.github.io/post/n1-docker/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="斐讯N1 docker部署 openwrt系统的使用记录" />
+<meta property="og:description" content="openWRT 系统无法与宿主机通信问题解决 参考文档 环境说明 小钢炮宿主机 IP：192.168.8.102 Docker 内 openWRT macvlan ip: 192.168.8.111 主路由网关：192.168.8.1 机器" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://coderyzun.github.io/post/n1-docker/" />
+<meta property="article:published_time" content="2020-11-15T16:09:10+08:00" />
+<meta property="article:modified_time" content="2020-11-15T16:09:10+08:00" />
+<meta itemprop="name" content="斐讯N1 docker部署 openwrt系统的使用记录">
+<meta itemprop="description" content="openWRT 系统无法与宿主机通信问题解决 参考文档 环境说明 小钢炮宿主机 IP：192.168.8.102 Docker 内 openWRT macvlan ip: 192.168.8.111 主路由网关：192.168.8.1 机器">
+<meta itemprop="datePublished" content="2020-11-15T16:09:10+08:00" />
+<meta itemprop="dateModified" content="2020-11-15T16:09:10+08:00" />
+<meta itemprop="wordCount" content="644">
+
+
+
+<meta itemprop="keywords" content="n1,opwnWrt," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="斐讯N1 docker部署 openwrt系统的使用记录"/>
+<meta name="twitter:description" content="openWRT 系统无法与宿主机通信问题解决 参考文档 环境说明 小钢炮宿主机 IP：192.168.8.102 Docker 内 openWRT macvlan ip: 192.168.8.111 主路由网关：192.168.8.1 机器"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+</div>
+
+<nav class="site-navbar"><li style="display:inline-block;margin-right:10px;">
+    <input type="search" class="docsearch-input" placeholder="Search" />
+  </li><ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">斐讯N1 docker部署 openwrt系统的使用记录</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-11-15 </span>
+        <div class="post-category">
+            <a href="/categories/%E8%BD%AF%E8%B7%AF%E7%94%B1/"> 软路由 </a>
+            </div>
+          <span class="more-meta"> 约 644 字 </span>
+          <span class="more-meta"> 预计阅读 2 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#openwrt-系统无法与宿主机通信问题解决">openWRT 系统无法与宿主机通信问题解决</a>
+      <ul>
+        <li><a href="#环境说明">环境说明</a></li>
+        <li><a href="#造成原因及解决方法说明">造成原因及解决方法说明</a></li>
+        <li><a href="#具体步骤记录">具体步骤记录</a>
+          <ul>
+            <li><a href="#新增一个mynet的-macvlan-接口--注意不要和原容器的macvlan网卡重名">新增一个mynet的 <code>macvlan</code> 接口  (注意不要和原容器的macvlan网卡重名)</a></li>
+            <li><a href="#为该接口分配ip并启用">为该接口分配ip，并启用</a></li>
+            <li><a href="#测试效果">测试效果</a></li>
+            <li><a href="#写入开机自启动脚本中">写入开机自启动脚本中</a></li>
+            <li><a href="#确保开机自启脚本添加了-可执行--权限">确保开机自启脚本添加了 <code>可执行</code>  权限</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="openwrt-系统无法与宿主机通信问题解决">openWRT 系统无法与宿主机通信问题解决</h1>
+<blockquote>
+<p><a href="https://blog.oddbit.com/post/2018-03-12-using-docker-macvlan-networks/">参考文档</a></p>
+</blockquote>
+<h2 id="环境说明">环境说明</h2>
+<ul>
+<li>小钢炮宿主机 IP：192.168.8.102</li>
+<li>Docker 内 openWRT macvlan ip: 192.168.8.111</li>
+<li>主路由网关：192.168.8.1</li>
+<li>机器网段为 192.168.8.0/24</li>
+</ul>
+<h2 id="造成原因及解决方法说明">造成原因及解决方法说明</h2>
+<blockquote>
+<p>    原因是部署 openWRT 系统时使用到了 <code>docker</code> 的 <code>macvlan</code> 模式，这个模式通俗一点讲就是在一张物理网卡上虚拟出两个虚拟网卡，具有不同的MAC地址，可以让宿主机和docker同时接入网络并且使用不同的ip，此时 docker 可以直接和同一网络下的其他设备直接通信，相当的方便，但是这种模式有一个问题，宿主机和容器是没办法直接进行网络通信的，如宿主机ping容器的ip，尽管他们属于同一网段，但是也是ping不通的，反过来也是。因为该模式在设计的时候，为了安全禁止了宿主机与容器的直接通信，不过解决的方法其实也很简单——宿主机虽然没办法直接和容器内的 <code>macvlan</code> 接口通信，但是只要在宿主机上再建立一个 <code>macvlan</code>，然后修改路由，使数据经由该 <code>macvlan</code> 传输到容器内的 <code>macvlan</code> 即可，<code>macvlan</code> 之间是可以互相通信的。</p>
+</blockquote>
+<h2 id="具体步骤记录">具体步骤记录</h2>
+<blockquote>
+<p><strong>以下操作都在小钢炮宿主机上运行</strong></p>
+</blockquote>
+<h3 id="新增一个mynet的-macvlan-接口--注意不要和原容器的macvlan网卡重名">新增一个mynet的 <code>macvlan</code> 接口  (注意不要和原容器的macvlan网卡重名)</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">ip link add mynet link eth0 <span class="nb">type</span> macvlan mode bridge
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="为该接口分配ip并启用">为该接口分配ip，并启用</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">ip addr add 192.168.8.10 dev mynet
+ip link <span class="nb">set</span> mynet up
+<span class="c1">### 修改路由使宿主机到192.168.0.100的通信全部经由mynet进行</span>
+ip route add 192.168.8.111 dev mynet
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="测试效果">测试效果</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">docker <span class="nb">exec</span> -it openwrt ping 192.168.8.102 -c <span class="m">3</span>
+PING 192.168.8.102 <span class="o">(</span>192.168.8.102<span class="o">)</span>: <span class="m">56</span> data bytes
+<span class="m">64</span> bytes from 192.168.8.102: <span class="nv">seq</span><span class="o">=</span><span class="m">0</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">64</span> <span class="nv">time</span><span class="o">=</span>0.508 ms
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="写入开机自启动脚本中">写入开机自启动脚本中</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">cat &gt;&gt; /etc/rc.local <span class="s">&lt;&lt; EOF
+</span><span class="s">ip link add mynet link eth0 type macvlan mode bridge 
+</span><span class="s">ip addr add 192.168.8.10 dev mynet
+</span><span class="s">ip link set mynet up
+</span><span class="s">ip route add 192.168.8.111 dev mynet
+</span><span class="s">EOF</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="确保开机自启脚本添加了-可执行--权限">确保开机自启脚本添加了 <code>可执行</code>  权限</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">chmod a+x /etc/rc.local
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yang'zun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-11-15
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/n1/">n1</a>
+          <a href="/tags/opwnwrt/">opwnWrt</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/some-content/">
+            <span class="next-text nav-default">Kind 部署本地k8s集群的使用记录</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/post/n1-docker/" class="leancloud_visitors" data-flag-title="斐讯N1 docker部署 openwrt系统的使用记录">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
+        appKey: 'siSAWI3rzA6Ow8Tmiv7V4GO4',
+        notify:  true ,
+        verify:  true ,
+        avatar:'',
+        placeholder: 'ヾﾉ≧∀≦)o来啊，快活啊!',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="amoaloas@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/coderyzun" class="iconfont icon-github" title="github"></a>
+      <a href="https://space.bilibili.com/100202960?spm_id_from=333.33.b_73656375726974794f75744c696e6b.1" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://coderyzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js" integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js" integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin="anonymous"></script>
+  <script><!-- NOTE: timeago.js uses the language code format like "zh_CN" (underscore and case sensitive) -->
+    var languageCode = "en-us".replace(/-/g, '_').replace(/_(.*)/, function ($0, $1) {return $0.replace($1, $1.toUpperCase());});
+    timeago().render(document.querySelectorAll('.timeago'), languageCode);
+    timeago.cancel();  
+  </script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script>
+    docsearch({
+    apiKey: "17388eec628e676a77d6235068b458df",
+    indexName: "blog",
+    appId: "KEECS2XKBV",
+    inputSelector: '.docsearch-input',
+    debug: false,
+    });
+</script>
+</body>
+</html>

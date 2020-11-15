@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on 「Yang&#39;zun」的网志博客</title>
+    <link>https://coderyzun.github.io/post/</link>
+    <description>Recent content in Posts on 「Yang&#39;zun」的网志博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 15 Nov 2020 16:09:10 +0800</lastBuildDate><atom:link href="https://coderyzun.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>斐讯N1 docker部署 openwrt系统的使用记录</title>
+      <link>https://coderyzun.github.io/post/n1-docker/</link>
+      <pubDate>Sun, 15 Nov 2020 16:09:10 +0800</pubDate>
+      
+      <guid>https://coderyzun.github.io/post/n1-docker/</guid>
+      <description>openWRT 系统无法与宿主机通信问题解决 参考文档 环境说明 小钢炮宿主机 IP：192.168.8.102 Docker 内 openWRT macvlan ip: 192.168.8.111 主路由网关：192.168.8.1 机器</description>
+    </item>
+    
+    <item>
+      <title>Kind 部署本地k8s集群的使用记录</title>
+      <link>https://coderyzun.github.io/post/some-content/</link>
+      <pubDate>Sun, 15 Nov 2020 14:24:42 +0800</pubDate>
+      
+      <guid>https://coderyzun.github.io/post/some-content/</guid>
+      <description>参考资料 Github 地址 参考博客 安装 1 2 3 curl -Lo ./kind &amp;#34;https://kind.sigs.k8s.io/dl/v0.9.0/kind-$(uname)-amd64&amp;#34; chmod +x ./kind mv ./kind /some-dir-in-your-PATH/kind 启动集群 注意启动集群前 请确认 docker 服务是否启动 1 2 3 4 5 6 7 8 9 10 11 12 docker info|grep -A 2 Server # 确认 是否启</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: https://coderyzun.github.io/sitemap.xml
