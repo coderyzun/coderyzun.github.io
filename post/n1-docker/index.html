@@ -49,7 +49,7 @@
 <meta itemprop="description" content="openWRT 系统无法与宿主机通信问题解决 参考文档 环境说明 小钢炮宿主机 IP：192.168.8.102 Docker 内 openWRT macvlan ip: 192.168.8.111 主路由网关：192.168.8.1 机器">
 <meta itemprop="datePublished" content="2020-11-15T16:09:10+08:00" />
 <meta itemprop="dateModified" content="2020-11-15T16:09:10+08:00" />
-<meta itemprop="wordCount" content="644">
+<meta itemprop="wordCount" content="638">
 
 
 
@@ -130,7 +130,7 @@
         <div class="post-category">
             <a href="/categories/%E8%BD%AF%E8%B7%AF%E7%94%B1/"> 软路由 </a>
             </div>
-          <span class="more-meta"> 约 644 字 </span>
+          <span class="more-meta"> 约 638 字 </span>
           <span class="more-meta"> 预计阅读 2 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -149,6 +149,7 @@
           <ul>
             <li><a href="#新增一个mynet的-macvlan-接口--注意不要和原容器的macvlan网卡重名">新增一个mynet的 <code>macvlan</code> 接口  (注意不要和原容器的macvlan网卡重名)</a></li>
             <li><a href="#为该接口分配ip并启用">为该接口分配ip，并启用</a></li>
+            <li><a href="#添加静态路由使宿主机与openwrt的通信报文使用mynet进行">添加静态路由使宿主机与openWRT的通信报文使用mynet进行</a></li>
             <li><a href="#测试效果">测试效果</a></li>
             <li><a href="#写入开机自启动脚本中">写入开机自启动脚本中</a></li>
             <li><a href="#确保开机自启脚本添加了-可执行--权限">确保开机自启脚本添加了 <code>可执行</code>  权限</a></li>
@@ -194,14 +195,19 @@
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell">ip addr add 192.168.8.10 dev mynet
 ip link <span class="nb">set</span> mynet up
-<span class="c1">### 修改路由使宿主机到192.168.0.100的通信全部经由mynet进行</span>
-ip route add 192.168.8.111 dev mynet
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="添加静态路由使宿主机与openwrt的通信报文使用mynet进行">添加静态路由使宿主机与openWRT的通信报文使用mynet进行</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">ip route add 192.168.8.111 dev mynet
 </code></pre></td></tr></table>
 </div>
 </div><h3 id="测试效果">测试效果</h3>
