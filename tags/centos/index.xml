@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>centos on 「Yang&#39;zun」的网志博客</title>
+    <link>https://coderyzun.github.io/tags/centos/</link>
+    <description>Recent content in centos on 「Yang&#39;zun」的网志博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 19 Nov 2020 17:56:52 +0800</lastBuildDate><atom:link href="https://coderyzun.github.io/tags/centos/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Docker 部署多网口软路由</title>
+      <link>https://coderyzun.github.io/post/openwrt-docker-multi-net/</link>
+      <pubDate>Thu, 19 Nov 2020 17:56:52 +0800</pubDate>
+      
+      <guid>https://coderyzun.github.io/post/openwrt-docker-multi-net/</guid>
+      <description>环境说明: 操作系统: Centos 7.8.2003 内核版本: 4.14.129-bbrplus Docker 版本: 19.03.12 使用 Docker 镜像: raymondwong/openwrt_r9:20.1.24-x86_64 网卡说明: 板载螃蟹网卡、绿联 usb3.0 千M 网卡 系统网卡配置 将对应网卡启动混淆模式 1 2 3 4</description>
+    </item>
+    
+  </channel>
+</rss>

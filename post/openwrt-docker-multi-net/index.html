@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Docker 部署多网口软路由 - 「Yang&#39;zun」的网志博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="Centos使用Docker部署多网口openwrt软路由进行科学上网" /><meta name="keywords" content="软路由, docker, 多网口, openwrt, cetos" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.2 with theme even" />
+
+
+<link rel="canonical" href="https://coderyzun.github.io/post/openwrt-docker-multi-net/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Docker 部署多网口软路由" />
+<meta property="og:description" content="Centos使用Docker部署多网口openwrt软路由进行科学上网" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://coderyzun.github.io/post/openwrt-docker-multi-net/" />
+<meta property="article:published_time" content="2020-11-19T17:56:52+08:00" />
+<meta property="article:modified_time" content="2020-11-19T17:56:52+08:00" />
+<meta itemprop="name" content="Docker 部署多网口软路由">
+<meta itemprop="description" content="Centos使用Docker部署多网口openwrt软路由进行科学上网">
+<meta itemprop="datePublished" content="2020-11-19T17:56:52+08:00" />
+<meta itemprop="dateModified" content="2020-11-19T17:56:52+08:00" />
+<meta itemprop="wordCount" content="834">
+
+
+
+<meta itemprop="keywords" content="linux,openWrt,docker,centos," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Docker 部署多网口软路由"/>
+<meta name="twitter:description" content="Centos使用Docker部署多网口openwrt软路由进行科学上网"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+</div>
+
+<nav class="site-navbar">
+
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul><li style="display:inline-block;margin-right:10px;">
+    <input type="search" class="docsearch-input" placeholder="Search" />
+  </li></nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Docker 部署多网口软路由</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-11-19 </span>
+        <div class="post-category">
+            <a href="/categories/%E8%BD%AF%E8%B7%AF%E7%94%B1/"> 软路由 </a>
+            </div>
+          <span class="more-meta"> 约 834 字 </span>
+          <span class="more-meta"> 预计阅读 2 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#环境说明">环境说明:</a></li>
+        <li><a href="#系统网卡配置">系统网卡配置</a>
+          <ul>
+            <li><a href="#将对应网卡启动混淆模式">将对应网卡启动混淆模式</a></li>
+            <li><a href="#docker--创建虚拟网卡">Docker  创建虚拟网卡</a></li>
+          </ul>
+        </li>
+        <li><a href="#容器网络配置">容器网络配置</a>
+          <ul>
+            <li><a href="#启动容器">启动容器</a></li>
+            <li><a href="#添加第二块网卡">添加第二块网卡</a></li>
+            <li><a href="#进入容器-修改网卡配置">进入容器 修改网卡配置</a></li>
+            <li><a href="#修改网卡配置文件-etcconfignetwork">修改网卡配置文件： <code>/etc/config/network</code></a></li>
+            <li><a href="#重启网卡">重启网卡</a></li>
+          </ul>
+        </li>
+        <li><a href="#客户端使用及优化">客户端使用及优化</a>
+          <ul>
+            <li><a href="#配置与-lan口-为同一个网段的-ip">配置与 <code>Lan口</code> 为同一个网段的 ip</a></li>
+            <li><a href="#访问-dashboard">访问 <code>Dashboard</code></a></li>
+            <li><a href="#测试上网效果">测试上网效果</a></li>
+            <li><a href="#导致客户端无法正常上网的解决方案">导致客户端无法正常上网的解决方案</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="环境说明">环境说明:</h2>
+<blockquote>
+<p>操作系统: Centos 7.8.2003</p>
+<p>内核版本: 4.14.129-bbrplus</p>
+<p>Docker 版本: 19.03.12</p>
+<p>使用 Docker 镜像: <a href="https://hub.docker.com/r/raymondwong/openwrt_r9">raymondwong/openwrt_r9:20.1.24-x86_64</a></p>
+<p>网卡说明: 板载螃蟹网卡、绿联 <code>usb3.0</code> 千M 网卡</p>
+</blockquote>
+<h2 id="系统网卡配置">系统网卡配置</h2>
+<h3 id="将对应网卡启动混淆模式">将对应网卡启动混淆模式</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">ip link <span class="nb">set</span> enp0s29u1u2 promisc on
+ip link <span class="nb">set</span> enp2s0 promisc on
+
+<span class="nb">echo</span> <span class="s2">&#34;&#34;&#34;ip link set enp0s29u1u2 promisc on
+</span><span class="s2">ip link set enp2s0 promisc on&#34;&#34;&#34;</span> &gt;&gt; /etc/rc.local    <span class="c1"># 配置加入开机自启动</span>
+
+chmod a+x /etc/rc.local
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="docker--创建虚拟网卡">Docker  创建虚拟网卡</h3>
+<blockquote>
+<p><strong>主机规划:</strong></p>
+<ul>
+<li>
+<p>我们现在要基于现有的网卡创建两个 <code>macvlan</code> 类型的网卡，这样后面创建的容器才能有网卡进行挂载使用，并且使用独立的网卡进行数据报文的通讯。<code>macnet1</code> 我们作为后面 <code>openWRT容器</code> 运行的 <code>Wan口</code> 使用, <code>macnet2</code> 则是 <code>Lan口</code>。</p>
+</li>
+<li>
+<p>oepnWRT 使用网络说明  <code>(环境存在差异 按照你的环境配置参照修改即可)</code></p>
+<ul>
+<li>wan: 192.168.2.0/24</li>
+<li>lan：192.168.22.0/24</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker network create -d macvlan --subnet<span class="o">=</span>192.168.2.0/24 --gateway<span class="o">=</span>192.168.2.1 -o <span class="nv">parent</span><span class="o">=</span>enp2s0 macnet1
+
+docker network create -d macvlan -o <span class="nv">parent</span><span class="o">=</span>enp0s29u1u2 macnet2
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://image.tab.codes/images/2020/11/18/image-20201118173326706.png" alt="image-20201118173326706"></p>
+<h2 id="容器网络配置">容器网络配置</h2>
+<h3 id="启动容器">启动容器</h3>
+<blockquote>
+<p>这里启动时关联了创建的一张网卡，没有找到启动时关联多张网卡的方法，如有知道的小伙伴请留言告知。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker run --name openwrt <span class="se">\
+</span><span class="se"></span>--restart always <span class="se">\
+</span><span class="se"></span>-d --network macnet2 <span class="se">\
+</span><span class="se"></span>--privileged raymondwong/openwrt_r9:20.1.24-x86_64 /sbin/init
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="添加第二块网卡">添加第二块网卡</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker network connect macnet1 openwrt 
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="进入容器-修改网卡配置">进入容器 修改网卡配置</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker <span class="nb">exec</span> -it openwrt bash
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>查看 发现没有 IP 我们需要手动配置一下</p>
+</blockquote>
+<p><img src="https://image.tab.codes/images/2020/11/19/image-20201119174448355.png" alt="image-20201119174448355"></p>
+<h3 id="修改网卡配置文件-etcconfignetwork">修改网卡配置文件： <code>/etc/config/network</code></h3>
+<h4 id="默认的配置如下">默认的配置如下:</h4>
+<p><img src="https://image.tab.codes/images/2020/11/19/image-20201119174511891.png" alt="image-20201119174511891"></p>
+<h4 id="修改后的配置展示"><em><strong>修改后的配置展示</strong></em></h4>
+<blockquote>
+<p><em><strong>Lan口配置了静态ip <code>192.168.2.111</code> ，<code>wan口</code> 通过使用 <code>dhcp</code> 的方式自动获取IP使用.</strong></em></p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat &gt; /etc/config/network <span class="s">&lt;&lt; EOF
+</span><span class="s">config interface &#39;loopback&#39;
+</span><span class="s">option ifname &#39;lo&#39;
+</span><span class="s">option proto &#39;static&#39;
+</span><span class="s">option ipaddr &#39;127.0.0.1&#39;
+</span><span class="s">option netmask &#39;255.0.0.0&#39;
+</span><span class="s">
+</span><span class="s">config globals &#39;globals&#39;
+</span><span class="s">option ula_prefix &#39;fdc4:0ac4:85d4::/48&#39;
+</span><span class="s">
+</span><span class="s">config interface &#39;lan&#39;
+</span><span class="s">option ifname &#39;eth0&#39;
+</span><span class="s">option proto &#39;static&#39;
+</span><span class="s">option ipaddr &#39;192.168.22.111&#39;
+</span><span class="s">option netmask &#39;255.255.255.0&#39;
+</span><span class="s">
+</span><span class="s">config interface &#39;wan&#39;
+</span><span class="s">option ifname &#39;eth1&#39;
+</span><span class="s">option proto &#39;dhcp&#39;
+</span><span class="s">
+</span><span class="s">config interface &#39;vpn0&#39;
+</span><span class="s">option ifname &#39;tun0&#39;
+</span><span class="s">option proto &#39;none&#39;
+</span><span class="s">EOF</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="重启网卡">重启网卡</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">/etc/init.d/network restart
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p><em><strong>再次检查一下 此时我们配置的 ip 已经有了</strong></em></p>
+<p><img src="https://image.tab.codes/images/2020/11/19/image-20201119172308290.png" alt="image-20201119172308290" /></p>
+</blockquote>
+<h2 id="客户端使用及优化">客户端使用及优化</h2>
+<h3 id="配置与-lan口-为同一个网段的-ip">配置与 <code>Lan口</code> 为同一个网段的 ip</h3>
+<p><img src="https://image.tab.codes/images/2020/11/19/image-20201119172657968.png" alt="image-20201119172657968"></p>
+<h3 id="访问-dashboard">访问 <code>Dashboard</code></h3>
+<blockquote>
+<p>我使用的这个容器默认的用户名密码为:</p>
+<ul>
+<li>
+<p>User: root</p>
+</li>
+<li>
+<p>Passwold: password</p>
+</li>
+</ul>
+</blockquote>
+<p><img src="https://image.tab.codes/images/2020/11/19/image-20201119172802424e954a00527e2cb9c.png" alt="image-20201119172802424"></p>
+<p><img src="https://image.tab.codes/images/2020/11/19/image-20201119172904817b910116c02162b5d.png" alt="image-20201119172904817"></p>
+<h3 id="测试上网效果">测试上网效果</h3>
+<h4 id="ping-测试"><code>Ping 测试</code></h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"> ping -c <span class="m">3</span> 223.5.5.5   <span class="c1"># 发现无法 ping 通</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<p>检查路由</p>
+<ul>
+<li>常见操作系统查看路由表的方法</li>
+<li>mac 通常使用命令：<code>ip route</code></li>
+<li>linux 通常使用命令:  <code>route -n</code></li>
+<li>windows 通常使用命令: <code>route print </code></li>
+</ul>
+</li>
+</ul>
+<p><img src="https://image.tab.codes/images/2020/11/19/image-20201119173121314.png" alt="image-20201119173121314"></p>
+<p>检查路由发现是正确指向  <code>Lan口</code> 上面的网关的</p>
+<h3 id="导致客户端无法正常上网的解决方案">导致客户端无法正常上网的解决方案</h3>
+<blockquote>
+<p>⚠️  添加防火墙自定义规则进行解决</p>
+</blockquote>
+<p><img src="https://image.tab.codes/images/2020/11/19/image-20201119173428549c99c37fa46048ce6.png" alt="image-20201119173428549"></p>
+<p><img src="https://image.tab.codes/images/2020/11/19/image-2020111917351807305b2e8ef2319f700.png" alt="image-20201119173518073"></p>
+<h4 id="将下面这个粘贴进去注意修改示例中的网段为你-lan口上的网段-然后重启一下防火墙">将下面这个粘贴进去，注意修改示例中的网段为你 <code>Lan口上的网段</code> ,然后重启一下防火墙</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">iptables -t nat -I POSTROUTING -s 192.168.22.0/24  -j MASQUERADE
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://image.tab.codes/images/2020/11/19/image-20201119211209289.png" alt="image-20201119211209289"></p>
+<h4 id="再次测试一下-发现此时的网络已可以ping通-">再次测试一下 发现此时的网络已可以ping通 ~</h4>
+<p>​				<img src="https://image.tab.codes/images/2020/11/19/image-20201119173800417.png" alt="image-20201119173800417"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yang'zun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-11-19
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/linux/">linux</a>
+          <a href="/tags/openwrt/">openWrt</a>
+          <a href="/tags/docker/">docker</a>
+          <a href="/tags/centos/">centos</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/n1-docker/">
+            <span class="next-text nav-default">斐讯N1 docker部署 openwrt系统的使用记录</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
+        appKey: 'siSAWI3rzA6Ow8Tmiv7V4GO4',
+        notify:  true ,
+        verify:  true ,
+        avatar:'',
+        placeholder: '来留下点什么吧~',
+        visitor:  false 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="amoaloas@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/coderyzun" class="iconfont icon-github" title="github"></a>
+      <a href="https://space.bilibili.com/100202960?spm_id_from=333.33.b_73656375726974794f75744c696e6b.1" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://coderyzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js" integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js" integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin="anonymous"></script>
+  <script><!-- NOTE: timeago.js uses the language code format like "zh_CN" (underscore and case sensitive) -->
+    var languageCode = "en-us".replace(/-/g, '_').replace(/_(.*)/, function ($0, $1) {return $0.replace($1, $1.toUpperCase());});
+    timeago().render(document.querySelectorAll('.timeago'), languageCode);
+    timeago.cancel();  
+  </script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script>
+    docsearch({
+    apiKey: "17388eec628e676a77d6235068b458df",
+    indexName: "blog",
+    appId: "KEECS2XKBV",
+    inputSelector: '.docsearch-input',
+    debug: false,
+    });
+</script>
+</body>
+</html>

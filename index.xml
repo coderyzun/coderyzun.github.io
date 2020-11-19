@@ -6,7 +6,16 @@
     <description>Recent content on 「Yang&#39;zun」的网志博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 15 Nov 2020 16:09:10 +0800</lastBuildDate><atom:link href="https://coderyzun.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 19 Nov 2020 17:56:52 +0800</lastBuildDate><atom:link href="https://coderyzun.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Docker 部署多网口软路由</title>
+      <link>https://coderyzun.github.io/post/openwrt-docker-multi-net/</link>
+      <pubDate>Thu, 19 Nov 2020 17:56:52 +0800</pubDate>
+      
+      <guid>https://coderyzun.github.io/post/openwrt-docker-multi-net/</guid>
+      <description>环境说明: 操作系统: Centos 7.8.2003 内核版本: 4.14.129-bbrplus Docker 版本: 19.03.12 使用 Docker 镜像: raymondwong/openwrt_r9:20.1.24-x86_64 网卡说明: 板载螃蟹网卡、绿联 usb3.0 千M 网卡 系统网卡配置 将对应网卡启动混淆模式 1 2 3 4</description>
+    </item>
+    
     <item>
       <title>斐讯N1 docker部署 openwrt系统的使用记录</title>
       <link>https://coderyzun.github.io/post/n1-docker/</link>
