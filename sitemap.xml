@@ -3,21 +3,63 @@
   
   <url>
     <loc>https://coderyzun.github.io/categories/</loc>
-    <lastmod>2020-11-19T17:56:52+08:00</lastmod>
+    <lastmod>2020-11-30T10:35:47+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://coderyzun.github.io/tags/centos/</loc>
-    <lastmod>2020-11-19T17:56:52+08:00</lastmod>
+    <lastmod>2020-11-30T10:35:47+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://coderyzun.github.io/tags/docker/</loc>
-    <lastmod>2020-11-19T17:56:52+08:00</lastmod>
+    <lastmod>2020-11-30T10:35:47+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://coderyzun.github.io/post/docker-quickstart-redis/</loc>
+    <lastmod>2020-11-30T10:35:47+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://coderyzun.github.io/post/</loc>
+    <lastmod>2020-11-30T10:35:47+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://coderyzun.github.io/tags/redis/</loc>
+    <lastmod>2020-11-30T10:35:47+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://coderyzun.github.io/tags/</loc>
+    <lastmod>2020-11-30T10:35:47+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://coderyzun.github.io/</loc>
+    <lastmod>2020-11-30T10:35:47+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://coderyzun.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
+    <lastmod>2020-11-30T10:35:47+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -38,27 +80,6 @@
   
   <url>
     <loc>https://coderyzun.github.io/tags/openwrt/</loc>
-    <lastmod>2020-11-19T17:56:52+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://coderyzun.github.io/post/</loc>
-    <lastmod>2020-11-19T17:56:52+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://coderyzun.github.io/tags/</loc>
-    <lastmod>2020-11-19T17:56:52+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://coderyzun.github.io/</loc>
     <lastmod>2020-11-19T17:56:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

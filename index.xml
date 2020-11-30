@@ -6,7 +6,16 @@
     <description>Recent content on 「Yang&#39;zun」的网志博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 19 Nov 2020 17:56:52 +0800</lastBuildDate><atom:link href="https://coderyzun.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 30 Nov 2020 10:35:47 +0800</lastBuildDate><atom:link href="https://coderyzun.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Docker Quickstart Redis Server</title>
+      <link>https://coderyzun.github.io/post/docker-quickstart-redis/</link>
+      <pubDate>Mon, 30 Nov 2020 10:35:47 +0800</pubDate>
+      
+      <guid>https://coderyzun.github.io/post/docker-quickstart-redis/</guid>
+      <description>环境说明: 系统镜像: Redis:5.x （示例容器为: redis:5.0.4 ） 操作系统: Centos Docker 版本: 19.03.8 具体实现步骤 操作系统简单优化 1 2 3 4 5 6 echo &amp;#39;vm.overcommit_memory=1 net.core.somaxconn=65535&amp;#39; &amp;gt;&amp;gt; /etc/sysctl.conf sysctl -p echo never &amp;gt; /sys/kernel/mm/transparent_hugepage/enable 下载容器 1 docker pull redis:5.0.4</description>
+    </item>
+    
     <item>
       <title>Docker 部署多网口软路由</title>
       <link>https://coderyzun.github.io/post/openwrt-docker-multi-net/</link>
