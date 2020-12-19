@@ -100,13 +100,6 @@
   </url>
   
   <url>
-    <loc>https://coderyzun.github.io/tags/opwnwrt/</loc>
-    <lastmod>2020-11-15T16:09:10+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://coderyzun.github.io/post/n1-docker/</loc>
     <lastmod>2020-11-15T16:09:10+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -114,7 +107,21 @@
   </url>
   
   <url>
+    <loc>https://coderyzun.github.io/tags/kind/</loc>
+    <lastmod>2020-11-15T14:24:42+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://coderyzun.github.io/post/some-content/</loc>
+    <lastmod>2020-11-15T14:24:42+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://coderyzun.github.io/tags/kubernetes/</loc>
     <lastmod>2020-11-15T14:24:42+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
