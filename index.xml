@@ -2,44 +2,44 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>「Yang&#39;zun」的网志博客</title>
-    <link>https://coderyzun.github.io/</link>
+    <link>https://cdryzun.github.io/</link>
     <description>Recent content on 「Yang&#39;zun」的网志博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 30 Nov 2020 10:35:47 +0800</lastBuildDate><atom:link href="https://coderyzun.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 30 Nov 2020 10:35:47 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Docker Quickstart Redis Server</title>
-      <link>https://coderyzun.github.io/post/docker-quickstart-redis/</link>
+      <link>https://cdryzun.github.io/post/docker-quickstart-redis/</link>
       <pubDate>Mon, 30 Nov 2020 10:35:47 +0800</pubDate>
       
-      <guid>https://coderyzun.github.io/post/docker-quickstart-redis/</guid>
+      <guid>https://cdryzun.github.io/post/docker-quickstart-redis/</guid>
       <description>环境说明: 系统镜像: Redis:5.x （示例容器为: redis:5.0.4 ） 操作系统: Centos Docker 版本: 19.03.8 具体实现步骤 操作系统简单优化 1 2 3 4 5 6 echo &amp;#39;vm.overcommit_memory=1 net.core.somaxconn=65535&amp;#39; &amp;gt;&amp;gt; /etc/sysctl.conf sysctl -p echo never &amp;gt; /sys/kernel/mm/transparent_hugepage/enable 下载容器 1 docker pull redis:5.0.4</description>
     </item>
     
     <item>
       <title>Docker 部署多网口软路由</title>
-      <link>https://coderyzun.github.io/post/openwrt-docker-multi-net/</link>
+      <link>https://cdryzun.github.io/post/openwrt-docker-multi-net/</link>
       <pubDate>Thu, 19 Nov 2020 17:56:52 +0800</pubDate>
       
-      <guid>https://coderyzun.github.io/post/openwrt-docker-multi-net/</guid>
+      <guid>https://cdryzun.github.io/post/openwrt-docker-multi-net/</guid>
       <description>环境说明: 操作系统: Centos 7.8.2003 内核版本: 4.14.129-bbrplus Docker 版本: 19.03.12 使用 Docker 镜像: raymondwong/openwrt_r9:20.1.24-x86_64 网卡说明: 板载螃蟹网卡、绿联 usb3.0 千M 网卡 系统网卡配置 将对应网卡启动混淆模式 1 2 3 4</description>
     </item>
     
     <item>
       <title>斐讯N1 docker部署 openwrt系统的使用记录</title>
-      <link>https://coderyzun.github.io/post/n1-docker/</link>
+      <link>https://cdryzun.github.io/post/n1-docker/</link>
       <pubDate>Sun, 15 Nov 2020 16:09:10 +0800</pubDate>
       
-      <guid>https://coderyzun.github.io/post/n1-docker/</guid>
+      <guid>https://cdryzun.github.io/post/n1-docker/</guid>
       <description>openWRT 系统无法与宿主机通信问题解决 参考文档 环境说明 小钢炮宿主机 IP：192.168.8.102 Docker 内 openWRT macvlan ip: 192.168.8.111 主路由网关：192.168.8.1 机器</description>
     </item>
     
     <item>
       <title>Kind 部署本地k8s集群的使用记录</title>
-      <link>https://coderyzun.github.io/post/some-content/</link>
+      <link>https://cdryzun.github.io/post/some-content/</link>
       <pubDate>Sun, 15 Nov 2020 14:24:42 +0800</pubDate>
       
-      <guid>https://coderyzun.github.io/post/some-content/</guid>
+      <guid>https://cdryzun.github.io/post/some-content/</guid>
       <description>参考资料 Github 地址 参考博客 安装 1 2 3 curl -Lo ./kind &amp;#34;https://kind.sigs.k8s.io/dl/v0.9.0/kind-$(uname)-amd64&amp;#34; chmod +x ./kind mv ./kind /some-dir-in-your-PATH/kind 启动集群 注意启动集群前 请确认 docker 服务是否启动 1 2 3 4 5 6 7 8 9 10 11 12 docker info|grep -A 2 Server # 确认 是否启</description>
     </item>
     

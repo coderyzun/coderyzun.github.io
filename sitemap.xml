@@ -1,134 +1,134 @@
-<?xml-stylesheet type="text/xsl" href="https://coderyzun.github.io/sitemap.xsl"?>
+<?xml-stylesheet type="text/xsl" href="https://cdryzun.github.io/sitemap.xsl"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://coderyzun.github.io/categories/</loc>
+    <loc>https://cdryzun.github.io/categories/</loc>
     <lastmod>2020-11-30T10:35:47+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://coderyzun.github.io/tags/centos/</loc>
+    <loc>https://cdryzun.github.io/tags/centos/</loc>
     <lastmod>2020-11-30T10:35:47+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://coderyzun.github.io/tags/docker/</loc>
+    <loc>https://cdryzun.github.io/tags/docker/</loc>
     <lastmod>2020-11-30T10:35:47+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://coderyzun.github.io/post/docker-quickstart-redis/</loc>
+    <loc>https://cdryzun.github.io/post/docker-quickstart-redis/</loc>
     <lastmod>2020-11-30T10:35:47+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://coderyzun.github.io/post/</loc>
+    <loc>https://cdryzun.github.io/post/</loc>
     <lastmod>2020-11-30T10:35:47+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://coderyzun.github.io/tags/redis/</loc>
+    <loc>https://cdryzun.github.io/tags/redis/</loc>
     <lastmod>2020-11-30T10:35:47+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://coderyzun.github.io/tags/</loc>
+    <loc>https://cdryzun.github.io/tags/</loc>
     <lastmod>2020-11-30T10:35:47+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://coderyzun.github.io/</loc>
+    <loc>https://cdryzun.github.io/</loc>
     <lastmod>2020-11-30T10:35:47+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://coderyzun.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
+    <loc>https://cdryzun.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
     <lastmod>2020-11-30T10:35:47+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://coderyzun.github.io/post/openwrt-docker-multi-net/</loc>
+    <loc>https://cdryzun.github.io/post/openwrt-docker-multi-net/</loc>
     <lastmod>2020-11-19T17:56:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://coderyzun.github.io/tags/linux/</loc>
+    <loc>https://cdryzun.github.io/tags/linux/</loc>
     <lastmod>2020-11-19T17:56:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://coderyzun.github.io/tags/openwrt/</loc>
+    <loc>https://cdryzun.github.io/tags/openwrt/</loc>
     <lastmod>2020-11-19T17:56:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://coderyzun.github.io/categories/%E8%BD%AF%E8%B7%AF%E7%94%B1/</loc>
+    <loc>https://cdryzun.github.io/categories/%E8%BD%AF%E8%B7%AF%E7%94%B1/</loc>
     <lastmod>2020-11-19T17:56:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://coderyzun.github.io/tags/n1/</loc>
+    <loc>https://cdryzun.github.io/tags/n1/</loc>
     <lastmod>2020-11-15T16:09:10+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://coderyzun.github.io/post/n1-docker/</loc>
+    <loc>https://cdryzun.github.io/post/n1-docker/</loc>
     <lastmod>2020-11-15T16:09:10+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://coderyzun.github.io/tags/kind/</loc>
+    <loc>https://cdryzun.github.io/tags/kind/</loc>
     <lastmod>2020-11-15T14:24:42+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://coderyzun.github.io/post/some-content/</loc>
+    <loc>https://cdryzun.github.io/post/some-content/</loc>
     <lastmod>2020-11-15T14:24:42+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://coderyzun.github.io/tags/kubernetes/</loc>
+    <loc>https://cdryzun.github.io/tags/kubernetes/</loc>
     <lastmod>2020-11-15T14:24:42+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://coderyzun.github.io/categories/kubernetes/</loc>
+    <loc>https://cdryzun.github.io/categories/kubernetes/</loc>
     <lastmod>2020-11-15T14:24:42+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

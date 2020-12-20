@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: https://coderyzun.github.io/sitemap.xml
+Sitemap: https://cdryzun.github.io/sitemap.xml
