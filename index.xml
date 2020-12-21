@@ -6,7 +6,16 @@
     <description>Recent content on 「Yang&#39;zun」的网志博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 21 Dec 2020 09:34:01 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 21 Dec 2020 13:19:31 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kubeadm 部署 kubernetes-v1.19.x 集群</title>
+      <link>https://cdryzun.github.io/post/kubeadm-deploy-k8s1.9/</link>
+      <pubDate>Mon, 21 Dec 2020 13:19:31 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/kubeadm-deploy-k8s1.9/</guid>
+      <description>系统环境说明 使用操作系统: Centos-7.9.2009 操作系统内核版本: 4.4.248 (lt) Docker容器版本: 18.09.9 Kubeadm 版本: 1.19.6 节点说明: master01: 192.168.8.70 ,192.168.88.70 node01: 192.168.8.71 ,192.168.88.71 (备注: 为每个节点配置了两个ip，</description>
+    </item>
+    
     <item>
       <title>Centos7 安装之后必要的初始化操作</title>
       <link>https://cdryzun.github.io/post/centos-init-config/</link>

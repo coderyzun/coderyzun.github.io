@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Kubeadm on 「Yang&#39;zun」的网志博客</title>
-    <link>https://cdryzun.github.io/tags/kubeadm/</link>
-    <description>Recent content in Kubeadm on 「Yang&#39;zun」的网志博客</description>
+    <title>kubeadm on 「Yang&#39;zun」的网志博客</title>
+    <link>https://cdryzun.github.io/categories/kubeadm/</link>
+    <description>Recent content in kubeadm on 「Yang&#39;zun」的网志博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 21 Dec 2020 13:19:31 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/kubeadm/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 21 Dec 2020 13:19:31 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/kubeadm/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Kubeadm 部署 kubernetes-v1.19.x 集群</title>
       <link>https://cdryzun.github.io/post/kubeadm-deploy-k8s1.9/</link>
