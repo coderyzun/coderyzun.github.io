@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Centos7 安装之后必要的初始化操作 - 「Yang&#39;zun」的网志博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="Centos7安装完成后的初始化调优" /><meta name="keywords" content="centos7, 调优, 部署, 容器化, deploy" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.2 with theme even" />
+
+
+<link rel="canonical" href="https://cdryzun.github.io/post/centos-init-config/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Centos7 安装之后必要的初始化操作" />
+<meta property="og:description" content="Centos7安装完成后的初始化调优" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdryzun.github.io/post/centos-init-config/" />
+<meta property="article:published_time" content="2020-12-21T09:34:01+08:00" />
+<meta property="article:modified_time" content="2020-12-21T09:34:01+08:00" />
+<meta itemprop="name" content="Centos7 安装之后必要的初始化操作">
+<meta itemprop="description" content="Centos7安装完成后的初始化调优">
+<meta itemprop="datePublished" content="2020-12-21T09:34:01+08:00" />
+<meta itemprop="dateModified" content="2020-12-21T09:34:01+08:00" />
+<meta itemprop="wordCount" content="1518">
+
+
+
+<meta itemprop="keywords" content="Centos7,Docker,Linux," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Centos7 安装之后必要的初始化操作"/>
+<meta name="twitter:description" content="Centos7安装完成后的初始化调优"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+</div>
+
+<nav class="site-navbar">
+
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul><li style="display:inline-block;margin-right:10px;">
+    <input type="search" class="docsearch-input" placeholder="Search" />
+  </li></nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Centos7 安装之后必要的初始化操作</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-12-21 </span>
+        <div class="post-category">
+            <a href="/categories/centos/"> Centos </a>
+            <a href="/categories/docker/"> Docker </a>
+            </div>
+          <span class="more-meta"> 约 1518 字 </span>
+          <span class="more-meta"> 预计阅读 4 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#os-调优">OS 调优</a>
+      <ul>
+        <li><a href="#内核优化">内核优化</a></li>
+        <li><a href="#更新系统内核">更新系统内核</a></li>
+        <li><a href="#系统文件句柄优化">系统文件句柄优化</a></li>
+        <li><a href="#统一网卡名称为-ethx">统一网卡名称为 ethx</a></li>
+        <li><a href="#关闭-selinux">关闭 Selinux</a></li>
+      </ul>
+    </li>
+    <li><a href="#常用软件安装配置及优化">常用软件安装配置及优化</a>
+      <ul>
+        <li><a href="#配置yum源为-aliyunhttpsdeveloperaliyuncommirror-的国内源">配置yum源为 <a href="https://developer.aliyun.com/mirror/">aliyun</a> 的国内源</a></li>
+        <li><a href="#常用工具及依赖库的安装-可选">常用工具及依赖库的安装 (可选)</a></li>
+        <li><a href="#openssh-优化">Openssh 优化</a></li>
+        <li><a href="#关闭防火墙">关闭防火墙</a></li>
+        <li><a href="#添加终端自动断开">添加终端自动断开</a></li>
+        <li><a href="#更新软件及系统版本">更新软件及系统版本</a></li>
+        <li><a href="#docker安装">Docker安装</a>
+          <ul>
+            <li><a href="#优化">优化</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>⚠️ 注意此些操作在Centos7中得到验证且可行，其他发行版本请自己尝试</strong></p>
+</blockquote>
+<h1 id="os-调优">OS 调优</h1>
+<h2 id="内核优化">内核优化</h2>
+<blockquote>
+<p>⚠️ 请更具实践业务场景进行调整，此示例中较适合kubernetes节点和etcd节点-<a href="https://docs.rancher.cn/docs/rancher2/best-practices/optimize/os/_index">参考配置</a></p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s2">&#34;
+</span><span class="s2">net.bridge.bridge-nf-call-ip6tables=1
+</span><span class="s2">net.bridge.bridge-nf-call-iptables=1
+</span><span class="s2">net.ipv4.ip_forward=1
+</span><span class="s2">net.ipv4.conf.all.forwarding=1
+</span><span class="s2">net.ipv4.neigh.default.gc_thresh1=4096
+</span><span class="s2">net.ipv4.neigh.default.gc_thresh2=6144
+</span><span class="s2">net.ipv4.neigh.default.gc_thresh3=8192
+</span><span class="s2">net.ipv4.neigh.default.gc_interval=60
+</span><span class="s2">net.ipv4.neigh.default.gc_stale_time=120
+</span><span class="s2"># 参考 https://github.com/prometheus/node_exporter#disabled-by-default
+</span><span class="s2">kernel.perf_event_paranoid=-1
+</span><span class="s2">#sysctls for k8s node config
+</span><span class="s2">net.ipv4.tcp_slow_start_after_idle=0
+</span><span class="s2">net.core.rmem_max=16777216
+</span><span class="s2">fs.inotify.max_user_watches=524288
+</span><span class="s2">kernel.softlockup_all_cpu_backtrace=1
+</span><span class="s2">kernel.softlockup_panic=0
+</span><span class="s2">kernel.watchdog_thresh=30
+</span><span class="s2">fs.file-max=2097152
+</span><span class="s2">fs.inotify.max_user_instances=8192
+</span><span class="s2">fs.inotify.max_queued_events=16384
+</span><span class="s2">vm.max_map_count=262144
+</span><span class="s2">fs.may_detach_mounts=1
+</span><span class="s2">net.core.netdev_max_backlog=16384
+</span><span class="s2">net.ipv4.tcp_wmem=4096 12582912 16777216
+</span><span class="s2">net.core.wmem_max=16777216
+</span><span class="s2">net.core.somaxconn=32768
+</span><span class="s2">net.ipv4.ip_forward=1
+</span><span class="s2">net.ipv4.tcp_max_syn_backlog=8096
+</span><span class="s2">net.ipv4.tcp_rmem=4096 12582912 16777216
+</span><span class="s2">net.ipv6.conf.all.disable_ipv6=1
+</span><span class="s2">net.ipv6.conf.default.disable_ipv6=1
+</span><span class="s2">net.ipv6.conf.lo.disable_ipv6=1
+</span><span class="s2">kernel.yama.ptrace_scope=0
+</span><span class="s2">vm.swappiness=0
+</span><span class="s2">
+</span><span class="s2"># 可以控制core文件的文件名中是否添加pid作为扩展。
+</span><span class="s2">kernel.core_uses_pid=1
+</span><span class="s2"># Do not accept source routing
+</span><span class="s2">net.ipv4.conf.default.accept_source_route=0
+</span><span class="s2">net.ipv4.conf.all.accept_source_route=0
+</span><span class="s2"># Promote secondary addresses when the primary address is removed
+</span><span class="s2">net.ipv4.conf.default.promote_secondaries=1
+</span><span class="s2">net.ipv4.conf.all.promote_secondaries=1
+</span><span class="s2"># Enable hard and soft link protection
+</span><span class="s2">fs.protected_hardlinks=1
+</span><span class="s2">fs.protected_symlinks=1
+</span><span class="s2">
+</span><span class="s2"># 源路由验证
+</span><span class="s2"># see details in https://help.aliyun.com/knowledge_detail/39428.html
+</span><span class="s2">net.ipv4.conf.all.rp_filter=0
+</span><span class="s2">net.ipv4.conf.default.rp_filter=0
+</span><span class="s2">net.ipv4.conf.default.arp_announce = 2
+</span><span class="s2">net.ipv4.conf.lo.arp_announce=2
+</span><span class="s2">net.ipv4.conf.all.arp_announce=2
+</span><span class="s2">
+</span><span class="s2"># see details in https://help.aliyun.com/knowledge_detail/41334.html
+</span><span class="s2">net.ipv4.tcp_max_tw_buckets=5000
+</span><span class="s2">net.ipv4.tcp_syncookies=1
+</span><span class="s2">net.ipv4.tcp_fin_timeout=30
+</span><span class="s2">net.ipv4.tcp_synack_retries=2
+</span><span class="s2">kernel.sysrq=1
+</span><span class="s2">
+</span><span class="s2"># tcp 连接优化
+</span><span class="s2">net.ipv4.tcp_tw_reuse=1
+</span><span class="s2">net.ipv4.tcp_tw_recycle=1
+</span><span class="s2">&#34;</span> &gt;&gt; /etc/sysctl.conf
+sysctl -p <span class="c1"># 使其生效</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="更新系统内核">更新系统内核</h2>
+<blockquote>
+<p>脚本中默认安装lt最新稳定版本的内核，如需更改为ml内核修改main函数中的&quot;VERSION_TYPE&quot;变量即可</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">  <span class="c1"># 使用脚本如下所示</span>
+  cat update_kernel.sh
+  <span class="c1">#!/bin/bash</span>
+
+  <span class="c1">##########################################################</span>
+  <span class="c1"># Author        : Yang&#39;Zun</span>
+  <span class="c1"># Email         : amoaloas@gmail.com</span>
+  <span class="c1"># Last modified : 2020-12-21 10:38:27</span>
+  <span class="c1"># Description   : Centos update linux kernel</span>
+  <span class="c1"># License: Attribution-NonCommercial 4.0 International</span>
+  <span class="c1">###########################################################</span>
+
+  update_kernel<span class="o">(){</span>
+      <span class="nb">echo</span> <span class="s2">&#34;当前内核是:&#34;</span> <span class="sb">`</span>grub2-editenv list<span class="p">|</span>awk -F <span class="s2">&#34;=&#34;</span> <span class="s1">&#39;{print $2}&#39;</span><span class="sb">`</span>
+      curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+      yum -y install epel-release curl wget
+      sed -i <span class="s2">&#34;0,/enabled=0/s//enabled=1/&#34;</span> /etc/yum.repos.d/epel.repo
+      yum remove -y kernel-devel
+      rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
+      rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-2.el7.elrepo.noarch.rpm
+      yum --disablerepo<span class="o">=</span><span class="s2">&#34;*&#34;</span> --enablerepo<span class="o">=</span><span class="s2">&#34;elrepo-kernel&#34;</span> list available <span class="p">|</span>tee kernel_list
+      <span class="nv">KERNEL_VERSION</span><span class="o">=</span><span class="sb">`</span>cat kernel_list <span class="p">|</span>grep <span class="s2">&#34;</span><span class="si">${</span><span class="nv">VERSION_TYPE</span><span class="si">}</span><span class="s2">&#34;</span> <span class="p">|</span>tail -1<span class="p">|</span>awk <span class="s1">&#39;{print $2}&#39;</span><span class="sb">`</span>
+      <span class="nb">echo</span> <span class="s2">&#34;更新系统内核版本为: </span><span class="si">${</span><span class="nv">KERNEL_VERSION</span><span class="si">}</span><span class="s2">&#34;</span>
+      yum -y --enablerepo<span class="o">=</span>elrepo-kernel install kernel-<span class="s2">&#34;</span><span class="si">${</span><span class="nv">VERSION_TYPE</span><span class="si">}</span><span class="s2">&#34;</span>
+      grub2-set-default <span class="s2">&#34;CentOS Linux (</span><span class="si">${</span><span class="nv">KERNEL_VERSION</span><span class="si">}</span><span class="s2">.x86_64) 7 (Core)&#34;</span>
+      wget https://elrepo.org/linux/kernel/el7/x86_64/RPMS/kernel-<span class="s2">&#34;</span><span class="si">${</span><span class="nv">VERSION_TYPE</span><span class="si">}</span><span class="s2">&#34;</span>-devel-<span class="s2">&#34;</span><span class="si">${</span><span class="nv">KERNEL_VERSION</span><span class="si">}</span><span class="s2">&#34;</span>.x86_64.rpm
+      rpm -ivh kernel-<span class="s2">&#34;</span><span class="si">${</span><span class="nv">VERSION_TYPE</span><span class="si">}</span><span class="s2">&#34;</span>-devel-<span class="s2">&#34;</span><span class="si">${</span><span class="nv">KERNEL_VERSION</span><span class="si">}</span><span class="s2">&#34;</span>.x86_64.rpm
+      yum -y --enablerepo<span class="o">=</span>elrepo-kernel install kernel-<span class="s2">&#34;</span><span class="si">${</span><span class="nv">VERSION_TYPE</span><span class="si">}</span><span class="s2">&#34;</span>-devel
+      <span class="nb">echo</span> <span class="s2">&#34;当前内核是:&#34;</span> <span class="sb">`</span>grub2-editenv list<span class="p">|</span>awk -F <span class="s2">&#34;=&#34;</span> <span class="s1">&#39;{print $2}&#39;</span><span class="sb">`</span>
+      <span class="nb">read</span> -p <span class="s2">&#34;更新内核需要重启系统，是否现在重启 ? [Y/n] :&#34;</span> yn
+          <span class="o">[</span> -z <span class="s2">&#34;</span><span class="si">${</span><span class="nv">yn</span><span class="si">}</span><span class="s2">&#34;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nv">yn</span><span class="o">=</span><span class="s2">&#34;y&#34;</span>
+          <span class="k">if</span> <span class="o">[[</span> <span class="nv">$yn</span> <span class="o">==</span> <span class="o">[</span>Yy<span class="o">]</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+                  <span class="nb">echo</span> -e <span class="s2">&#34;系统 重启中...&#34;</span>
+                  reboot
+          <span class="k">fi</span>
+  <span class="o">}</span>
+
+  main<span class="o">(){</span>
+      <span class="c1"># install &#34;lt&#34; or &#34;ml&#34;</span>
+      <span class="nv">VERSION_TYPE</span><span class="o">=</span><span class="s1">&#39;lt&#39;</span>
+      update_kernel
+  <span class="o">}</span>
+  main
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>⚠️ 内核安装重启完成后我们还需要对他进行版本锁定，防止在执行yum update更新软件包的时候更新了内核，将我们刚才设置的内核给覆盖掉。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">yum -y install yum-versionlock <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> yum versionlock add kernel* <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> yum versionlock list
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<h2 id="系统文件句柄优化">系统文件句柄优化</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat &gt;&gt; /etc/security/limits.conf <span class="s">&lt;&lt;EOF
+</span><span class="s">* soft nofile 65535
+</span><span class="s">* hard nofile 65536
+</span><span class="s">hive   - nofile 65535
+</span><span class="s">hive   - nproc  65535
+</span><span class="s">EOF</span>
+
+sed -i <span class="s1">&#39;s#4096#65535#g&#39;</span>   /etc/security/limits.d/20-nproc.conf  <span class="c1"># 加大普通用户限制也可以改为 unlimited</span>
+egrep -v <span class="s2">&#34;^</span>$<span class="s2">|^#&#34;</span> /etc/security/limits.d/20-nproc.conf  <span class="c1"># 检查是否生效</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="统一网卡名称为-ethx">统一网卡名称为 ethx</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># 统一网卡名称为ethx</span>
+sudo sed -i <span class="s1">&#39;s/GRUB_CMDLINE_LINUX=&#34;\(.*\)&#34;/GRUB_CMDLINE_LINUX=&#34;net.ifnames=0 cgroup_enable=memory swapaccount=1 biosdevname=0 \1&#34;/g&#39;</span> /etc/default/grub<span class="p">;</span>
+sudo grub2-mkconfig -o /boot/grub2/grub.cfg
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="关闭-selinux">关闭 Selinux</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">sed -i <span class="s1">&#39;s#SELINUX=enforcing#SELINUX=disabled#g&#39;</span> /etc/selinux/config
+grep -i  ^selinux<span class="o">=</span> /etc/selinux/config 
+getenforce
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="常用软件安装配置及优化">常用软件安装配置及优化</h1>
+<h2 id="配置yum源为-aliyunhttpsdeveloperaliyuncommirror-的国内源">配置yum源为 <a href="https://developer.aliyun.com/mirror/">aliyun</a> 的国内源</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">mv /etc/yum.repos.d<span class="o">{</span>,.bak<span class="o">}</span> <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> mkdir -p /etc/yum.repos.d <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> curl -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-7.repo <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> wget -O /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-7.repo <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> yum clean all yum <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> makecache fast
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="常用工具及依赖库的安装-可选">常用工具及依赖库的安装 (可选)</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">yum -y install telnet vim ntp ntpdate wget vim* net-tools iptables iptables-services git vim gcc glibc-static telnet bridge-utils net-tools wget telnet lrzsz tree ntsysv bash-completion gcc cmake bzip2-devel curl-devel db4-devel libjpeg-devel libpng-devel freetype-devel libXpm-devel gmp-devel libc-client-devel openldap-devel unixODBC-devel postgresql-devel sqlite-devel aspell-devel net-snmp-devel libxslt-devel libxml2-devel pcre-devel mysql-devel pspell-devel libmemcached libmemcached-devel zlib-devel 
+
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="openssh-优化">Openssh 优化</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">sed -i <span class="s1">&#39;s/#UseDNS yes/UseDNS no/&#39;</span> /etc/ssh/sshd_config <span class="c1"># 禁用 dns 解析</span>
+sed -i <span class="s1">&#39;/^GSS/s/yes/no/g&#39;</span> /etc/ssh/sshd_config  <span class="c1"># 禁用GSSAPI认证加快登录速度</span>
+systemctl restart sshd 
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="关闭防火墙">关闭防火墙</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">systemctl stop firewalld.service
+systemctl disable firewalld.service
+systemctl list-unit-files <span class="p">|</span>grep firewalld
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="添加终端自动断开">添加终端自动断开</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># 为了增强系统的安全性 添加终端在用户输入空闲一段时间后自动断开 此示例为: 30分钟</span>
+<span class="nb">echo</span> <span class="s2">&#34;&#34;&#34;export TMOUT=1800
+</span><span class="s2">readonly TMOUT&#34;&#34;&#34;</span> &gt;&gt; /etc/profile
+<span class="nb">source</span> /etc/profile <span class="c1"># 使设置立即生效</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="更新软件及系统版本">更新软件及系统版本</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">yum update <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> yum upgrade
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="docker安装">Docker安装</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">sudo yum install -y yum-utils device-mapper-persistent-data lvm2 <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> sudo yum-config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> sudo yum makecache fast
+
+<span class="c1"># 安装前先检查一下需要安装的版本</span>
+yum list docker-ce.x86_64 --showduplicates <span class="p">|</span> sort -r
+docker-ce.x86_64            3:18.09.9-3.el7                    docker-ce-stable
+
+<span class="c1"># 安装指定的版本 (去掉第二列的 &#34;3:&#34;即可)</span>
+yum -y install docker-ce-18.09.9-3.el7
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="优化">优化</h3>
+<ul>
+<li>配置文件优化
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">systemctl stop docker.service
+sudo ip link del docker0
+touch /etc/docker/daemon.json
+cat &gt; /etc/docker/daemon.json <span class="s">&lt;&lt; EOF
+</span><span class="s">{
+</span><span class="s">    &#34;oom-score-adjust&#34;: -1000,
+</span><span class="s">    &#34;log-driver&#34;: &#34;json-file&#34;,
+</span><span class="s">    &#34;log-opts&#34;: {
+</span><span class="s">    &#34;max-size&#34;: &#34;100m&#34;,
+</span><span class="s">    &#34;max-file&#34;: &#34;3&#34;
+</span><span class="s">    },
+</span><span class="s">    &#34;max-concurrent-downloads&#34;: 10,
+</span><span class="s">    &#34;max-concurrent-uploads&#34;: 10,
+</span><span class="s">    &#34;insecure-registries&#34;: [&#34;idocker.io&#34;],
+</span><span class="s">    &#34;registry-mirrors&#34;: [&#34;https://7bezldxe.mirror.aliyuncs.com&#34;],
+</span><span class="s">    &#34;storage-driver&#34;: &#34;overlay2&#34;,
+</span><span class="s">    &#34;storage-opts&#34;: [
+</span><span class="s">    &#34;overlay2.override_kernel_check=true&#34;
+</span><span class="s">    ]
+</span><span class="s">}
+</span><span class="s">EOF</span>
+
+systemctl daemon-reload <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> systemctl restart docker  <span class="c1"># 配置完成后重启加载一下配置文件 </span>
+
+systemctl status docker <span class="c1"># 注意检查一下是否正常启动</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>常用项说明:</p>
+<ul>
+<li>&ldquo;log-driver&rdquo;: &ldquo;json-file&rdquo; 设置json 格式日志</li>
+<li>&ldquo;oom-score-adjust&rdquo;: -1000 防止容器被 内核 oom</li>
+<li>&ldquo;log-opts&rdquo; 设置容器日志大小</li>
+<li>&ldquo;max-concurrent-downloads&rdquo;: 10 并行下载容器数量</li>
+<li>&ldquo;max-concurrent-uploads&rdquo;: 10 并行上传</li>
+<li>&ldquo;storage-driver&rdquo;: &ldquo;overlay2&rdquo; 设置存储驱动为 overlay2</li>
+<li>&ldquo;bip&rdquo; 容器默认的网段</li>
+<li>&ldquo;registry-mirrors&rdquo; 配置镜像下载加速这里使用的是阿里云的 (⚠️ 在离线部署时 此选项可以选择去掉)</li>
+<li>&ldquo;insecure-registries&rdquo; 信任的私服地址</li>
+</ul>
+</blockquote>
+</li>
+<li>服务进程优化
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">sed -i <span class="s1">&#39;/\[Service\]/a\OOMScoreAdjust=-1000&#39;</span> /usr/lib/systemd/system/docker.service
+sed -i <span class="s1">&#39;/ExecReload/a\ExecStartPost=/usr/sbin/iptables -P FORWARD ACCEPT&#39;</span> /usr/lib/systemd/system/docker.service
+systemctl daemon-reload <span class="o">&amp;&amp;</span> systemctl restart docker
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>设置开机自启动
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">systemctl daemon-reload <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> systemctl restart docker <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> systemctl <span class="nb">enable</span> docker.service
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yang'zun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-21
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/centos7/">Centos7</a>
+          <a href="/tags/docker/">Docker</a>
+          <a href="/tags/linux/">Linux</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/docker-quickstart-redis/">
+            <span class="next-text nav-default">Docker Quickstart Redis Server</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
+        appKey: 'siSAWI3rzA6Ow8Tmiv7V4GO4',
+        notify:  true ,
+        verify:  true ,
+        avatar:'',
+        placeholder: '来留下点什么吧~',
+        visitor:  false 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:amoaloas@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/cdryzun" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdryzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js" integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js" integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin="anonymous"></script>
+  <script><!-- NOTE: timeago.js uses the language code format like "zh_CN" (underscore and case sensitive) -->
+    var languageCode = "en-us".replace(/-/g, '_').replace(/_(.*)/, function ($0, $1) {return $0.replace($1, $1.toUpperCase());});
+    timeago().render(document.querySelectorAll('.timeago'), languageCode);
+    timeago.cancel();  
+  </script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script>
+    docsearch({
+    apiKey: "17388eec628e676a77d6235068b458df",
+    indexName: "blog",
+    appId: "KEECS2XKBV",
+    inputSelector: '.docsearch-input',
+    debug: false,
+    });
+</script>
+</body>
+</html>

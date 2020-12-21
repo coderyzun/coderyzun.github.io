@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Centos7 on 「Yang&#39;zun」的网志博客</title>
+    <link>https://cdryzun.github.io/tags/centos7/</link>
+    <description>Recent content in Centos7 on 「Yang&#39;zun」的网志博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 21 Dec 2020 09:34:01 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/centos7/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Centos7 安装之后必要的初始化操作</title>
+      <link>https://cdryzun.github.io/post/centos-init-config/</link>
+      <pubDate>Mon, 21 Dec 2020 09:34:01 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/centos-init-config/</guid>
+      <description>⚠️ 注意此些操作在Centos7中得到验证且可行，其他发行版本请自己尝试 OS 调优 内核优化 ⚠️ 请更具实践业务场景进行调整，此示例中较适合kube</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -3,20 +3,76 @@
   
   <url>
     <loc>https://cdryzun.github.io/categories/</loc>
-    <lastmod>2020-11-30T10:35:47+08:00</lastmod>
+    <lastmod>2020-12-21T09:34:01+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cdryzun.github.io/tags/centos/</loc>
-    <lastmod>2020-11-30T10:35:47+08:00</lastmod>
+    <loc>https://cdryzun.github.io/categories/centos/</loc>
+    <lastmod>2020-12-21T09:34:01+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/centos7/</loc>
+    <lastmod>2020-12-21T09:34:01+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/post/centos-init-config/</loc>
+    <lastmod>2020-12-21T09:34:01+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdryzun.github.io/tags/docker/</loc>
+    <lastmod>2020-12-21T09:34:01+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/categories/docker/</loc>
+    <lastmod>2020-12-21T09:34:01+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/linux/</loc>
+    <lastmod>2020-12-21T09:34:01+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/post/</loc>
+    <lastmod>2020-12-21T09:34:01+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/</loc>
+    <lastmod>2020-12-21T09:34:01+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/</loc>
+    <lastmod>2020-12-21T09:34:01+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/centos/</loc>
     <lastmod>2020-11-30T10:35:47+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -30,28 +86,7 @@
   </url>
   
   <url>
-    <loc>https://cdryzun.github.io/post/</loc>
-    <lastmod>2020-11-30T10:35:47+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://cdryzun.github.io/tags/redis/</loc>
-    <lastmod>2020-11-30T10:35:47+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/tags/</loc>
-    <lastmod>2020-11-30T10:35:47+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/</loc>
     <lastmod>2020-11-30T10:35:47+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -66,13 +101,6 @@
   
   <url>
     <loc>https://cdryzun.github.io/post/openwrt-docker-multi-net/</loc>
-    <lastmod>2020-11-19T17:56:52+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/tags/linux/</loc>
     <lastmod>2020-11-19T17:56:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
