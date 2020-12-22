@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>nginxIngress on 「Yang&#39;zun」的网志博客</title>
+    <link>https://cdryzun.github.io/categories/nginxingress/</link>
+    <description>Recent content in nginxIngress on 「Yang&#39;zun」的网志博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 22 Dec 2020 09:24:55 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/nginxingress/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>部署 Nginx-Ingress 并配置暴露 kubernetes dashboard</title>
+      <link>https://cdryzun.github.io/post/ingress-to-dashboard/</link>
+      <pubDate>Tue, 22 Dec 2020 09:24:55 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/ingress-to-dashboard/</guid>
+      <description>环境说明 链接文档 软件版本说明 helm: v3.4.2 ingress: v3.16.1 Nginx Ingress 参考文档 安装 1 2 3 4 wget https://get.helm.sh/helm-v3.4.2-linux-amd64.tar.gz tar xf helm-v3.4.2-linux-amd64.tar.gz \ &amp;amp;&amp;amp; cp linux-amd64/helm /usr/local/bin/ 添加helm命令补全 1 2 helm completion bash \ &amp;amp;&amp;amp; helm completion bash &amp;gt; /etc/bash_completion.d/helm 添加 ingress repo 1 2 3 helm</description>
+    </item>
+    
+  </channel>
+</rss>
