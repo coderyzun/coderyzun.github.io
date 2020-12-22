@@ -49,7 +49,7 @@
 <meta itemprop="description" content="使用kubeadm部署kubernetes-v1.19.x集群">
 <meta itemprop="datePublished" content="2020-12-21T13:19:31+08:00" />
 <meta itemprop="dateModified" content="2020-12-21T13:19:31+08:00" />
-<meta itemprop="wordCount" content="2438">
+<meta itemprop="wordCount" content="2434">
 
 
 
@@ -131,7 +131,7 @@
             <a href="/categories/kubernetes/"> kubernetes </a>
             <a href="/categories/kubeadm/"> kubeadm </a>
             </div>
-          <span class="more-meta"> 约 2438 字 </span>
+          <span class="more-meta"> 约 2434 字 </span>
           <span class="more-meta"> 预计阅读 5 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -184,7 +184,7 @@
         <li><a href="#部署-原生-dashboard">部署 <code>原生</code> dashboard</a>
           <ul>
             <li><a href="#临时使用kubectl-将-dashboard-代理出来">临时使用kubectl 将 dashboard 代理出来</a></li>
-            <li><a href="#用户获取token">用户获取token</a></li>
+            <li><a href="#获取用户-token">获取用户 Token</a></li>
             <li><a href="#解决方法-重新绑定默认用户为管理员生产不推荐">解决方法-重新绑定默认用户为管理员(<code>生产不推荐</code>)</a></li>
           </ul>
         </li>
@@ -741,7 +741,7 @@ watch kubectl get pod -n kubernetes-dashboard  <span class="c1"># 等待容器�
 <pre class="chroma"><code class="language-bash" data-lang="bash">kubectl port-forward -n kubernetes-dashboard service/kubernetes-dashboard 8080:443 --addss 0.0.0.0
 </code></pre></td></tr></table>
 </div>
-</div><h3 id="用户获取token">用户获取token</h3>
+</div><h3 id="获取用户-token">获取用户 Token</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
