@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>kubernetes集群中 controller-manager 及 scheduler 组件频繁发生重启的一次排查解决 - 「Yang&#39;zun」的网志博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="kubernetes集群中controller-manager及scheduler组件频繁重启的一次排查解决" /><meta name="keywords" content="Flannel, Core, 错误修复, io high" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.2 with theme even" />
+
+
+<link rel="canonical" href="https://cdryzun.github.io/post/flannel-exclusion-records/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="kubernetes集群中 controller-manager 及 scheduler 组件频繁发生重启的一次排查解决" />
+<meta property="og:description" content="kubernetes集群中controller-manager及scheduler组件频繁重启的一次排查解决" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdryzun.github.io/post/flannel-exclusion-records/" />
+<meta property="article:published_time" content="2020-12-18T16:24:43+08:00" />
+<meta property="article:modified_time" content="2020-12-18T16:24:43+08:00" />
+<meta itemprop="name" content="kubernetes集群中 controller-manager 及 scheduler 组件频繁发生重启的一次排查解决">
+<meta itemprop="description" content="kubernetes集群中controller-manager及scheduler组件频繁重启的一次排查解决">
+<meta itemprop="datePublished" content="2020-12-18T16:24:43+08:00" />
+<meta itemprop="dateModified" content="2020-12-18T16:24:43+08:00" />
+<meta itemprop="wordCount" content="694">
+
+
+
+<meta itemprop="keywords" content="Kubernetes,Core,Flannel," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="kubernetes集群中 controller-manager 及 scheduler 组件频繁发生重启的一次排查解决"/>
+<meta name="twitter:description" content="kubernetes集群中controller-manager及scheduler组件频繁重启的一次排查解决"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+</div>
+
+<nav class="site-navbar">
+
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul><li style="display:inline-block;margin-right:10px;">
+    <input type="search" class="docsearch-input" placeholder="Search" />
+  </li></nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">kubernetes集群中 controller-manager 及 scheduler 组件频繁发生重启的一次排查解决</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-12-18 </span>
+        <div class="post-category">
+            <a href="/categories/kubernetes/"> Kubernetes </a>
+            <a href="/categories/%E9%94%99%E8%AF%AF%E4%BF%AE%E5%A4%8D/"> 错误修复 </a>
+            </div>
+          <span class="more-meta"> 约 694 字 </span>
+          <span class="more-meta"> 预计阅读 2 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#环境说明">环境说明</a>
+      <ul>
+        <li><a href="#现象说明">现象说明</a></li>
+      </ul>
+    </li>
+    <li><a href="#排查记录">排查记录</a>
+      <ul>
+        <li><a href="#抓取日志">抓取日志</a>
+          <ul>
+            <li><a href="#错误信息如下所示">错误信息如下所示</a></li>
+          </ul>
+        </li>
+        <li><a href="#检测网络及io">检测网络及io</a>
+          <ul>
+            <li><a href="#安装工具">安装工具</a></li>
+            <li><a href="#找到问题">找到问题</a></li>
+          </ul>
+        </li>
+        <li><a href="#更换版本">更换版本</a>
+          <ul>
+            <li><a href="#检查正在使用的版本">检查正在使用的版本</a></li>
+            <li><a href="#降级版本">降级版本</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#总结">总结</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="环境说明">环境说明</h1>
+<blockquote>
+<ul>
+<li>Kubernetes 版本: v1.19.6</li>
+<li>使用操作系统: Centos-7.9.2009</li>
+</ul>
+</blockquote>
+<h2 id="现象说明">现象说明</h2>
+<blockquote>
+<p>最近在使用k8s集群的时候，发现集群变慢了许多，排查发现 <code>master</code> 节点中 <code>controller-manager</code> 及 <code>scheduler</code> 组件频繁的发生重启
+<img src="https://image.coderyzun.cyou/images/2020/12/22/image-20201222213306595.png" alt="image-20201222213306595"></p>
+</blockquote>
+<h1 id="排查记录">排查记录</h1>
+<h2 id="抓取日志">抓取日志</h2>
+<blockquote>
+<p>使用重定向将日志写入至文件中再慢慢分析 (一开始使用前台抓取，打印日志太长，超出终端的默认显示行）</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl logs -f kube-controller-manager-master01 -n kube-system &gt;&gt; controller.log
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="错误信息如下所示">错误信息如下所示</h3>
+<p><img src="https://image.coderyzun.cyou/images/2020/12/22/image-20201222213552227.png" alt="image-20201222213552227"></p>
+<blockquote>
+<p>通过搜索引擎，有人说是etcd性能导致，重试使用了<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/tuning.md"><code>此文档文档</code></a> 进行了etcd的优化，没有什么效果。</p>
+</blockquote>
+<h2 id="检测网络及io">检测网络及io</h2>
+<h3 id="安装工具">安装工具</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">yum install dstat iotop -y
+
+iotop -oP  <span class="c1"># 检查 io</span>
+
+dstat -nf <span class="c1"># 显示所有网络接口使用情况</span>
+dstat -df <span class="c1"># 显示所有磁盘使用情况，  当接口过多时 可使用 &#34;-N&#34; 加指定的网口, &#34;-D&#34; 加磁盘 </span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>排除得到 io 占用高且被flanneld这个进程占用着
+<img src="https://image.coderyzun.cyou/images/2020/12/22/image-20201222215836738.png" alt="image-20201222215836738"></p>
+</blockquote>
+<h3 id="找到问题">找到问题</h3>
+<p><strong>发现社区也有人反馈这个问题，但是目前暂没有人员回复</strong>
+<img src="https://image.coderyzun.cyou/images/2020/12/22/image-20201222221012316.png" alt="image-20201222221012316"></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl delete -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
+ifconfig cni0 down
+ip link delete cni0
+ifconfig flannel.1 down
+ip link delete flannel.1
+rm -rf /var/lib/cni/
+rm -f /etc/cni/net.d/*
+systemctl restart kubelet
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p><code>删除flannel后</code> 各节点的io恢复正常，原因应该就是这个了，但是flannel组件不可缺少，得想个办法将它再次安装上才行。</p>
+</blockquote>
+<h2 id="更换版本">更换版本</h2>
+<h3 id="检查正在使用的版本">检查正在使用的版本</h3>
+<p><img src="https://image.coderyzun.cyou/images/2020/12/22/image-20201222221312175.png" alt="image-20201222221312175"></p>
+<h3 id="降级版本">降级版本</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">curl https://raw.githubusercontent.com/coreos/flannel/v0.13.0/Documentation/kube-flannel.yml|sed &#39;s#10.244.0.0/16#172.20.0.0/16#g&#39; | kubectl apply -f -  # 我这里进行了替换子网，如没有修改默认的pod子网地址请直接使用下面语句即可
+
+kubectl apply -f  https://raw.githubusercontent.com/coreos/flannel/v0.13.0/Documentation/kube-flannel.yml
+
+watch kubectl get pod -n kube-system  # 等待 pod 启动完成
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>启动完成后再次使用 <code>iotop -oP</code> 观察io是否异常, 确认正常后观察 <code>controller-manager</code> 是否会再次发生重启</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl logs -f kube-controller-manager-master01 -n kube-system &gt; controller.log
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<h1 id="总结">总结</h1>
+<p>更换版本后集群暂时恢复正常，之后要是还有异常得使用观察一段时间才知道，因为这个是的自己的测试环境，再使用其他一些生产环境的时候还是不要动不动就将flannel删除。再经历过这次问题后，再次深刻了在使用一些软件的时候还是尽量不要使用一些较新版本，如非要使用时，因使用官方稳定版本中的包较宜。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yang'zun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-18
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/kubernetes/">Kubernetes</a>
+          <a href="/tags/core/">Core</a>
+          <a href="/tags/flannel/">Flannel</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/centos-init-config/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Centos7 安装之后必要的初始化操作</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/docker-quickstart-redis/">
+            <span class="next-text nav-default">Docker Quickstart Redis Server</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
+        appKey: 'siSAWI3rzA6Ow8Tmiv7V4GO4',
+        notify:  true ,
+        verify:  true ,
+        avatar:'',
+        placeholder: '来留下点什么吧~',
+        visitor:  false 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:amoaloas@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/cdryzun" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdryzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js" integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js" integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin="anonymous"></script>
+  <script><!-- NOTE: timeago.js uses the language code format like "zh_CN" (underscore and case sensitive) -->
+    var languageCode = "en-us".replace(/-/g, '_').replace(/_(.*)/, function ($0, $1) {return $0.replace($1, $1.toUpperCase());});
+    timeago().render(document.querySelectorAll('.timeago'), languageCode);
+    timeago.cancel();  
+  </script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script>
+    docsearch({
+    apiKey: "17388eec628e676a77d6235068b458df",
+    indexName: "blog",
+    appId: "KEECS2XKBV",
+    inputSelector: '.docsearch-input',
+    debug: false,
+    });
+</script>
+</body>
+</html>

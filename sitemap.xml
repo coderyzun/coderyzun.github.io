@@ -156,6 +156,34 @@
   </url>
   
   <url>
+    <loc>https://cdryzun.github.io/tags/core/</loc>
+    <lastmod>2020-12-18T16:24:43+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/flannel/</loc>
+    <lastmod>2020-12-18T16:24:43+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/post/flannel-exclusion-records/</loc>
+    <lastmod>2020-12-18T16:24:43+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/categories/%E9%94%99%E8%AF%AF%E4%BF%AE%E5%A4%8D/</loc>
+    <lastmod>2020-12-18T16:24:43+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://cdryzun.github.io/post/docker-quickstart-redis/</loc>
     <lastmod>2020-11-30T10:35:47+08:00</lastmod>
     <changefreq>weekly</changefreq>

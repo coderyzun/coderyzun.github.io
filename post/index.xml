@@ -35,6 +35,15 @@
     </item>
     
     <item>
+      <title>kubernetes集群中 controller-manager 及 scheduler 组件频繁发生重启的一次排查解决</title>
+      <link>https://cdryzun.github.io/post/flannel-exclusion-records/</link>
+      <pubDate>Fri, 18 Dec 2020 16:24:43 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/flannel-exclusion-records/</guid>
+      <description>环境说明 Kubernetes 版本: v1.19.6 使用操作系统: Centos-7.9.2009 现象说明 最近在使用k8s集群的时候，发现集群变慢了许多，排查发现 master 节点中 controller-manager 及 scheduler 组件频繁的发生重启 排查记录 抓</description>
+    </item>
+    
+    <item>
       <title>Docker Quickstart Redis Server</title>
       <link>https://cdryzun.github.io/post/docker-quickstart-redis/</link>
       <pubDate>Mon, 30 Nov 2020 10:35:47 +0800</pubDate>
