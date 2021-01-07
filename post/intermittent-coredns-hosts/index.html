@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Coredns 进行解析域名时，某些域名出现间断性无法正常解析问题 - 「Yang&#39;zun」的网志博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="Kubernetes节点中，有一台节点使用coredns进行解析某个域名时，出现间断性无法正常解析问题，而解析另外一个域名时不会出现解析问题。" /><meta name="keywords" content="centos7, kubernetes, coredns, 间断性无法解析" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.2 with theme even" />
+
+
+<link rel="canonical" href="https://cdryzun.github.io/post/intermittent-coredns-hosts/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Coredns 进行解析域名时，某些域名出现间断性无法正常解析问题" />
+<meta property="og:description" content="Kubernetes节点中，有一台节点使用coredns进行解析某个域名时，出现间断性无法正常解析问题，而解析另外一个域名时不会出现解析问题。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdryzun.github.io/post/intermittent-coredns-hosts/" />
+<meta property="article:published_time" content="2021-01-07T14:34:16+08:00" />
+<meta property="article:modified_time" content="2021-01-07T14:34:16+08:00" />
+<meta itemprop="name" content="Coredns 进行解析域名时，某些域名出现间断性无法正常解析问题">
+<meta itemprop="description" content="Kubernetes节点中，有一台节点使用coredns进行解析某个域名时，出现间断性无法正常解析问题，而解析另外一个域名时不会出现解析问题。">
+<meta itemprop="datePublished" content="2021-01-07T14:34:16+08:00" />
+<meta itemprop="dateModified" content="2021-01-07T14:34:16+08:00" />
+<meta itemprop="wordCount" content="1672">
+
+
+
+<meta itemprop="keywords" content="Kubernetes,Coredns," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Coredns 进行解析域名时，某些域名出现间断性无法正常解析问题"/>
+<meta name="twitter:description" content="Kubernetes节点中，有一台节点使用coredns进行解析某个域名时，出现间断性无法正常解析问题，而解析另外一个域名时不会出现解析问题。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+</div>
+
+<nav class="site-navbar">
+
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul><li style="display:inline-block;margin-right:10px;">
+    <input type="search" class="docsearch-input" placeholder="Search" />
+  </li></nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Coredns 进行解析域名时，某些域名出现间断性无法正常解析问题</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-01-07 </span>
+        <div class="post-category">
+            <a href="/categories/kubernetes/"> Kubernetes </a>
+            <a href="/categories/coredns/"> Coredns </a>
+            </div>
+          <span class="more-meta"> 约 1672 字 </span>
+          <span class="more-meta"> 预计阅读 4 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#问题描述">问题描述:</a></li>
+    <li><a href="#环境说明">环境说明：</a></li>
+    <li><a href="#工具说明">工具说明</a></li>
+    <li><a href="#问题表现">问题表现</a>
+      <ul>
+        <li><a href="#排查结果">排查结果</a></li>
+        <li><a href="#排查步骤如下">排查步骤如下:</a>
+          <ul>
+            <li><a href="#步骤一">步骤一:</a></li>
+            <li><a href="#步骤二">步骤二:</a></li>
+            <li><a href="#修改后的结果展示">修改后的结果展示:</a></li>
+            <li><a href="#重载配置完成后-我们再测试一下结果">重载配置完成后 我们再测试一下结果</a></li>
+          </ul>
+        </li>
+        <li><a href="#解决问题">解决问题</a>
+          <ul>
+            <li><a href="#更改-coredns-配置">更改 coredns 配置</a></li>
+            <li><a href="#更改node-local-cahce-配置">更改node-local-cahce 配置</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#参考文档及博客">参考文档及博客:</a></li>
+    <li><a href="#总结">总结:</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="问题描述">问题描述:</h1>
+<p>Kubernetes 节点中，有<code>一台节点</code>使用 coredns 进行解析<code>某个域名</code>时，出现间断性无法正常解析问题，而解析另外一个域名时不会出现解析问题。</p>
+<blockquote>
+<p>再次重复一下问题重点: <code>且在集群中的某台节点中出现，且使用某个域名时出现</code></p>
+</blockquote>
+<h1 id="环境说明">环境说明：</h1>
+<ul>
+<li>操作系统:  CentOS Linux release 7.9.2009</li>
+<li>Kubernetes 集群:  v1.17.4  （集群使用 rancher <code>自定义添加集群</code> 一键部署）</li>
+<li>Dashboard: Rancher-v2.3.5</li>
+<li>Linux Kernel:  5.10.3-1.el7.elrepo.x86_64</li>
+<li>Coredns : Coredns:1.6.5 + Node-local-dns</li>
+</ul>
+<h1 id="工具说明">工具说明</h1>
+<ul>
+<li>
+<p>测试时使用的容器:  praqma/network-multitool:latest</p>
+</li>
+<li>
+<p>测试时使用的dns 测试工具 ： coredns-tools.go</p>
+<p>程序出自 <a href="https://blog.51cto.com/14143894/2515451"><code>Blog</code></a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+  
+<span class="kn">import</span> <span class="p">(</span>
+  <span class="s">&#34;context&#34;</span>
+  <span class="s">&#34;flag&#34;</span>
+  <span class="s">&#34;fmt&#34;</span>
+  <span class="s">&#34;net&#34;</span>
+  <span class="s">&#34;sync/atomic&#34;</span>
+  <span class="s">&#34;time&#34;</span>
+<span class="p">)</span>
+  
+<span class="kd">var</span> <span class="nx">host</span> <span class="kt">string</span>
+<span class="kd">var</span> <span class="nx">connections</span> <span class="kt">int</span>
+<span class="kd">var</span> <span class="nx">duration</span> <span class="kt">int64</span>
+<span class="kd">var</span> <span class="nx">limit</span> <span class="kt">int64</span>
+<span class="kd">var</span> <span class="nx">timeoutCount</span> <span class="kt">int64</span>
+  
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// os.Args = append(os.Args, &#34;-host&#34;, &#34;www.baidu.com&#34;, &#34;-c&#34;, &#34;200&#34;, &#34;-d&#34;, &#34;30&#34;, &#34;-l&#34;, &#34;5000&#34;)
+</span><span class="c1"></span>  
+  <span class="nx">flag</span><span class="p">.</span><span class="nf">StringVar</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">host</span><span class="p">,</span> <span class="s">&#34;host&#34;</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;Resolve host&#34;</span><span class="p">)</span>
+  <span class="nx">flag</span><span class="p">.</span><span class="nf">IntVar</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">connections</span><span class="p">,</span> <span class="s">&#34;c&#34;</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s">&#34;Connections&#34;</span><span class="p">)</span>
+  <span class="nx">flag</span><span class="p">.</span><span class="nf">Int64Var</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">duration</span><span class="p">,</span> <span class="s">&#34;d&#34;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#34;Duration(s)&#34;</span><span class="p">)</span>
+  <span class="nx">flag</span><span class="p">.</span><span class="nf">Int64Var</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">limit</span><span class="p">,</span> <span class="s">&#34;l&#34;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#34;Limit(ms)&#34;</span><span class="p">)</span>
+  <span class="nx">flag</span><span class="p">.</span><span class="nf">Parse</span><span class="p">()</span>
+  
+  <span class="kd">var</span> <span class="nx">count</span> <span class="kt">int64</span> <span class="p">=</span> <span class="mi">0</span>
+  <span class="kd">var</span> <span class="nx">errCount</span> <span class="kt">int64</span> <span class="p">=</span> <span class="mi">0</span>
+  <span class="nx">pool</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">connections</span><span class="p">)</span>
+  <span class="nx">exit</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">bool</span><span class="p">)</span>
+  <span class="kd">var</span> <span class="p">(</span>
+      <span class="nx">min</span> <span class="kt">int64</span> <span class="p">=</span> <span class="mi">0</span>
+      <span class="nx">max</span> <span class="kt">int64</span> <span class="p">=</span> <span class="mi">0</span>
+      <span class="nx">sum</span> <span class="kt">int64</span> <span class="p">=</span> <span class="mi">0</span>
+  <span class="p">)</span>
+  
+  <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Duration</span><span class="p">(</span><span class="nx">duration</span><span class="p">))</span>
+      <span class="nx">exit</span> <span class="o">&lt;-</span> <span class="kc">true</span>
+  <span class="p">}()</span>
+<span class="nx">endD</span><span class="p">:</span>
+  <span class="k">for</span> <span class="p">{</span>
+      <span class="k">select</span> <span class="p">{</span>
+      <span class="k">case</span> <span class="nx">pool</span> <span class="o">&lt;-</span> <span class="kc">nil</span><span class="p">:</span>
+          <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+              <span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+                  <span class="o">&lt;-</span><span class="nx">pool</span>
+              <span class="p">}()</span>
+              <span class="nx">resolver</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">net</span><span class="p">.</span><span class="nx">Resolver</span><span class="p">{}</span>
+              <span class="nx">now</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">()</span>
+              <span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">resolver</span><span class="p">.</span><span class="nf">LookupIPAddr</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">(),</span> <span class="nx">host</span><span class="p">)</span>
+              <span class="nx">use</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Since</span><span class="p">(</span><span class="nx">now</span><span class="p">).</span><span class="nf">Nanoseconds</span><span class="p">()</span> <span class="o">/</span> <span class="nb">int64</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Millisecond</span><span class="p">)</span>
+              <span class="k">if</span> <span class="nx">min</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">use</span> <span class="p">&lt;</span> <span class="nx">min</span> <span class="p">{</span>
+                  <span class="nx">min</span> <span class="p">=</span> <span class="nx">use</span>
+              <span class="p">}</span>
+              <span class="k">if</span> <span class="nx">use</span> <span class="p">&gt;</span> <span class="nx">max</span> <span class="p">{</span>
+                  <span class="nx">max</span> <span class="p">=</span> <span class="nx">use</span>
+              <span class="p">}</span>
+              <span class="nx">sum</span> <span class="o">+=</span> <span class="nx">use</span>
+              <span class="k">if</span> <span class="nx">limit</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">use</span> <span class="o">&gt;=</span> <span class="nx">limit</span> <span class="p">{</span>
+                  <span class="nx">timeoutCount</span><span class="o">++</span>
+              <span class="p">}</span>
+              <span class="nx">atomic</span><span class="p">.</span><span class="nf">AddInt64</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">count</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+              <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+                  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nf">Error</span><span class="p">())</span>
+                  <span class="nx">atomic</span><span class="p">.</span><span class="nf">AddInt64</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">errCount</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+              <span class="p">}</span>
+          <span class="p">}()</span>
+      <span class="k">case</span> <span class="o">&lt;-</span><span class="nx">exit</span><span class="p">:</span>
+          <span class="k">break</span> <span class="nx">endD</span>
+      <span class="p">}</span>
+  <span class="p">}</span>
+  
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;request count：%d\nerror count：%d\n&#34;</span><span class="p">,</span> <span class="nx">count</span><span class="p">,</span> <span class="nx">errCount</span><span class="p">)</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;request time：min(%dms) max(%dms) avg(%dms) timeout(%dn)\n&#34;</span><span class="p">,</span> <span class="nx">min</span><span class="p">,</span> <span class="nx">max</span><span class="p">,</span> <span class="nx">sum</span><span class="o">/</span><span class="nx">count</span><span class="p">,</span> <span class="nx">timeoutCount</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>工具编译</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">export</span> <span class="nv">CGO_ENABLED</span><span class="o">=</span><span class="m">0</span>
+<span class="nb">export</span> <span class="nv">GOOS</span><span class="o">=</span>linux
+<span class="nb">export</span> <span class="nv">GOARCH</span><span class="o">=</span>amd64
+go build coredns-tools.go
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+</li>
+<li>
+<p>使用文件分享工具: nginx</p>
+<blockquote>
+<p>配置文件如下所示:</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat /usr/local/etc/nginx/nginx.conf  <span class="c1"># 且截取部分配置</span>
+server <span class="o">{</span>
+    listen 188<span class="p">;</span>
+    server_name _<span class="p">;</span>
+    charset utf-8<span class="p">;</span>
+
+    location / <span class="o">{</span>
+        root /Users/zun/Downloads<span class="p">;</span>
+        autoindex on<span class="p">;</span>
+        autoindex_exact_size off<span class="p">;</span>
+        autoindex_localtime on<span class="p">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+nginx <span class="c1"># 启动</span>
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<h1 id="问题表现">问题表现</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"> ./coredns-tools-linux -host sim-gtw.dt.com -c <span class="m">200</span> -d <span class="m">30</span> -l <span class="m">5000</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://image.coderyzun.cyou/images/2021/01/07/image-20210107115048562.png" alt="image-20210107115048562"></p>
+<blockquote>
+<p>我们可以看到, 我们使用dns测试程序进行测试时，测试结果接近有 <code>61%</code> 的解析失败率，而解析其他域名时解析是正常的</p>
+<p><img src="https://image.coderyzun.cyou/images/2021/01/07/image-20210107142038042.png" alt="image-20210107142038042"></p>
+</blockquote>
+<h2 id="排查结果">排查结果</h2>
+<blockquote>
+<p>排查到结果与 Coredns 使用到的<code>上层DNS</code> 有关; 如下如截图所示中，使用同一个域名解析出来的地址, 一个是外网地址一个是内网地址，由此推断出解析域名时分别使用了不同dns server进行解析的。</p>
+</blockquote>
+<p><img src="https://image.coderyzun.cyou/images/2021/01/07/image-20210107111557846.png" alt="image-20210107111557846"></p>
+<p>为了验证我们刚才的推断，我们在coredns 的 configmap 中开启 hosts 插件，并将相关域名写入其中。类似于主机中的 hosts文件，hosts文件优先于dns server，当拿到地址解析后客户端将不再继续请求上层dns server。</p>
+<h2 id="排查步骤如下">排查步骤如下:</h2>
+<h3 id="步骤一">步骤一:</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl edit cm coredns -n kube-system  <span class="c1"># 编辑 coredns configmap 添加 hosts插件配置 (配置如下)</span>
+
+     hosts <span class="o">{</span>
+         192.168.1.105   dt.com
+         192.168.1.106   sim-gtw.dt.com
+         fallthrough
+     <span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="步骤二">步骤二:</h3>
+<blockquote>
+<p>修改完成后 等待 coredns pod 重新读取配置或手动删除 coredns 与之相关的 <code>pod</code> 进行重载</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl get pod -n kube-system <span class="p">|</span>grep coredns<span class="p">|</span>awk <span class="s1">&#39;{print $1}&#39;</span><span class="p">|</span>xargs -I <span class="o">{}</span> kubectl delete pod <span class="o">{}</span> --force -n kube-system
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="修改后的结果展示">修改后的结果展示:</h3>
+<p><img src="https://image.coderyzun.cyou/images/2021/01/07/image-20210107112810631.png" alt="image-20210107112810631"></p>
+<h3 id="重载配置完成后-我们再测试一下结果">重载配置完成后 我们再测试一下结果</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">wget http://192.168.121.110:188/coredns-tools-linux <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> chmod a+x  coredns-tools-linux <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> ./coredns-tools-linux -host sim-gtw.dt.com -c <span class="m">200</span> -d <span class="m">30</span> -l <span class="m">5000</span> 
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://image.coderyzun.cyou/images/2021/01/07/image-20210107114813398.png" alt="image-20210107114813398"></p>
+<blockquote>
+<p>可以看到, 此时我们再进行测试时，域名解析已不再提示报错了。但是最大延迟显示还是显示有5s左右，这个和我们正在使用的kube-proxy策略有关，默认策略使用的是 <code>iptables 模式</code>，如后期优化可进行更改为性能更高的 <code>ipvs模式</code> 及部署 node-local-dns 服务来减少解析延迟，我这里无法更改 kubelet的启动参数中 dns的地址，貌似 node-local-dns 没有太多效果 。</p>
+</blockquote>
+<h2 id="解决问题">解决问题</h2>
+<p>我们通过上面的测试验证了间断性域名解析失效，是由于上层dns造成；解决方法也非常简单，只需要更改 coredns 使其使用正确的上层dns即可。</p>
+<h3 id="更改-coredns-配置">更改 coredns 配置</h3>
+<p>同样我们需要更改一下 coredns 的 configmap 文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl edit cm coredns -n kube-system
+</code></pre></td></tr></table>
+</div>
+</div><p>更改后的 配置展示</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span><span class="w"></span><span class="nt">data</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">Corefile</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
+</span><span class="sd">    .:53 {
+</span><span class="sd">        errors
+</span><span class="sd">        health {
+</span><span class="sd">          lameduck 5s
+</span><span class="sd">        }
+</span><span class="sd">        ready
+</span><span class="sd">        kubernetes cluster.local in-addr.arpa ip6.arpa {
+</span><span class="sd">          pods insecure
+</span><span class="sd">          fallthrough in-addr.arpa ip6.arpa
+</span><span class="sd">          ttl 600
+</span><span class="sd">        }
+</span><span class="sd">        prometheus :9153
+</span><span class="sd">        forward . 192.168.1.112 192.168.121.112
+</span><span class="sd">        cache 600
+</span><span class="sd">        loop
+</span><span class="sd">        reload
+</span><span class="sd">        loadbalance
+</span><span class="sd">    }</span><span class="w">    
+</span><span class="w"></span><span class="nn">...</span><span class="l">.</span><span class="w">
+</span><span class="w"></span><span class="c"># 省略部分配置</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>适当的增减了 cache 时间与 ttl 时间</p>
+</blockquote>
+<h3 id="更改node-local-cahce-配置">更改node-local-cahce 配置</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl edit cm  node-local-dns -n kube-system  <span class="c1"># 编辑 node-local-dns 修改参数</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>更改后的配置展示:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-json" data-lang="json">    <span class="err">ip</span><span class="mi">6</span><span class="err">.arpa:</span><span class="mi">53</span> <span class="p">{</span>
+        <span class="err">errors</span>
+        <span class="err">cache</span> <span class="err">30</span>
+        <span class="err">reload</span>
+        <span class="err">reload</span>
+        <span class="err">loop</span>
+        <span class="err">bind</span> <span class="err">169.254.20.10</span> <span class="err">10.43.0.10</span>
+        <span class="err">forward</span> <span class="err">.</span> <span class="err">__PILLAR__CLUSTER__DNS__</span> <span class="err">{</span>
+                <span class="err">force_tcp</span>
+        <span class="p">}</span>
+        <span class="err">prometheus</span> <span class="err">:</span><span class="mi">9253</span>
+        <span class="err">}</span>
+    <span class="err">.:</span><span class="mi">53</span> <span class="p">{</span>
+        <span class="err">errors</span>
+        <span class="err">cache</span> <span class="err">30</span>
+        <span class="err">reload</span>
+        <span class="err">loop</span>
+        <span class="err">bind</span> <span class="err">169.254.20.10</span> <span class="err">10.43.0.10</span>
+        <span class="err">forward</span> <span class="err">.</span> <span class="err">__PILLAR__CLUSTER__DNS__</span> <span class="err">{</span>
+            <span class="err">force_tcp</span>
+        <span class="p">}</span>
+        <span class="err">prometheus</span> <span class="err">:</span><span class="mi">9253</span>
+        <span class="err">}</span>
+<span class="err">....</span>
+<span class="err">#</span> <span class="err">省略部分配置</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>更改完成后，继续等待 coredns 相关pod重载配置。 或手动重载。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl get pod -n kube-system <span class="p">|</span>grep coredns<span class="p">|</span>awk <span class="s1">&#39;{print $1}&#39;</span><span class="p">|</span>xargs -I <span class="o">{}</span> kubectl delete pod <span class="o">{}</span> --force -n kube-system
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<h1 id="参考文档及博客">参考文档及博客:</h1>
+<p><a href="https://kubernetes.io/zh/docs/tasks/administer-cluster/dns-custom-nameservers/">Coredns Kubernetes 相关文档</a></p>
+<p><a href="https://www.qikqiak.com/post/resolve-coredns-hosts-invalid/">CoreDNS 自定义域名失效</a></p>
+<p><a href="https://blog.51cto.com/14143894/2515451">部署 Nodelocaldns 解决 Coredns 域名解析延迟</a></p>
+<h1 id="总结">总结:</h1>
+<p>原生的coredns功能方面还是存在某些不完善及兼容性的问题，不过我们可以使用第三方扩展来进行解决。目前coredns主要出现问题的地方在于:  内核的版本、网络插件兼容、5s超时问题，而五秒超时问题我们可以通过升级内核版本及部署 node-local-dns 应用在每个节点中增加缓存解决。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yang'zun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-01-07
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/kubernetes/">Kubernetes</a>
+          <a href="/tags/coredns/">Coredns</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/ingress-to-dashboard/">
+            <span class="next-text nav-default">部署 Nginx-Ingress 并配置暴露 kubernetes dashboard</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
+        appKey: 'siSAWI3rzA6Ow8Tmiv7V4GO4',
+        notify:  true ,
+        verify:  true ,
+        avatar:'',
+        placeholder: '来留下点什么吧~',
+        visitor:  false 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:amoaloas@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/cdryzun" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdryzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js" integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js" integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin="anonymous"></script>
+  <script><!-- NOTE: timeago.js uses the language code format like "zh_CN" (underscore and case sensitive) -->
+    var languageCode = "en-us".replace(/-/g, '_').replace(/_(.*)/, function ($0, $1) {return $0.replace($1, $1.toUpperCase());});
+    timeago().render(document.querySelectorAll('.timeago'), languageCode);
+    timeago.cancel();  
+  </script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script>
+    docsearch({
+    apiKey: "17388eec628e676a77d6235068b458df",
+    indexName: "blog",
+    appId: "KEECS2XKBV",
+    inputSelector: '.docsearch-input',
+    debug: false,
+    });
+</script>
+</body>
+</html>
