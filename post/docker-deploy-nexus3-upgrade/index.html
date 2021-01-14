@@ -208,7 +208,7 @@
 <li>
 <p>group: 即是多个仓库的集合，group中可 <code>包涵多个</code>  hosted, proxy, group 类型的仓库</p>
 <blockquote>
-<p>注意，在 group 中还存在优先级的关系，即示例图中，如 <code>custom</code> 和 <code>aliyun</code> 的docker仓库中多包涵了 <code>centos:7</code> 的镜像，那么在 docker pull 的使用客户拉取的是 <code>custom</code>中的 centos7，原因为: &ldquo;在nexus3 group仓库中使用为 <code>自上而下</code> 的匹配方式，当匹配后将 <code>不再继续</code> 向下匹配&rdquo;，所有说我们在使用 &ldquo;group&quot;类型参考时还需要考虑一下，各个仓库的 <code>优先级</code>。</p>
+<p>注意，在 group 中还存在优先级的关系，即示例图中，如 <code>custom</code> 和 <code>aliyun</code> 的docker仓库中多包涵了 <code>centos:7</code> 的镜像，那么在 docker pull 的使用客户拉取的是 <code>custom</code>中的 centos7，原因为: &ldquo;在nexus3 group仓库中使用为 <code>自上而下</code> 的匹配方式，当匹配后将 <code>不再继续</code> 向下匹配&rdquo;，所以说我们在使用 &ldquo;group&quot;类型参考时还需要考虑一下，各个仓库的 <code>优先级</code>。</p>
 <p><img src="https://image.coderyzun.cyou/images/2021/01/14/image-20210114180247413.png" alt="image-20210114180247413"></p>
 </blockquote>
 </li>
