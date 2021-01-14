@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>记录一次，因误删容器导致的容器恢复过程 - 「Yang&#39;zun」的网志博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="记录一次因误操作删除了容器的，容器恢复过程" /><meta name="keywords" content="Docker, Glpi" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.2 with theme even" />
+
+
+<link rel="canonical" href="https://cdryzun.github.io/post/delete-container-reset/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="记录一次，因误删容器导致的容器恢复过程" />
+<meta property="og:description" content="记录一次因误操作删除了容器的，容器恢复过程" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdryzun.github.io/post/delete-container-reset/" />
+<meta property="article:published_time" content="2021-01-14T20:09:58+08:00" />
+<meta property="article:modified_time" content="2021-01-14T20:09:58+08:00" />
+<meta itemprop="name" content="记录一次，因误删容器导致的容器恢复过程">
+<meta itemprop="description" content="记录一次因误操作删除了容器的，容器恢复过程">
+<meta itemprop="datePublished" content="2021-01-14T20:09:58+08:00" />
+<meta itemprop="dateModified" content="2021-01-14T20:09:58+08:00" />
+<meta itemprop="wordCount" content="2094">
+
+
+
+<meta itemprop="keywords" content="Docker,Devops,Centos," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="记录一次，因误删容器导致的容器恢复过程"/>
+<meta name="twitter:description" content="记录一次因误操作删除了容器的，容器恢复过程"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+</div>
+
+<nav class="site-navbar">
+
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul><li style="display:inline-block;margin-right:10px;">
+    <input type="search" class="docsearch-input" placeholder="Search" />
+  </li></nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">记录一次，因误删容器导致的容器恢复过程</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-01-14 </span>
+        <div class="post-category">
+            <a href="/categories/docker/"> Docker </a>
+            <a href="/categories/datarecovery/"> DataRecovery </a>
+            </div>
+          <span class="more-meta"> 约 2094 字 </span>
+          <span class="more-meta"> 预计阅读 5 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#环境说明">环境说明</a>
+      <ul>
+        <li><a href="#容器恢复流程说明">容器恢复流程说明</a></li>
+      </ul>
+    </li>
+    <li><a href="#实行方案一-进行数据恢复">实行方案一, 进行数据恢复</a>
+      <ul>
+        <li><a href="#进入备份文件夹下查找关键信息">进入备份文件夹下，查找关键信息</a>
+          <ul>
+            <li><a href="#遍历所有文件夹查找和容器相关联的容器id">遍历所有文件夹，查找和容器相关联的容器id</a></li>
+            <li><a href="#查看第一个配置文件并使用-json-格式化工具httpsjsoncn-进行分析">查看第一个配置文件，并使用 json <a href="https://json.cn"><code>格式化工具</code></a> 进行分析</a></li>
+            <li><a href="#查看第二个配置文件并使用-json-格式化工具httpsjsoncn-进行分析">查看第二个配置文件，并使用 json <a href="https://json.cn"><code>格式化工具</code></a> 进行分析</a></li>
+            <li><a href="#dockerhub-查找相关容器信息">Dockerhub 查找相关容器信息</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#容器恢复">容器恢复</a>
+      <ul>
+        <li><a href="#数据库容器恢复">数据库容器恢复</a>
+          <ul>
+            <li><a href="#数据库容器-具体-json-文件如下所示">数据库容器 具体 json 文件如下所示</a></li>
+            <li><a href="#从-json-文件中推理出容器启动命令进行重建">从 json 文件中推理出，容器启动命令，进行重建</a></li>
+            <li><a href="#检查容器是否正常启动">检查容器是否正常启动</a></li>
+            <li><a href="#使用数据库管理工具进行连接">使用数据库管理工具进行连接</a></li>
+          </ul>
+        </li>
+        <li><a href="#恢复-glpi-容器">恢复 glpi 容器</a>
+          <ul>
+            <li><a href="#glpi-容器具体-json-文件如下所示">glpi 容器具体 <code>json</code> 文件如下所示</a></li>
+            <li><a href="#从-json-文件中推理出容器启动命令进行重建-1">从 json 文件中推理出，容器启动命令，进行重建</a></li>
+          </ul>
+        </li>
+        <li><a href="#使用替换----links-方案">使用替换 <code>-- links</code> 方案</a></li>
+        <li><a href="#创建容器">创建容器</a></li>
+        <li><a href="#dashboard-引导恢复">dashboard 引导恢复</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="环境说明">环境说明</h1>
+<blockquote>
+<p>因在日常维护过程中<code>升级了docker的版本</code> ，碰到了一个 docker 的一个<code>bug</code>, 导致 docker 服务无法正常启动。在恢复 docker 服务的过程中把 <code>/var/lib/docker/containers</code> 下的所有文件给 <code>清空</code> 了，清空后 docker 服务可以正常运行，但发现原来的服务中还存留着一个还在使用的 <code>cmdb</code> 系统也被我跟着删除了，是之前的前辈部署的。好在自己有 <code>做备份</code> 的习惯，现记录一下被删除容器的恢复过程。</p>
+</blockquote>
+<ul>
+<li>
+<p>操作系统: Centos</p>
+</li>
+<li>
+<p>Docker 版本:  19.03.8</p>
+</li>
+<li>
+<p>需要恢复容器:  <code>glpi</code> &amp; <code>mysql</code></p>
+<blockquote>
+<p>一开始以为只要一个容器，后面恢复起来才发现还存在一个关联的外置数据库需要恢复。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="容器恢复流程说明">容器恢复流程说明</h2>
+<blockquote>
+<p>目前我想到的恢复方案有两种:</p>
+<ul>
+<li>
+<p>方案一：重建容器，基于数据卷的恢复，因为我们只删除了 <code>/var/lib/docker/containers</code> , 所有数据卷还是存在的。下面的步骤也将具体讲述使用这种方式进行恢复</p>
+</li>
+<li>
+<p>方案二：回滚， 将备份数据覆盖到 <code>/var/lib/docker</code> 下， 即:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /var/lib/docker.bak/ 
+  
+mv /var/lib/docker<span class="o">{</span>,.bak-del<span class="o">}</span>
+  
+cp -a /var/lib/docker.bak /var/lib/docker  <span class="c1"># 备份为 /var/lib/docker.bak</span>
+  
+service docker restart 
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>但是这里就回到了第一个问题上就是 <code>docker 服务还是会存在无法启动</code>。 <code>docker 服务无法启动的原因及正确解决流程我会后面再后面写一篇博客说明</code>。</p>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+<h1 id="实行方案一-进行数据恢复">实行方案一, 进行数据恢复</h1>
+<h2 id="进入备份文件夹下查找关键信息">进入备份文件夹下，查找关键信息</h2>
+<h3 id="遍历所有文件夹查找和容器相关联的容器id">遍历所有文件夹，查找和容器相关联的容器id</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /var/lib/docker.bak/ 
+<span class="k">for</span> i in <span class="sb">`</span>ls */config.v2.json<span class="sb">`</span> <span class="p">;</span><span class="k">do</span> grep -l <span class="s1">&#39;glpi&#39;</span> <span class="s2">&#34;</span><span class="nv">$i</span><span class="s2">&#34;</span><span class="p">;</span><span class="k">done</span> <span class="c1"># 遍历所有文件夹，查找和容器相关联的容器id</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>可以看到我们找到了，两个文件</p>
+<p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228202756832.png" alt="image-20201228202756832"></p>
+</blockquote>
+<h3 id="查看第一个配置文件并使用-json-格式化工具httpsjsoncn-进行分析">查看第一个配置文件，并使用 json <a href="https://json.cn"><code>格式化工具</code></a> 进行分析</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat 33c749acc76fec662a292e7a7fb73a1e32bd2b57ebe4270bb1ad46abc4598011/config.v2.json
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228202917046.png" alt="image-20201228202917046"></p>
+<blockquote>
+<p>找到了容器运行的镜像名称即 <code>fjudith/glpi</code></p>
+</blockquote>
+<p><strong>检查到容器部署时，使用的端口映射</strong></p>
+<p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228203739158.png" alt="image-20201228203739158"></p>
+<blockquote>
+<p><code>内部 80端口</code> 映射到了 <code>宿主机 的30000 端口</code></p>
+</blockquote>
+<p><strong>检查到 使用的存储卷</strong></p>
+<p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228203159841.png" alt="image-20201228203159841"></p>
+<blockquote>
+<p>使用了两个储存卷，一个为 <code>宿主机的文件</code> ，一个为创建的的 <code>glpi-app 存储卷</code></p>
+</blockquote>
+<p><strong>容器环境变量</strong></p>
+<p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228203903711.png" alt="image-20201228203903711"></p>
+<h4 id="检查查找到的容器镜像是否匹配">检查查找到的容器镜像是否匹配</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker image ls 
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228203018126.png" alt="image-20201228203018126"></p>
+<blockquote>
+<p>可以看到找到的镜像是 <code>匹配</code> 的</p>
+</blockquote>
+<h3 id="查看第二个配置文件并使用-json-格式化工具httpsjsoncn-进行分析">查看第二个配置文件，并使用 json <a href="https://json.cn"><code>格式化工具</code></a> 进行分析</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat a967e8f43115ea574ce1929e75b99374b4f050b612264928983baa0fd8109609/config.v2.json
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228204649277.png" alt="image-20201228204649277"></p>
+<blockquote>
+<p>可以看到这是一个 <code>数据容器</code></p>
+</blockquote>
+<p><strong>查看挂载的 目录数据是否还在</strong></p>
+<p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228204913461.png" alt="image-20201228204913461"></p>
+<h3 id="dockerhub-查找相关容器信息">Dockerhub 查找相关容器信息</h3>
+<blockquote>
+<p>在 dockerhub 上 search  <code>fjudith/glpi</code> 镜像，可以看到容器的启动命令。</p>
+</blockquote>
+<p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228203520126.png" alt="image-20201228203520126"></p>
+<blockquote>
+<p>可以看到 dockerhub上 此容器的部署说明，和我们查看到了信息也吻合，那么确定了之前的前辈是一个什么部署步骤了</p>
+</blockquote>
+<h1 id="容器恢复">容器恢复</h1>
+<h2 id="数据库容器恢复">数据库容器恢复</h2>
+<h3 id="数据库容器-具体-json-文件如下所示">数据库容器 具体 json 文件如下所示</h3>
+<blockquote>
+<p><strong>格式化后</strong></p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span><span class="lnt">174
+</span><span class="lnt">175
+</span><span class="lnt">176
+</span><span class="lnt">177
+</span><span class="lnt">178
+</span><span class="lnt">179
+</span><span class="lnt">180
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
+    <span class="nt">&#34;StreamConfig&#34;</span><span class="p">:{</span>
+
+    <span class="p">},</span>
+    <span class="nt">&#34;State&#34;</span><span class="p">:{</span>
+        <span class="nt">&#34;Running&#34;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+        <span class="nt">&#34;Paused&#34;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+        <span class="nt">&#34;Restarting&#34;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+        <span class="nt">&#34;OOMKilled&#34;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+        <span class="nt">&#34;RemovalInProgress&#34;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+        <span class="nt">&#34;Dead&#34;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+        <span class="nt">&#34;Pid&#34;</span><span class="p">:</span><span class="mi">8598</span><span class="p">,</span>
+        <span class="nt">&#34;ExitCode&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+        <span class="nt">&#34;Error&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+        <span class="nt">&#34;StartedAt&#34;</span><span class="p">:</span><span class="s2">&#34;2020-12-28T03:12:01.012923553Z&#34;</span><span class="p">,</span>
+        <span class="nt">&#34;FinishedAt&#34;</span><span class="p">:</span><span class="s2">&#34;2020-12-28T03:10:01.310689449Z&#34;</span><span class="p">,</span>
+        <span class="nt">&#34;Health&#34;</span><span class="p">:</span><span class="kc">null</span>
+    <span class="p">},</span>
+    <span class="nt">&#34;ID&#34;</span><span class="p">:</span><span class="s2">&#34;a967e8f43115ea574ce1929e75b99374b4f050b612264928983baa0fd8109609&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;Created&#34;</span><span class="p">:</span><span class="s2">&#34;2019-12-16T07:00:49.830939878Z&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;Managed&#34;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+    <span class="nt">&#34;Path&#34;</span><span class="p">:</span><span class="s2">&#34;docker-entrypoint.sh&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;Args&#34;</span><span class="p">:[</span>
+        <span class="s2">&#34;mysqld&#34;</span>
+    <span class="p">],</span>
+    <span class="nt">&#34;Config&#34;</span><span class="p">:{</span>
+        <span class="nt">&#34;Hostname&#34;</span><span class="p">:</span><span class="s2">&#34;a967e8f43115&#34;</span><span class="p">,</span>
+        <span class="nt">&#34;Domainname&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+        <span class="nt">&#34;User&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+        <span class="nt">&#34;AttachStdin&#34;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+        <span class="nt">&#34;AttachStdout&#34;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+        <span class="nt">&#34;AttachStderr&#34;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+        <span class="nt">&#34;ExposedPorts&#34;</span><span class="p">:{</span>
+            <span class="nt">&#34;3306/tcp&#34;</span><span class="p">:{</span>
+
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nt">&#34;Tty&#34;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+        <span class="nt">&#34;OpenStdin&#34;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+        <span class="nt">&#34;StdinOnce&#34;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+        <span class="nt">&#34;Env&#34;</span><span class="p">:[</span>
+            <span class="s2">&#34;MYSQL_DATABASE=glpi&#34;</span><span class="p">,</span>
+            <span class="s2">&#34;MYSQL_ROOT_PASSWORD=pass&#34;</span><span class="p">,</span>
+            <span class="s2">&#34;MYSQL_USER=glpi&#34;</span><span class="p">,</span>
+            <span class="s2">&#34;MYSQL_PASSWORD=pass&#34;</span><span class="p">,</span>
+            <span class="s2">&#34;PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin&#34;</span><span class="p">,</span>
+            <span class="s2">&#34;GOSU_VERSION=1.10&#34;</span><span class="p">,</span>
+            <span class="s2">&#34;GPG_KEYS=177F4010FE56CA3336300305F1656F24C74CD1D8&#34;</span><span class="p">,</span>
+            <span class="s2">&#34;MARIADB_MAJOR=10.4&#34;</span><span class="p">,</span>
+            <span class="s2">&#34;MARIADB_VERSION=1:10.4.11+maria~bionic&#34;</span>
+        <span class="p">],</span>
+        <span class="nt">&#34;Cmd&#34;</span><span class="p">:[</span>
+            <span class="s2">&#34;mysqld&#34;</span>
+        <span class="p">],</span>
+        <span class="nt">&#34;ArgsEscaped&#34;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+        <span class="nt">&#34;Image&#34;</span><span class="p">:</span><span class="s2">&#34;mariadb&#34;</span><span class="p">,</span>
+        <span class="nt">&#34;Volumes&#34;</span><span class="p">:{</span>
+            <span class="nt">&#34;/var/lib/mysql&#34;</span><span class="p">:{</span>
+
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nt">&#34;WorkingDir&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+        <span class="nt">&#34;Entrypoint&#34;</span><span class="p">:[</span>
+            <span class="s2">&#34;docker-entrypoint.sh&#34;</span>
+        <span class="p">],</span>
+        <span class="nt">&#34;OnBuild&#34;</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span>
+        <span class="nt">&#34;Labels&#34;</span><span class="p">:{</span>
+
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&#34;Image&#34;</span><span class="p">:</span><span class="s2">&#34;sha256:e93d99aa9076c3582e36fd458be51d2d389cf421b711f03b8767f156be4d2cfb&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;NetworkSettings&#34;</span><span class="p">:{</span>
+        <span class="nt">&#34;Bridge&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+        <span class="nt">&#34;SandboxID&#34;</span><span class="p">:</span><span class="s2">&#34;7e381858bd5aa515ccd13b8c856779132d6ddfcefd7ec82ece585db25c4a1c8c&#34;</span><span class="p">,</span>
+        <span class="nt">&#34;HairpinMode&#34;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+        <span class="nt">&#34;LinkLocalIPv6Address&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+        <span class="nt">&#34;LinkLocalIPv6PrefixLen&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+        <span class="nt">&#34;Networks&#34;</span><span class="p">:{</span>
+            <span class="nt">&#34;bridge&#34;</span><span class="p">:{</span>
+                <span class="nt">&#34;IPAMConfig&#34;</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span>
+                <span class="nt">&#34;Links&#34;</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span>
+                <span class="nt">&#34;Aliases&#34;</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span>
+                <span class="nt">&#34;NetworkID&#34;</span><span class="p">:</span><span class="s2">&#34;b34a6d28cfffb257837e9336d7556eb97ce768c835c59246361db5042c30394d&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;EndpointID&#34;</span><span class="p">:</span><span class="s2">&#34;50432a9bac088866479de0e423926924d20494ad7e6054bb9395ff28572506bb&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;Gateway&#34;</span><span class="p">:</span><span class="s2">&#34;172.17.0.1&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;IPAddress&#34;</span><span class="p">:</span><span class="s2">&#34;172.17.0.2&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;IPPrefixLen&#34;</span><span class="p">:</span><span class="mi">16</span><span class="p">,</span>
+                <span class="nt">&#34;IPv6Gateway&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;GlobalIPv6Address&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;GlobalIPv6PrefixLen&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+                <span class="nt">&#34;MacAddress&#34;</span><span class="p">:</span><span class="s2">&#34;02:42:ac:11:00:02&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;IPAMOperational&#34;</span><span class="p">:</span><span class="kc">false</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nt">&#34;Service&#34;</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span>
+        <span class="nt">&#34;Ports&#34;</span><span class="p">:{</span>
+            <span class="nt">&#34;3306/tcp&#34;</span><span class="p">:[</span>
+                <span class="p">{</span>
+                    <span class="nt">&#34;HostIp&#34;</span><span class="p">:</span><span class="s2">&#34;0.0.0.0&#34;</span><span class="p">,</span>
+                    <span class="nt">&#34;HostPort&#34;</span><span class="p">:</span><span class="s2">&#34;33306&#34;</span>
+                <span class="p">}</span>
+            <span class="p">]</span>
+        <span class="p">},</span>
+        <span class="nt">&#34;SandboxKey&#34;</span><span class="p">:</span><span class="s2">&#34;/var/run/docker/netns/7e381858bd5a&#34;</span><span class="p">,</span>
+        <span class="nt">&#34;SecondaryIPAddresses&#34;</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span>
+        <span class="nt">&#34;SecondaryIPv6Addresses&#34;</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span>
+        <span class="nt">&#34;IsAnonymousEndpoint&#34;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+        <span class="nt">&#34;HasSwarmEndpoint&#34;</span><span class="p">:</span><span class="kc">false</span>
+    <span class="p">},</span>
+    <span class="nt">&#34;LogPath&#34;</span><span class="p">:</span><span class="s2">&#34;/var/lib/docker/containers/a967e8f43115ea574ce1929e75b99374b4f050b612264928983baa0fd8109609/a967e8f43115ea574ce1929e75b99374b4f050b612264928983baa0fd8109609-json.log&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;Name&#34;</span><span class="p">:</span><span class="s2">&#34;/glpi-db&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;Driver&#34;</span><span class="p">:</span><span class="s2">&#34;overlay&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;MountLabel&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;ProcessLabel&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;RestartCount&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&#34;HasBeenStartedBefore&#34;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&#34;HasBeenManuallyStopped&#34;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+    <span class="nt">&#34;MountPoints&#34;</span><span class="p">:{</span>
+        <span class="nt">&#34;/etc/localtime&#34;</span><span class="p">:{</span>
+            <span class="nt">&#34;Source&#34;</span><span class="p">:</span><span class="s2">&#34;/etc/localtime&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Destination&#34;</span><span class="p">:</span><span class="s2">&#34;/etc/localtime&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;RW&#34;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+            <span class="nt">&#34;Name&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Driver&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Type&#34;</span><span class="p">:</span><span class="s2">&#34;bind&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Spec&#34;</span><span class="p">:{</span>
+                <span class="nt">&#34;Type&#34;</span><span class="p">:</span><span class="s2">&#34;bind&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;Source&#34;</span><span class="p">:</span><span class="s2">&#34;/etc/localtime&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;Target&#34;</span><span class="p">:</span><span class="s2">&#34;/etc/localtime&#34;</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nt">&#34;/etc/mysql&#34;</span><span class="p">:{</span>
+            <span class="nt">&#34;Source&#34;</span><span class="p">:</span><span class="s2">&#34;/data/glpi-mysql/conf&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Destination&#34;</span><span class="p">:</span><span class="s2">&#34;/etc/mysql&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;RW&#34;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+            <span class="nt">&#34;Name&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Driver&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Type&#34;</span><span class="p">:</span><span class="s2">&#34;bind&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Spec&#34;</span><span class="p">:{</span>
+                <span class="nt">&#34;Type&#34;</span><span class="p">:</span><span class="s2">&#34;bind&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;Source&#34;</span><span class="p">:</span><span class="s2">&#34;/data/glpi-mysql/conf&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;Target&#34;</span><span class="p">:</span><span class="s2">&#34;/etc/mysql&#34;</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nt">&#34;/var/lib/mysql&#34;</span><span class="p">:{</span>
+            <span class="nt">&#34;Source&#34;</span><span class="p">:</span><span class="s2">&#34;/data/glpi-mysql/data&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Destination&#34;</span><span class="p">:</span><span class="s2">&#34;/var/lib/mysql&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;RW&#34;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+            <span class="nt">&#34;Name&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Driver&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Type&#34;</span><span class="p">:</span><span class="s2">&#34;bind&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Spec&#34;</span><span class="p">:{</span>
+                <span class="nt">&#34;Type&#34;</span><span class="p">:</span><span class="s2">&#34;bind&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;Source&#34;</span><span class="p">:</span><span class="s2">&#34;/data/glpi-mysql/data&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;Target&#34;</span><span class="p">:</span><span class="s2">&#34;/var/lib/mysql&#34;</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nt">&#34;/var/log/mysql&#34;</span><span class="p">:{</span>
+            <span class="nt">&#34;Source&#34;</span><span class="p">:</span><span class="s2">&#34;/data/glpi-mysql/log&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Destination&#34;</span><span class="p">:</span><span class="s2">&#34;/var/log/mysql&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;RW&#34;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+            <span class="nt">&#34;Name&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Driver&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Type&#34;</span><span class="p">:</span><span class="s2">&#34;bind&#34;</span><span class="p">,</span>
+            <span class="nt">&#34;Spec&#34;</span><span class="p">:{</span>
+                <span class="nt">&#34;Type&#34;</span><span class="p">:</span><span class="s2">&#34;bind&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;Source&#34;</span><span class="p">:</span><span class="s2">&#34;/data/glpi-mysql/log&#34;</span><span class="p">,</span>
+                <span class="nt">&#34;Target&#34;</span><span class="p">:</span><span class="s2">&#34;/var/log/mysql&#34;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&#34;SecretReferences&#34;</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span>
+    <span class="nt">&#34;AppArmorProfile&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;HostnamePath&#34;</span><span class="p">:</span><span class="s2">&#34;/var/lib/docker/containers/a967e8f43115ea574ce1929e75b99374b4f050b612264928983baa0fd8109609/hostname&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;HostsPath&#34;</span><span class="p">:</span><span class="s2">&#34;/var/lib/docker/containers/a967e8f43115ea574ce1929e75b99374b4f050b612264928983baa0fd8109609/hosts&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;ShmPath&#34;</span><span class="p">:</span><span class="s2">&#34;/var/lib/docker/containers/a967e8f43115ea574ce1929e75b99374b4f050b612264928983baa0fd8109609/shm&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;ResolvConfPath&#34;</span><span class="p">:</span><span class="s2">&#34;/var/lib/docker/containers/a967e8f43115ea574ce1929e75b99374b4f050b612264928983baa0fd8109609/resolv.conf&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;SeccompProfile&#34;</span><span class="p">:</span><span class="s2">&#34;&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;NoNewPrivileges&#34;</span><span class="p">:</span><span class="kc">false</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="从-json-文件中推理出容器启动命令进行重建">从 json 文件中推理出，容器启动命令，进行重建</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker run --name<span class="o">=</span><span class="s1">&#39;glpi-db&#39;</span> -d <span class="se">\
+</span><span class="se"></span>--restart<span class="o">=</span>always <span class="se">\
+</span><span class="se"></span>-p 33306:3306 <span class="se">\
+</span><span class="se"></span>-e <span class="nv">MYSQL_DATABASE</span><span class="o">=</span>glpi <span class="se">\
+</span><span class="se"></span>-e <span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span>pass <span class="se">\
+</span><span class="se"></span>-e <span class="nv">MYSQL_USER</span><span class="o">=</span>glpi <span class="se">\
+</span><span class="se"></span>-e <span class="nv">MYSQL_PASSWORD</span><span class="o">=</span>pass <span class="se">\
+</span><span class="se"></span>-v /data/glpi-mysql/data:/var/lib/mysql <span class="se">\
+</span><span class="se"></span>-v /data/glpi-mysql/log:/var/log/mysql <span class="se">\
+</span><span class="se"></span>-v /data/glpi-mysql/conf:/etc/mysql <span class="se">\
+</span><span class="se"></span>-v /etc/localtime:/etc/localtime <span class="se">\
+</span><span class="se"></span>mariadb   <span class="c1"># 启动</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="检查容器是否正常启动">检查容器是否正常启动</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker logs --tail <span class="m">100</span> -f glpi-db   <span class="c1"># 检测启动日志</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228210556103.png" alt="image-20201228210556103"></p>
+<h3 id="使用数据库管理工具进行连接">使用数据库管理工具进行连接</h3>
+<p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228210726779.png" alt="image-20201228210726779"></p>
+<blockquote>
+<p>自此数据库 <code>恢复成功</code></p>
+</blockquote>
+<h2 id="恢复-glpi-容器">恢复 glpi 容器</h2>
+<h3 id="glpi-容器具体-json-文件如下所示">glpi 容器具体 <code>json</code> 文件如下所示</h3>
+<blockquote>
+<p><strong>格式后</strong></p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">{</span>
+    <span class="s2">&#34;StreamConfig&#34;</span>:<span class="o">{</span>
+
+    <span class="o">}</span>,
+    <span class="s2">&#34;State&#34;</span>:<span class="o">{</span>
+        <span class="s2">&#34;Running&#34;</span>:true,
+        <span class="s2">&#34;Paused&#34;</span>:false,
+        <span class="s2">&#34;Restarting&#34;</span>:false,
+        <span class="s2">&#34;OOMKilled&#34;</span>:false,
+        <span class="s2">&#34;RemovalInProgress&#34;</span>:false,
+        <span class="s2">&#34;Dead&#34;</span>:false,
+        <span class="s2">&#34;Pid&#34;</span>:8894,
+        <span class="s2">&#34;ExitCode&#34;</span>:0,
+        <span class="s2">&#34;Error&#34;</span>:<span class="s2">&#34;&#34;</span>,
+        <span class="s2">&#34;StartedAt&#34;</span>:<span class="s2">&#34;2020-12-28T03:12:03.393664003Z&#34;</span>,
+        <span class="s2">&#34;FinishedAt&#34;</span>:<span class="s2">&#34;2020-12-28T03:09:59.174014953Z&#34;</span>,
+        <span class="s2">&#34;Health&#34;</span>:null
+    <span class="o">}</span>,
+    <span class="s2">&#34;ID&#34;</span>:<span class="s2">&#34;33c749acc76fec662a292e7a7fb73a1e32bd2b57ebe4270bb1ad46abc4598011&#34;</span>,
+    <span class="s2">&#34;Created&#34;</span>:<span class="s2">&#34;2019-12-16T07:30:55.091572697Z&#34;</span>,
+    <span class="s2">&#34;Managed&#34;</span>:false,
+    <span class="s2">&#34;Path&#34;</span>:<span class="s2">&#34;/docker-entrypoint.sh&#34;</span>,
+    <span class="s2">&#34;Args&#34;</span>:<span class="o">[</span>
+        <span class="s2">&#34;apache2-foreground&#34;</span>
+    <span class="o">]</span>,
+    <span class="s2">&#34;Config&#34;</span>:<span class="o">{</span>
+        <span class="s2">&#34;Hostname&#34;</span>:<span class="s2">&#34;33c749acc76f&#34;</span>,
+        <span class="s2">&#34;Domainname&#34;</span>:<span class="s2">&#34;&#34;</span>,
+        <span class="s2">&#34;User&#34;</span>:<span class="s2">&#34;&#34;</span>,
+        <span class="s2">&#34;AttachStdin&#34;</span>:false,
+        <span class="s2">&#34;AttachStdout&#34;</span>:false,
+        <span class="s2">&#34;AttachStderr&#34;</span>:false,
+        <span class="s2">&#34;ExposedPorts&#34;</span>:<span class="o">{</span>
+            <span class="s2">&#34;80/tcp&#34;</span>:<span class="o">{</span>
+
+            <span class="o">}</span>
+        <span class="o">}</span>,
+        <span class="s2">&#34;Tty&#34;</span>:false,
+        <span class="s2">&#34;OpenStdin&#34;</span>:false,
+        <span class="s2">&#34;StdinOnce&#34;</span>:false,
+        <span class="s2">&#34;Env&#34;</span>:<span class="o">[</span>
+            <span class="s2">&#34;PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin&#34;</span>,
+            <span class="s2">&#34;PHPIZE_DEPS=autoconf 	dpkg-dev 	file 	g++ 	gcc 	libc-dev 	make 	pkg-config 	re2c&#34;</span>,
+            <span class="s2">&#34;PHP_INI_DIR=/usr/local/etc/php&#34;</span>,
+            <span class="s2">&#34;APACHE_CONFDIR=/etc/apache2&#34;</span>,
+            <span class="s2">&#34;APACHE_ENVVARS=/etc/apache2/envvars&#34;</span>,
+            <span class="s2">&#34;PHP_EXTRA_BUILD_DEPS=apache2-dev&#34;</span>,
+            <span class="s2">&#34;PHP_EXTRA_CONFIGURE_ARGS=--with-apxs2&#34;</span>,
+            <span class="s2">&#34;PHP_CFLAGS=-fstack-protector-strong -fpic -fpie -O2&#34;</span>,
+            <span class="s2">&#34;PHP_CPPFLAGS=-fstack-protector-strong -fpic -fpie -O2&#34;</span>,
+            <span class="s2">&#34;PHP_LDFLAGS=-Wl,-O1 -Wl,--hash-style=both -pie&#34;</span>,
+            <span class="s2">&#34;GPG_KEYS=1729F83938DA44E27BA0F4D3DBDB397470D12172 B1B44D8F021E4E2D6021E995DC9FF8D3EE5AF27F&#34;</span>,
+            <span class="s2">&#34;PHP_VERSION=7.2.4&#34;</span>,
+            <span class="s2">&#34;PHP_URL=https://secure.php.net/get/php-7.2.4.tar.xz/from/this/mirror&#34;</span>,
+            <span class="s2">&#34;PHP_ASC_URL=https://secure.php.net/get/php-7.2.4.tar.xz.asc/from/this/mirror&#34;</span>,
+            <span class="s2">&#34;PHP_SHA256=7916b1bd148ddfd46d7f8f9a517d4b09cd8a8ad9248734e7c8dd91ef17057a88&#34;</span>,
+            <span class="s2">&#34;PHP_MD5=&#34;</span>,
+            <span class="s2">&#34;GLPI_VERSION=9.2.1&#34;</span>,
+            <span class="s2">&#34;GLPI_URL=https://github.com/glpi-project/glpi/releases/download/9.2.1/glpi-9.2.1.tgz&#34;</span>,
+            <span class="s2">&#34;TERM=xterm&#34;</span>
+        <span class="o">]</span>,
+        <span class="s2">&#34;Cmd&#34;</span>:<span class="o">[</span>
+            <span class="s2">&#34;apache2-foreground&#34;</span>
+        <span class="o">]</span>,
+        <span class="s2">&#34;ArgsEscaped&#34;</span>:true,
+        <span class="s2">&#34;Image&#34;</span>:<span class="s2">&#34;fjudith/glpi&#34;</span>,
+        <span class="s2">&#34;Volumes&#34;</span>:null,
+        <span class="s2">&#34;WorkingDir&#34;</span>:<span class="s2">&#34;/var/www/html&#34;</span>,
+        <span class="s2">&#34;Entrypoint&#34;</span>:<span class="o">[</span>
+            <span class="s2">&#34;/docker-entrypoint.sh&#34;</span>
+        <span class="o">]</span>,
+        <span class="s2">&#34;OnBuild&#34;</span>:null,
+        <span class="s2">&#34;Labels&#34;</span>:<span class="o">{</span>
+
+        <span class="o">}</span>
+    <span class="o">}</span>,
+    <span class="s2">&#34;Image&#34;</span>:<span class="s2">&#34;sha256:4c740260749c175d94078f60dedcd898343d287268c9de8af539677e9f49acc9&#34;</span>,
+    <span class="s2">&#34;NetworkSettings&#34;</span>:<span class="o">{</span>
+        <span class="s2">&#34;Bridge&#34;</span>:<span class="s2">&#34;&#34;</span>,
+        <span class="s2">&#34;SandboxID&#34;</span>:<span class="s2">&#34;30d50522da0bacc5d6813ecad985ae8891e68ebee54499c17ffabf546b7f6193&#34;</span>,
+        <span class="s2">&#34;HairpinMode&#34;</span>:false,
+        <span class="s2">&#34;LinkLocalIPv6Address&#34;</span>:<span class="s2">&#34;&#34;</span>,
+        <span class="s2">&#34;LinkLocalIPv6PrefixLen&#34;</span>:0,
+        <span class="s2">&#34;Networks&#34;</span>:<span class="o">{</span>
+            <span class="s2">&#34;bridge&#34;</span>:<span class="o">{</span>
+                <span class="s2">&#34;IPAMConfig&#34;</span>:null,
+                <span class="s2">&#34;Links&#34;</span>:null,
+                <span class="s2">&#34;Aliases&#34;</span>:null,
+                <span class="s2">&#34;NetworkID&#34;</span>:<span class="s2">&#34;b34a6d28cfffb257837e9336d7556eb97ce768c835c59246361db5042c30394d&#34;</span>,
+                <span class="s2">&#34;EndpointID&#34;</span>:<span class="s2">&#34;b6cdb139c21fcf9f0c90283e83e52464d2d078af2f6ea48bcd764c562be5509a&#34;</span>,
+                <span class="s2">&#34;Gateway&#34;</span>:<span class="s2">&#34;172.17.0.1&#34;</span>,
+                <span class="s2">&#34;IPAddress&#34;</span>:<span class="s2">&#34;172.17.0.4&#34;</span>,
+                <span class="s2">&#34;IPPrefixLen&#34;</span>:16,
+                <span class="s2">&#34;IPv6Gateway&#34;</span>:<span class="s2">&#34;&#34;</span>,
+                <span class="s2">&#34;GlobalIPv6Address&#34;</span>:<span class="s2">&#34;&#34;</span>,
+                <span class="s2">&#34;GlobalIPv6PrefixLen&#34;</span>:0,
+                <span class="s2">&#34;MacAddress&#34;</span>:<span class="s2">&#34;02:42:ac:11:00:04&#34;</span>,
+                <span class="s2">&#34;IPAMOperational&#34;</span>:false
+            <span class="o">}</span>
+        <span class="o">}</span>,
+        <span class="s2">&#34;Service&#34;</span>:null,
+        <span class="s2">&#34;Ports&#34;</span>:<span class="o">{</span>
+            <span class="s2">&#34;80/tcp&#34;</span>:<span class="o">[</span>
+                <span class="o">{</span>
+                    <span class="s2">&#34;HostIp&#34;</span>:<span class="s2">&#34;0.0.0.0&#34;</span>,
+                    <span class="s2">&#34;HostPort&#34;</span>:<span class="s2">&#34;30000&#34;</span>
+                <span class="o">}</span>
+            <span class="o">]</span>
+        <span class="o">}</span>,
+        <span class="s2">&#34;SandboxKey&#34;</span>:<span class="s2">&#34;/var/run/docker/netns/30d50522da0b&#34;</span>,
+        <span class="s2">&#34;SecondaryIPAddresses&#34;</span>:null,
+        <span class="s2">&#34;SecondaryIPv6Addresses&#34;</span>:null,
+        <span class="s2">&#34;IsAnonymousEndpoint&#34;</span>:false,
+        <span class="s2">&#34;HasSwarmEndpoint&#34;</span>:false
+    <span class="o">}</span>,
+    <span class="s2">&#34;LogPath&#34;</span>:<span class="s2">&#34;/var/lib/docker/containers/33c749acc76fec662a292e7a7fb73a1e32bd2b57ebe4270bb1ad46abc4598011/33c749acc76fec662a292e7a7fb73a1e32bd2b57ebe4270bb1ad46abc4598011-json.log&#34;</span>,
+    <span class="s2">&#34;Name&#34;</span>:<span class="s2">&#34;/glpi-app&#34;</span>,
+    <span class="s2">&#34;Driver&#34;</span>:<span class="s2">&#34;overlay&#34;</span>,
+    <span class="s2">&#34;MountLabel&#34;</span>:<span class="s2">&#34;&#34;</span>,
+    <span class="s2">&#34;ProcessLabel&#34;</span>:<span class="s2">&#34;&#34;</span>,
+    <span class="s2">&#34;RestartCount&#34;</span>:0,
+    <span class="s2">&#34;HasBeenStartedBefore&#34;</span>:true,
+    <span class="s2">&#34;HasBeenManuallyStopped&#34;</span>:false,
+    <span class="s2">&#34;MountPoints&#34;</span>:<span class="o">{</span>
+        <span class="s2">&#34;/etc/localtime&#34;</span>:<span class="o">{</span>
+            <span class="s2">&#34;Source&#34;</span>:<span class="s2">&#34;/etc/localtime&#34;</span>,
+            <span class="s2">&#34;Destination&#34;</span>:<span class="s2">&#34;/etc/localtime&#34;</span>,
+            <span class="s2">&#34;RW&#34;</span>:true,
+            <span class="s2">&#34;Name&#34;</span>:<span class="s2">&#34;&#34;</span>,
+            <span class="s2">&#34;Driver&#34;</span>:<span class="s2">&#34;&#34;</span>,
+            <span class="s2">&#34;Type&#34;</span>:<span class="s2">&#34;bind&#34;</span>,
+            <span class="s2">&#34;Spec&#34;</span>:<span class="o">{</span>
+                <span class="s2">&#34;Type&#34;</span>:<span class="s2">&#34;bind&#34;</span>,
+                <span class="s2">&#34;Source&#34;</span>:<span class="s2">&#34;/etc/localtime&#34;</span>,
+                <span class="s2">&#34;Target&#34;</span>:<span class="s2">&#34;/etc/localtime&#34;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>,
+        <span class="s2">&#34;/var/www/html/files&#34;</span>:<span class="o">{</span>
+            <span class="s2">&#34;Source&#34;</span>:<span class="s2">&#34;/var/lib/docker/volumes/glpi-app/_data&#34;</span>,
+            <span class="s2">&#34;Destination&#34;</span>:<span class="s2">&#34;/var/www/html/files&#34;</span>,
+            <span class="s2">&#34;RW&#34;</span>:true,
+            <span class="s2">&#34;Name&#34;</span>:<span class="s2">&#34;glpi-app&#34;</span>,
+            <span class="s2">&#34;Driver&#34;</span>:<span class="s2">&#34;local&#34;</span>,
+            <span class="s2">&#34;Type&#34;</span>:<span class="s2">&#34;volume&#34;</span>,
+            <span class="s2">&#34;Relabel&#34;</span>:<span class="s2">&#34;z&#34;</span>,
+            <span class="s2">&#34;ID&#34;</span>:<span class="s2">&#34;f700b3bf921f366d7f29aa481757fb6dfd77090c940e4e7c2258b3690acc1168&#34;</span>,
+            <span class="s2">&#34;Spec&#34;</span>:<span class="o">{</span>
+                <span class="s2">&#34;Type&#34;</span>:<span class="s2">&#34;volume&#34;</span>,
+                <span class="s2">&#34;Source&#34;</span>:<span class="s2">&#34;glpi-app&#34;</span>,
+                <span class="s2">&#34;Target&#34;</span>:<span class="s2">&#34;/var/www/html/files&#34;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>,
+    <span class="s2">&#34;SecretReferences&#34;</span>:null,
+    <span class="s2">&#34;AppArmorProfile&#34;</span>:<span class="s2">&#34;&#34;</span>,
+    <span class="s2">&#34;HostnamePath&#34;</span>:<span class="s2">&#34;/var/lib/docker/containers/33c749acc76fec662a292e7a7fb73a1e32bd2b57ebe4270bb1ad46abc4598011/hostname&#34;</span>,
+    <span class="s2">&#34;HostsPath&#34;</span>:<span class="s2">&#34;/var/lib/docker/containers/33c749acc76fec662a292e7a7fb73a1e32bd2b57ebe4270bb1ad46abc4598011/hosts&#34;</span>,
+    <span class="s2">&#34;ShmPath&#34;</span>:<span class="s2">&#34;/var/lib/docker/containers/33c749acc76fec662a292e7a7fb73a1e32bd2b57ebe4270bb1ad46abc4598011/shm&#34;</span>,
+    <span class="s2">&#34;ResolvConfPath&#34;</span>:<span class="s2">&#34;/var/lib/docker/containers/33c749acc76fec662a292e7a7fb73a1e32bd2b57ebe4270bb1ad46abc4598011/resolv.conf&#34;</span>,
+    <span class="s2">&#34;SeccompProfile&#34;</span>:<span class="s2">&#34;&#34;</span>,
+    <span class="s2">&#34;NoNewPrivileges&#34;</span>:false
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="从-json-文件中推理出容器启动命令进行重建-1">从 json 文件中推理出，容器启动命令，进行重建</h3>
+<blockquote>
+<p>重建前，检查一下备份数据中，对应 docker 存储卷中的数据是否还在，可以看到文件什么的多还在 ，按道理我们只需要把文件 <code>copy</code> 到对应的文件夹下应该就可以了</p>
+<p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228204135727.png" alt="image-20201228204135727"></p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker volume create <span class="s2">&#34;glpi-app&#34;</span>  <span class="c1"># 创建 容器卷文件</span>
+
+cp -a /var/lib/docker.bak/volumes/glpi-app/_data/* /var/lib/docker/volumes/glpi-app/  <span class="c1"># 将备份数据 copy 至新建的卷容器文件夹内</span>
+
+docker run --name<span class="o">=</span>glpi-app -d <span class="se">\
+</span><span class="se"></span>--restart<span class="o">=</span>always <span class="se">\
+</span><span class="se"></span>-p 30000:80 <span class="se">\
+</span><span class="se"></span>-v glpi-app:/var/www/html/files <span class="se">\
+</span><span class="se"></span>-v /etc/localtime:/etc/localtime <span class="se">\
+</span><span class="se"></span>--links glpi-db:mysql <span class="se">\
+</span><span class="se"></span>fjudith/glpi    <span class="c1"># 尝试启动，需要注意网卡link的名称为之前启动的数据库容器的名称</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228212927377.png" alt="image-20201228212927377"></p>
+<blockquote>
+<p>⚠️  <code>无法启动</code></p>
+<p><code>-- links</code>  在高版本的 Docker 中好像被移除了，<a href="https://docs.docker.com/network/links/">文档说明</a></p>
+<p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228212956200.png" alt="image-20201228212956200"></p>
+</blockquote>
+<h2 id="使用替换----links-方案">使用替换 <code>-- links</code> 方案</h2>
+<h2 id="创建容器">创建容器</h2>
+<blockquote>
+<p>此方案将删除前面部署的 mysql 容器</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker rm -f glpi-db
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker network create glpi  <span class="c1"># 创建网络</span>
+
+<span class="c1"># 将前面部署的 &#34;glpi-db&#34;, 更名为 &#34;mysql&#34; ，方便在同一个网络时使用</span>
+
+docker run --name<span class="o">=</span>mysql -d <span class="se">\
+</span><span class="se"></span>--restart<span class="o">=</span>always <span class="se">\
+</span><span class="se"></span>--network<span class="o">=</span>glpi <span class="se">\
+</span><span class="se"></span>-p 33306:3306 <span class="se">\
+</span><span class="se"></span>-e <span class="nv">MYSQL_DATABASE</span><span class="o">=</span>glpi <span class="se">\
+</span><span class="se"></span>-e <span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span>pass <span class="se">\
+</span><span class="se"></span>-e <span class="nv">MYSQL_USER</span><span class="o">=</span>glpi <span class="se">\
+</span><span class="se"></span>-e <span class="nv">MYSQL_PASSWORD</span><span class="o">=</span>pass <span class="se">\
+</span><span class="se"></span>-v /data/glpi-mysql/data:/var/lib/mysql <span class="se">\
+</span><span class="se"></span>-v /data/glpi-mysql/log:/var/log/mysql <span class="se">\
+</span><span class="se"></span>-v /data/glpi-mysql/conf:/etc/mysql <span class="se">\
+</span><span class="se"></span>-v /etc/localtime:/etc/localtime <span class="se">\
+</span><span class="se"></span>mariadb  
+
+
+docker logs --tail <span class="m">100</span> -f mysql  <span class="c1"># 检查是否正常启动，正常后随后启动第二个容器</span>
+
+docker run --name<span class="o">=</span>glpi-app -d <span class="se">\
+</span><span class="se"></span>--restart<span class="o">=</span>always <span class="se">\
+</span><span class="se"></span>-p 30000:80 <span class="se">\
+</span><span class="se"></span>-v glpi-app:/var/www/html/files <span class="se">\
+</span><span class="se"></span>-v /etc/localtime:/etc/localtime <span class="se">\
+</span><span class="se"></span>--network<span class="o">=</span>glpi <span class="se">\
+</span><span class="se"></span>fjudith/glpi
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="dashboard-引导恢复">dashboard 引导恢复</h2>
+<blockquote>
+<p>选择 &ldquo;更新&rdquo; =&gt; &ldquo;选择现有数据库&rdquo;</p>
+</blockquote>
+<p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228213751995.png" alt="image-20201228213751995"></p>
+<p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228214059990.png" alt="image-20201228214059990"></p>
+<blockquote>
+<p>登录账户后，数据回来了 😺</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yang'zun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-01-14
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/docker/">Docker</a>
+          <a href="/tags/devops/">Devops</a>
+          <a href="/tags/centos/">Centos</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/intermittent-coredns-hosts/">
+            <span class="next-text nav-default">Coredns 进行解析域名时，某些域名出现间断性无法正常解析问题</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
+        appKey: 'siSAWI3rzA6Ow8Tmiv7V4GO4',
+        notify:  true ,
+        verify:  true ,
+        avatar:'',
+        placeholder: '来留下点什么吧~',
+        visitor:  false 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:amoaloas@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/cdryzun" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdryzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js" integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js" integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin="anonymous"></script>
+  <script><!-- NOTE: timeago.js uses the language code format like "zh_CN" (underscore and case sensitive) -->
+    var languageCode = "en-us".replace(/-/g, '_').replace(/_(.*)/, function ($0, $1) {return $0.replace($1, $1.toUpperCase());});
+    timeago().render(document.querySelectorAll('.timeago'), languageCode);
+    timeago.cancel();  
+  </script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script>
+    docsearch({
+    apiKey: "17388eec628e676a77d6235068b458df",
+    indexName: "blog",
+    appId: "KEECS2XKBV",
+    inputSelector: '.docsearch-input',
+    debug: false,
+    });
+</script>
+</body>
+</html>

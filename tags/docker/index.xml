@@ -6,7 +6,16 @@
     <description>Recent content in Docker on 「Yang&#39;zun」的网志博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 22 Dec 2020 09:24:55 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 14 Jan 2021 20:09:58 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>记录一次，因误删容器导致的容器恢复过程</title>
+      <link>https://cdryzun.github.io/post/delete-container-reset/</link>
+      <pubDate>Thu, 14 Jan 2021 20:09:58 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/delete-container-reset/</guid>
+      <description>环境说明 因在日常维护过程中升级了docker的版本 ，碰到了一个 docker 的一个bug, 导致 docker 服务无法正常启动。在恢复 docker 服务的过程中把 /var/lib/docker/containers 下的所有文件给</description>
+    </item>
+    
     <item>
       <title>使用 Docker 部署 Nexus3 私服的详细记录总结</title>
       <link>https://cdryzun.github.io/post/docker-deploy-nexus3-upgrade/</link>

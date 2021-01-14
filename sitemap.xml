@@ -3,7 +3,70 @@
   
   <url>
     <loc>https://cdryzun.github.io/categories/</loc>
-    <lastmod>2021-01-07T14:34:16+08:00</lastmod>
+    <lastmod>2021-01-14T20:09:58+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/centos/</loc>
+    <lastmod>2021-01-14T20:09:58+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/categories/datarecovery/</loc>
+    <lastmod>2021-01-14T20:09:58+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/devops/</loc>
+    <lastmod>2021-01-14T20:09:58+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/docker/</loc>
+    <lastmod>2021-01-14T20:09:58+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/categories/docker/</loc>
+    <lastmod>2021-01-14T20:09:58+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/post/</loc>
+    <lastmod>2021-01-14T20:09:58+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/</loc>
+    <lastmod>2021-01-14T20:09:58+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/</loc>
+    <lastmod>2021-01-14T20:09:58+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/post/delete-container-reset/</loc>
+    <lastmod>2021-01-14T20:09:58+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -44,49 +107,7 @@
   </url>
   
   <url>
-    <loc>https://cdryzun.github.io/post/</loc>
-    <lastmod>2021-01-07T14:34:16+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/tags/</loc>
-    <lastmod>2021-01-07T14:34:16+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/</loc>
-    <lastmod>2021-01-07T14:34:16+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://cdryzun.github.io/tags/dashboard/</loc>
-    <lastmod>2020-12-22T09:24:55+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/tags/devops/</loc>
-    <lastmod>2020-12-22T09:24:55+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/tags/docker/</loc>
-    <lastmod>2020-12-22T09:24:55+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/categories/docker/</loc>
     <lastmod>2020-12-22T09:24:55+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -144,13 +165,6 @@
   <url>
     <loc>https://cdryzun.github.io/post/ingress-to-dashboard/</loc>
     <lastmod>2020-12-22T09:24:55+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/tags/centos/</loc>
-    <lastmod>2020-12-21T13:19:31+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
