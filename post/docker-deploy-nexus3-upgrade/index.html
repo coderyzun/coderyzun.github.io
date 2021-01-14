@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>使用 Docker 部署 Nexus3 私服的详细记录总结 - 「Yang&#39;zun」的网志博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="使用docker部署 nexus3及如何进行版本的迭代更新" /><meta name="keywords" content="centos7, nexus3.x, upgrade, 升级, devops" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.2 with theme even" />
+
+
+<link rel="canonical" href="https://cdryzun.github.io/post/docker-deploy-nexus3-upgrade/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="使用 Docker 部署 Nexus3 私服的详细记录总结" />
+<meta property="og:description" content="使用docker部署 nexus3及如何进行版本的迭代更新" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdryzun.github.io/post/docker-deploy-nexus3-upgrade/" />
+<meta property="article:published_time" content="2020-12-22T09:24:55+08:00" />
+<meta property="article:modified_time" content="2020-12-22T09:24:55+08:00" />
+<meta itemprop="name" content="使用 Docker 部署 Nexus3 私服的详细记录总结">
+<meta itemprop="description" content="使用docker部署 nexus3及如何进行版本的迭代更新">
+<meta itemprop="datePublished" content="2020-12-22T09:24:55+08:00" />
+<meta itemprop="dateModified" content="2020-12-22T09:24:55+08:00" />
+<meta itemprop="wordCount" content="2997">
+
+
+
+<meta itemprop="keywords" content="Nexus3,Docker,Devops," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用 Docker 部署 Nexus3 私服的详细记录总结"/>
+<meta name="twitter:description" content="使用docker部署 nexus3及如何进行版本的迭代更新"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+</div>
+
+<nav class="site-navbar">
+
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul><li style="display:inline-block;margin-right:10px;">
+    <input type="search" class="docsearch-input" placeholder="Search" />
+  </li></nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">使用 Docker 部署 Nexus3 私服的详细记录总结</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-12-22 </span>
+        <div class="post-category">
+            <a href="/categories/nexus3/"> Nexus3 </a>
+            <a href="/categories/docker/"> Docker </a>
+            <a href="/categories/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/"> 持续集成 </a>
+            </div>
+          <span class="more-meta"> 约 2997 字 </span>
+          <span class="more-meta"> 预计阅读 6 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#nexus3x-说明">Nexus3.x 说明</a>
+      <ul>
+        <li><a href="#功能介绍">功能介绍</a></li>
+        <li><a href="#仓库类型">仓库类型</a></li>
+      </ul>
+    </li>
+    <li><a href="#环境说明">环境说明</a></li>
+    <li><a href="#使用-docker-部署">使用 Docker 部署</a>
+      <ul>
+        <li><a href="#检查是否正常启动">检查是否正常启动</a></li>
+        <li><a href="#配置-nginx-反向代理">配置 nginx 反向代理</a>
+          <ul>
+            <li><a href="#nginx-安装及配置调优">nginx 安装及配置调优</a></li>
+            <li><a href="#配置-docker-私服--反向代理">配置 Docker 私服 &amp; 反向代理</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#docker-部署如何进行版本升级">Docker 部署，如何进行版本升级。</a>
+      <ul>
+        <li><a href="#原容器启动命令">原容器启动命令</a></li>
+        <li><a href="#升级步骤">升级步骤</a></li>
+      </ul>
+    </li>
+    <li><a href="#其他类型私服的配置">其他类型私服的配置</a>
+      <ul>
+        <li><a href="#配置部署-yum-私服">配置部署 Yum 私服</a>
+          <ul>
+            <li><a href="#nexus-具体配置项">Nexus 具体配置项</a></li>
+            <li><a href="#rpm-依赖的上传配置">RPM 依赖的上传配置</a></li>
+            <li><a href="#yum-私服-客户端使用">Yum 私服 客户端使用</a></li>
+          </ul>
+        </li>
+        <li><a href="#配置部署-helm-私服">配置部署 Helm 私服</a>
+          <ul>
+            <li><a href="#nexus-配置项记录">Nexus 配置项记录</a></li>
+            <li><a href="#helm-上传依赖包配置">Helm 上传依赖包配置</a></li>
+            <li><a href="#客户端使用">客户端使用</a></li>
+          </ul>
+        </li>
+        <li><a href="#配置部署-pypi-私服">配置部署 pypi 私服</a>
+          <ul>
+            <li><a href="#nexus-配置项记录-1">Nexus 配置项记录</a></li>
+            <li><a href="#pypi-依赖上传配置">Pypi 依赖上传配置</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#pending">pending。。</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="nexus3x-说明">Nexus3.x 说明</h1>
+<h2 id="功能介绍">功能介绍</h2>
+<blockquote>
+<p>Nexus3, 是一款支持仓库种类繁多的私服管理工具，目前大众所知晓的仓库类型如：go、pypi、docker、yum、maven、yum、git、helm、npm、apt &hellip;，且功能非常强大，解决了不同类型的仓库 <code>统一管理</code> 问题。</p>
+</blockquote>
+<h2 id="仓库类型">仓库类型</h2>
+<p>目前Nexus3 仓库类型，可以分为三种，即 <code>hosted</code>, <code>proxy</code>,<code>group</code> 类型参考。</p>
+<ul>
+<li>
+<p>group: 即是多个仓库的集合，group中可 <code>包涵多个</code>  hosted, proxy, group 类型的仓库</p>
+<blockquote>
+<p>注意，在 group 中还存在优先级的关系，即示例图中，如 <code>custom</code> 和 <code>aliyun</code> 的docker仓库中多包涵了 <code>centos:7</code> 的镜像，那么在 docker pull 的使用客户拉取的是 <code>custom</code>中的 centos7，原因为: &ldquo;在nexus3 group仓库中使用为 <code>自上而下</code> 的匹配方式，当匹配后将 <code>不再继续</code> 向下匹配&rdquo;，所有说我们在使用 &ldquo;group&quot;类型参考时还需要考虑一下，各个仓库的 <code>优先级</code>。</p>
+<p><img src="https://image.coderyzun.cyou/images/2021/01/14/image-20210114180247413.png" alt="image-20210114180247413"></p>
+</blockquote>
+</li>
+<li>
+<p>proxy: 即是代理仓库，也叫缓存仓库, 示例原理: 。</p>
+<blockquote>
+<p>客户端请求 proxy 类型私服 如仓库中依赖存在即返回给客户端，如未存在就从proxy配置的远程仓库中拉取依赖返回给客户端，同时在 proxy 私服中进行缓存一份，当第二次访问时，即命中直接从本地 proxy 仓库返回</p>
+</blockquote>
+<p><img src="https://image.coderyzun.cyou/images/2021/01/14/357d3e0316900d3b63f60effd442356e.png" alt="未命名绘图"></p>
+<ul>
+<li>hosted: 即是用户自定义的参考</li>
+</ul>
+</li>
+</ul>
+<h1 id="环境说明">环境说明</h1>
+<ul>
+<li>操作系统: Centos 7.7 (<code>vm</code>)</li>
+<li>Docker 版本: 18.09.9</li>
+<li>代理工具: Nginx</li>
+<li>Helm 版本: 3.x</li>
+</ul>
+<h1 id="使用-docker-部署">使用 Docker 部署</h1>
+<blockquote>
+<p>建议部署 nexus3 的机器，应配置使用 <code>lvm 逻辑卷</code> 管理，方便在磁盘空间不足时可以添加磁盘进行 <code>动态扩展</code>。</p>
+<p><code>省略 docker 安装步骤和 os 初始化</code>，这部分参考 <a href="http://coderyzun.cyou/post/centos-init-config/#docker%E5%AE%89%E8%A3%85">链接</a></p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">mkdir -p /application/nexus3/data  <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> chmod <span class="m">777</span> -R /application/nexus3    <span class="c1"># 这里权限，出于安全考虑不应该设置这么大，我这里是开发环境使用就无所谓，生产环境应该酌情考虑。</span>
+
+docker run -dti <span class="se">\
+</span><span class="se"></span>--net<span class="o">=</span>host --name<span class="o">=</span>nexus3 <span class="se">\
+</span><span class="se"></span>--privileged<span class="o">=</span><span class="nb">true</span> --restart<span class="o">=</span>always <span class="se">\
+</span><span class="se"></span>-e <span class="nv">INSTALL4J_ADD_VM_PARAMS</span><span class="o">=</span><span class="s2">&#34;-Xms4g -Xmx4g -XX:MaxDirectMemorySize=6g&#34;</span> <span class="se">\
+</span><span class="se"></span>-v /etc/localtime:/etc/localtime:ro <span class="se">\
+</span><span class="se"></span>-v /application/nexus3/data:/nexus-data <span class="se">\
+</span><span class="se"></span>sonatype/nexus3:3.27.0
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="检查是否正常启动">检查是否正常启动</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">sleep <span class="m">5</span> <span class="o">&amp;&amp;</span> docker logs --tail <span class="m">100</span> nexus3 
+
+netstat -lntp <span class="p">|</span>grep <span class="m">8081</span>  <span class="c1"># 端口是否监听</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>初始安装账号为 admin，初始密码在这个文件里面 <code>/application/nexus3/data/admin.password</code>  (按照我的步骤来的话)，剩下的就是会有一个初始化的过程 也就是让你重置 admin 的密码 和是否开启匿名功能 。</p>
+</blockquote>
+<p><img src="https://image.coderyzun.cyou/images/2020/09/10/image-20200910164805785.png" alt="install"></p>
+<h2 id="配置-nginx-反向代理">配置 nginx 反向代理</h2>
+<blockquote>
+<p>此步骤包涵配置nginx 反向代理，及初始化<code>nexus docker私服</code>。</p>
+</blockquote>
+<h3 id="nginx-安装及配置调优">nginx 安装及配置调优</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span><span class="lnt">83
+</span><span class="lnt">84
+</span><span class="lnt">85
+</span><span class="lnt">86
+</span><span class="lnt">87
+</span><span class="lnt">88
+</span><span class="lnt">89
+</span><span class="lnt">90
+</span><span class="lnt">91
+</span><span class="lnt">92
+</span><span class="lnt">93
+</span><span class="lnt">94
+</span><span class="lnt">95
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">yum install -y nginx  <span class="c1"># 安装</span>
+
+useradd -M -s /sbin/nologin www  <span class="c1"># 添加 http 服务专属用户</span>
+
+mv /etc/nginx/nginx.conf<span class="o">{</span>,.bak<span class="o">}</span> <span class="c1"># 修改默认配置</span>
+
+cat &gt; /etc/nginx/nginx.conf <span class="s">&lt;&lt; EOF
+</span><span class="s">user www www;
+</span><span class="s">worker_processes auto;
+</span><span class="s">
+</span><span class="s">error_log /var/log/error_nginx.log crit;
+</span><span class="s">pid /var/run/nginx.pid;
+</span><span class="s">worker_rlimit_nofile 51200;
+</span><span class="s">
+</span><span class="s">events {
+</span><span class="s">  use epoll;
+</span><span class="s">  worker_connections 51200;
+</span><span class="s">  multi_accept on;
+</span><span class="s">}
+</span><span class="s">
+</span><span class="s">http {
+</span><span class="s">  include mime.types;
+</span><span class="s">  default_type application/octet-stream;
+</span><span class="s">  server_names_hash_bucket_size 128;
+</span><span class="s">  client_header_buffer_size 32k;
+</span><span class="s">  large_client_header_buffers 4 32k;
+</span><span class="s">  client_max_body_size 0;
+</span><span class="s">  client_body_buffer_size 4096m;
+</span><span class="s">  sendfile on;
+</span><span class="s">  tcp_nopush on;
+</span><span class="s">  keepalive_timeout 600;
+</span><span class="s">#  server_tokens off;
+</span><span class="s">  tcp_nodelay on;
+</span><span class="s">
+</span><span class="s">  fastcgi_connect_timeout 300;
+</span><span class="s">  fastcgi_send_timeout 300;
+</span><span class="s">  fastcgi_read_timeout 300;
+</span><span class="s">  fastcgi_buffer_size 64k;
+</span><span class="s">  fastcgi_buffers 4 64k;
+</span><span class="s">  fastcgi_busy_buffers_size 128k;
+</span><span class="s">  fastcgi_temp_file_write_size 128k;
+</span><span class="s">  fastcgi_intercept_errors on;
+</span><span class="s">
+</span><span class="s">  #Gzip Compression
+</span><span class="s">  gzip on;
+</span><span class="s">  gzip_buffers 16 8k;
+</span><span class="s">  gzip_comp_level 6;
+</span><span class="s">  gzip_http_version 1.1;
+</span><span class="s">  gzip_min_length 256;
+</span><span class="s">  gzip_proxied any;
+</span><span class="s">  gzip_vary on;
+</span><span class="s">  gzip_types
+</span><span class="s">    text/xml application/xml application/atom+xml application/rss+xml application/xhtml+xml image/svg+xml
+</span><span class="s">    text/javascript application/javascript application/x-javascript
+</span><span class="s">    text/x-json application/json application/x-web-app-manifest+json
+</span><span class="s">    text/css text/plain text/x-component
+</span><span class="s">    font/opentype application/x-font-ttf application/vnd.ms-fontobject
+</span><span class="s">    image/x-icon;
+</span><span class="s">  gzip_disable &#34;MSIE [1-6]\.(?!.*SV1)&#34;;
+</span><span class="s">
+</span><span class="s">    log_format access_log_json &#39;{ &#34;@timestamp&#34;: &#34;$time_local&#34;, &#39;
+</span><span class="s">&#39;&#34;remote_addr&#34;: &#34;$remote_addr&#34;, &#39;
+</span><span class="s">&#39;&#34;referer&#34;: &#34;$http_referer&#34;, &#39;
+</span><span class="s">&#39;&#34;request&#34;: &#34;$request&#34;, &#39;
+</span><span class="s">&#39;&#34;status&#34;: $status, &#39;
+</span><span class="s">&#39;&#34;bytes&#34;: $body_bytes_sent, &#39;
+</span><span class="s">&#39;&#34;agent&#34;: &#34;$http_user_agent&#34;, &#39;
+</span><span class="s">&#39;&#34;x_forwarded&#34;: &#34;$http_x_forwarded_for&#34;, &#39;
+</span><span class="s">&#39;&#34;up_addr&#34;: &#34;$upstream_addr&#34;,&#39;
+</span><span class="s">&#39;&#34;up_host&#34;: &#34;$upstream_http_host&#34;,&#39;
+</span><span class="s">&#39;&#34;up_resp_time&#34;: &#34;$upstream_response_time&#34;,&#39;
+</span><span class="s">&#39;&#34;request_time&#34;: &#34;$request_time&#34;&#39;
+</span><span class="s">&#39; }&#39;;
+</span><span class="s">
+</span><span class="s">    log_format json &#39;{ &#34;@timestamp&#34;: &#34;$time_iso8601&#34;, &#39;
+</span><span class="s">                            &#39;&#34;time&#34;: &#34;$time_iso8601&#34;, &#39;
+</span><span class="s">                            &#39;&#34;remote_addr&#34;: &#34;$remote_addr&#34;, &#39;
+</span><span class="s">                            &#39;&#34;remote_user&#34;: &#34;$remote_user&#34;, &#39;
+</span><span class="s">                            &#39;&#34;body_bytes_sent&#34;: &#34;$body_bytes_sent&#34;, &#39;
+</span><span class="s">                            &#39;&#34;request_time&#34;: &#34;$request_time&#34;, &#39;
+</span><span class="s">                            &#39;&#34;status&#34;: &#34;$status&#34;, &#39;
+</span><span class="s">                            &#39;&#34;host&#34;: &#34;$host&#34;, &#39;
+</span><span class="s">                            &#39;&#34;request&#34;: &#34;$request&#34;, &#39;
+</span><span class="s">                            &#39;&#34;request_method&#34;: &#34;$request_method&#34;, &#39;
+</span><span class="s">                            &#39;&#34;uri&#34;: &#34;$uri&#34;, &#39;
+</span><span class="s">                            &#39;&#34;http_referrer&#34;: &#34;$http_referer&#34;, &#39;
+</span><span class="s">                            &#39;&#34;body_bytes_sent&#34;:&#34;$body_bytes_sent&#34;, &#39;
+</span><span class="s">                            &#39;&#34;http_x_forwarded_for&#34;: &#34;$http_x_forwarded_for&#34;, &#39;
+</span><span class="s">                            &#39;&#34;http_user_agent&#34;: &#34;$http_user_agent&#34; &#39;
+</span><span class="s">                        &#39;}&#39;;
+</span><span class="s">  include conf.d/*.conf;
+</span><span class="s">}
+</span><span class="s">EOF</span>
+
+nginx -t  <span class="c1"># 测试配置文件,有无错误.</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="配置-docker-私服--反向代理">配置 Docker 私服 &amp; 反向代理</h3>
+<h4 id="创建-docker-专属-blob-存储卷"><strong>创建 docker 专属 <code>blob 存储卷</code></strong></h4>
+<p><img src="https://image.coderyzun.cyou/images/2020/09/11/image-202009110915461557169a2c54af26adc.png" alt="image-20200911091546155"></p>
+<p><img src="https://image.coderyzun.cyou/images/2020/09/11/image-20200911091722315.png" alt="image-20200911091722315"></p>
+<h4 id="创建-docker-hosted-类型仓库--image-20200911091224979httpsimagecoderyzuncyouimages20200911image-20200911091224979png"><strong>创建 docker <code>hosted</code> 类型仓库</strong>  <img src="https://image.coderyzun.cyou/images/2020/09/11/image-20200911091224979.png" alt="image-20200911091224979"></h4>
+<h4 id="image-20200911091314192httpsimagecoderyzuncyouimages20200911image-20200911091314192png"><img src="https://image.coderyzun.cyou/images/2020/09/11/image-20200911091314192.png" alt="image-20200911091314192"></h4>
+<h4 id="image-20200911091944505httpsimagecoderyzuncyouimages20200911image-20200911091944505png"><img src="https://image.coderyzun.cyou/images/2020/09/11/image-20200911091944505.png" alt="image-20200911091944505"></h4>
+<h4 id="添加-docker-proxy-类型仓库--image-20200914141738814httpsimagecoderyzuncyouimages20200914image-20200914141738814png"><strong>添加 docker <code>proxy</code> 类型仓库</strong>  <img src="https://image.coderyzun.cyou/images/2020/09/14/image-20200914141738814.png" alt="image-20200914141738814"></h4>
+<h4 id="image-20200914141831948httpsimagecoderyzuncyouimages20200914image-20200914141831948png"><img src="https://image.coderyzun.cyou/images/2020/09/14/image-20200914141831948.png" alt="image-20200914141831948"></h4>
+<blockquote>
+<p>图中使用代理仓库地址为:  <code>https://7bezldxe.mirror.aliyuncs.com </code></p>
+</blockquote>
+<p><img src="https://image.coderyzun.cyou/images/2020/09/14/image-20200914141929471.png" alt="image-20200914141929471"></p>
+<h4 id="创建-docker-group-类型仓库-image-20200911092506337httpsimagecoderyzuncyouimages20200911image-20200911092506337png"><strong>创建 docker <code>group</code> 类型仓库</strong> <img src="https://image.coderyzun.cyou/images/2020/09/11/image-20200911092506337.png" alt="image-20200911092506337"></h4>
+<p><img src="https://image.coderyzun.cyou/images/2020/09/14/image-20200914142809316.png" alt="image-20200914142809316"></p>
+<h4 id="检查配置完成后端口是否有监听是否正常">检查配置完成后，端口是否有监听，是否正常</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">netstat -lntp<span class="p">|</span>egrep <span class="s2">&#34;8081|8082|8083&#34;</span>  <span class="c1"># 如有以下三个端口存在即表示正常</span>
+tcp        <span class="m">0</span>      <span class="m">0</span> 0.0.0.0:8083            0.0.0.0:*               LISTEN      1393/java           
+tcp        <span class="m">0</span>      <span class="m">0</span> 0.0.0.0:8081            0.0.0.0:*               LISTEN      1393/java           
+tcp        <span class="m">0</span>      <span class="m">0</span> 0.0.0.0:8082            0.0.0.0:*               LISTEN      1393/java
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>开启 Docker认证功能</strong></p>
+<blockquote>
+<p>此功能不开启将导致 <code>docker私服</code>, 无法正常使用。</p>
+</blockquote>
+<p><img src="https://image.coderyzun.cyou/images/2020/09/11/image-20200911110039179.png" alt="image-20200911110039179"></p>
+<p><img src="https://image.coderyzun.cyou/images/2020/09/11/image-20200911110151341.png" alt="image-20200911110151341"></p>
+<h4 id="配置-nginx-反向代理-1"><strong>配置 nginx 反向代理</strong></h4>
+<blockquote>
+<p>注意下列命令中带有 <code>转义符号</code>，应直接复制到终端执行即可。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat &gt; /etc/nginx/conf.d/nexus3.conf <span class="s">&lt;&lt; EOF
+</span><span class="s">upstream nexus_web {
+</span><span class="s">    server 127.0.0.1:8081;
+</span><span class="s">}
+</span><span class="s">
+</span><span class="s">upstream nexus_docker_get {
+</span><span class="s">    server 127.0.0.1:8082;
+</span><span class="s">}
+</span><span class="s">
+</span><span class="s">upstream nexus_docker_put {
+</span><span class="s">    server 127.0.0.1:8083;
+</span><span class="s">}
+</span><span class="s">
+</span><span class="s">server {
+</span><span class="s">    listen 80;
+</span><span class="s">    server_name idocker.io;
+</span><span class="s">    access_log /var/log/idocker.io.log json;
+</span><span class="s">    client_max_body_size 0;
+</span><span class="s">    client_body_buffer_size 4096m;
+</span><span class="s">    chunked_transfer_encoding on;
+</span><span class="s">    set \$upstream &#34;nexus_docker_put&#34;;
+</span><span class="s">    if ( \$request_method ~* &#39;GET&#39;) {
+</span><span class="s">        set \$upstream &#34;nexus_docker_get&#34;;
+</span><span class="s">    }
+</span><span class="s">    if (\$request_uri ~ &#39;/search&#39;) {
+</span><span class="s">        set \$upstream &#34;nexus_docker_put&#34;; 
+</span><span class="s">    }  
+</span><span class="s">    index index.html index.htm index.php;
+</span><span class="s">    location / {
+</span><span class="s">            proxy_pass http://\$upstream;
+</span><span class="s">            proxy_set_header Host \$host;
+</span><span class="s">            proxy_connect_timeout 3600;
+</span><span class="s">            proxy_send_timeout 3600;
+</span><span class="s">            proxy_read_timeout 3600;
+</span><span class="s">            proxy_set_header X-Real-IP \$remote_addr;
+</span><span class="s">            proxy_buffering off;
+</span><span class="s">            proxy_request_buffering off;
+</span><span class="s">            proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+</span><span class="s">            proxy_set_header X-Forwarded-Proto http;
+</span><span class="s">    }
+</span><span class="s">}
+</span><span class="s">
+</span><span class="s">server {
+</span><span class="s">    listen 80;
+</span><span class="s">    server_name repo.demo.com;
+</span><span class="s">    client_max_body_size 0;
+</span><span class="s">    proxy_max_temp_file_size 0;
+</span><span class="s">    access_log /var/log/repo.demo.com.log access_log_json;
+</span><span class="s">    location /download {
+</span><span class="s">        root /application/download;
+</span><span class="s">    }
+</span><span class="s">    location / {
+</span><span class="s">      proxy_pass http://nexus_web;
+</span><span class="s">      proxy_set_header Host \$host;
+</span><span class="s">      proxy_set_header X-Real-IP \$remote_addr;
+</span><span class="s">      proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+</span><span class="s">    }
+</span><span class="s">}
+</span><span class="s">EOF</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>测试配置文件是否正常，进行配置的重载。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">nginx -t 
+
+service nginx restart <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> service nginx status <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> systemctl <span class="nb">enable</span> nginx <span class="c1"># 启动并设置开机自启</span>
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<h4 id="最终所有仓库展示"><strong>最终所有仓库展示</strong></h4>
+<h4 id="image-20200911104933579httpsimagecoderyzuncyouimages20200911image-20200911104933579png"><img src="https://image.coderyzun.cyou/images/2020/09/11/image-20200911104933579.png" alt="image-20200911104933579"></h4>
+<h4 id="docker-私服客户端测试使用"><strong>docker 私服客户端测试使用</strong></h4>
+<blockquote>
+<p>在客户端 docker 容器的配置文件中添加 <code>insecure-registries&quot;: [&quot;idocker.io&quot;] </code>, 并配置对应 hosts记录, 示例中即 <code>idocker.io</code>。</p>
+<p>配置文件完整展示:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat /etc/docker/daemon.json
+<span class="o">{</span>
+  <span class="s2">&#34;oom-score-adjust&#34;</span>: -1000,
+  <span class="s2">&#34;log-driver&#34;</span>: <span class="s2">&#34;json-file&#34;</span>,
+  <span class="s2">&#34;log-opts&#34;</span>: <span class="o">{</span>
+  <span class="s2">&#34;max-size&#34;</span>: <span class="s2">&#34;100m&#34;</span>,
+  <span class="s2">&#34;max-file&#34;</span>: <span class="s2">&#34;3&#34;</span>
+  <span class="o">}</span>,
+  <span class="s2">&#34;max-concurrent-downloads&#34;</span>: 10,
+  <span class="s2">&#34;max-concurrent-uploads&#34;</span>: 10,
+  <span class="s2">&#34;registry-mirrors&#34;</span>: <span class="o">[</span><span class="s2">&#34;https://7bezldxe.mirror.aliyuncs.com&#34;</span><span class="o">]</span>,
+  <span class="s2">&#34;storage-driver&#34;</span>: <span class="s2">&#34;overlay2&#34;</span>,
+  <span class="s2">&#34;insecure-registries&#34;</span>: <span class="o">[</span><span class="s2">&#34;idocker.io&#34;</span><span class="o">]</span>,
+  <span class="s2">&#34;storage-opts&#34;</span>: <span class="o">[</span>
+  <span class="s2">&#34;overlay2.override_kernel_check=true&#34;</span>
+  <span class="o">]</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<p>配置文件配好了后，进行重启一下 docker 服务进行测试。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">service docker restart <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> service docker status  <span class="c1"># 重启服务</span>
+
+ping -c <span class="m">3</span> idocker.io  <span class="c1"># 检查对应host 是否有添加</span>
+
+docker login idocker.io -u admin -p <span class="m">123456</span>  <span class="c1"># 登录私服，密码为你重置后的密码</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>测试 镜像的上传</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker tag sonatype/nexus3:3.27.0 idocker.io/sonatype/nexus3:3.27.0
+
+docker push idocker.io/sonatype/nexus3:3.27.0
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://image.coderyzun.cyou/images/2020/09/11/image-20200911110428718fa9042b0fd5263d1.png" alt="image-20200911110428718"></p>
+<h1 id="docker-部署如何进行版本升级">Docker 部署，如何进行版本升级。</h1>
+<blockquote>
+<p>示例将 nexus3 版本升级至 <code>3.29.2</code>。笔者在使用 nexus3 一年多以来，老是发现xx版本有xxx漏洞，提示你尽快更新版本进行修复，所有这个升级版本的操作还是比较常用的，官方提供的最佳实践里面也说了，让你经常的更新 nexus3 的版本。</p>
+</blockquote>
+<h2 id="原容器启动命令">原容器启动命令</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker run -dti <span class="se">\
+</span><span class="se"></span>--net<span class="o">=</span>host <span class="se">\
+</span><span class="se"></span>--name<span class="o">=</span>nexus3 <span class="se">\
+</span><span class="se"></span>--privileged<span class="o">=</span><span class="nb">true</span> <span class="se">\
+</span><span class="se"></span>--restart<span class="o">=</span>always <span class="se">\
+</span><span class="se"></span>-e <span class="nv">INSTALL4J_ADD_VM_PARAMS</span><span class="o">=</span><span class="s2">&#34;-Xms4g -Xmx4g -XX:MaxDirectMemorySize=6g&#34;</span> <span class="se">\
+</span><span class="se"></span>-v /etc/localtime:/etc/localtime <span class="se">\
+</span><span class="se"></span>-v /application/nexus3:/nexus-data sonatype/nexus3:3.28.1
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="升级步骤">升级步骤</h2>
+<ul>
+<li>neuxs3 容器版本 <a href="https://hub.docker.com/r/sonatype/nexus3/tags?page=1&amp;ordering=last_updated">列表</a> 查看</li>
+</ul>
+<blockquote>
+<p>升级使用的镜像版本应使用具体版本号的镜像，建议不要使用 <code>latest</code> 镜像，这样在维护的时候不好区分。</p>
+</blockquote>
+<p>更新步骤具体如下所示:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker stop nexus3
+docker rename nexus3 nexus3_old
+
+docker pull sonatype/nexus3:3.29.2 <span class="c1"># 减少启动容器的时间，可先将镜像 download下来 。</span>
+
+docker run -dti <span class="se">\
+</span><span class="se"></span>--net<span class="o">=</span>host <span class="se">\
+</span><span class="se"></span>--name<span class="o">=</span>nexus3 <span class="se">\
+</span><span class="se"></span>--privileged<span class="o">=</span><span class="nb">true</span> <span class="se">\
+</span><span class="se"></span>--restart<span class="o">=</span>always <span class="se">\
+</span><span class="se"></span>-e <span class="nv">INSTALL4J_ADD_VM_PARAMS</span><span class="o">=</span><span class="s2">&#34;-Xms4g -Xmx4g -XX:MaxDirectMemorySize=6g&#34;</span> <span class="se">\
+</span><span class="se"></span>-v /etc/localtime:/etc/localtime <span class="se">\
+</span><span class="se"></span>-v /application/nexus3:/nexus-data sonatype/nexus3:3.29.2
+
+
+docker logs -f --tail <span class="m">100</span> nexus3  <span class="c1"># 查看启动有无报错</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://image.coderyzun.cyou/images/2021/01/14/image-20210114092823923.png" alt="image-20210114092823923"></p>
+<blockquote>
+<p><code>新容器启动没有问题后，记得删除老容器即</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker rm -f nexus3_old
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<h1 id="其他类型私服的配置">其他类型私服的配置</h1>
+<ul>
+<li><a href="https://help.sonatype.com/repomanager3/formats"><code>参考文档</code></a></li>
+</ul>
+<h2 id="配置部署-yum-私服">配置部署 Yum 私服</h2>
+<h3 id="nexus-具体配置项">Nexus 具体配置项</h3>
+<h4 id="创建-blob-stores">创建 <code>blob stores</code></h4>
+<p><img src="https://image.coderyzun.cyou/images/2020/09/10/image-20200910170348196.png" alt="image-20200910170348196"></p>
+<p><img src="https://image.coderyzun.cyou/images/2020/09/10/image-20200910170438617.png" alt="image-20200910170438617"></p>
+<h4 id="创建-hosted-yum-仓库--image-20200910170153343httpsimagecoderyzuncyouimages20200910image-20200910170153343png">创建 <code>hosted</code> yum 仓库  <img src="https://image.coderyzun.cyou/images/2020/09/10/image-20200910170153343.png" alt="image-20200910170153343"></h4>
+<p><img src="https://image.coderyzun.cyou/images/2020/09/10/image-20200910180549889.png" alt="image-20200910180549889"></p>
+<blockquote>
+<p>⚠️ 注意这里的 <code>文件深度</code>，会影响后期的 <code>rpm 包依赖上传</code> , 下面图片中为截取官方文档的说明。</p>
+<p><img src="https://image.coderyzun.cyou/images/2020/09/10/image-20200910180656801.png" alt="image-20200910180656801"></p>
+</blockquote>
+<h3 id="rpm-依赖的上传配置">RPM 依赖的上传配置</h3>
+<h4 id="接下来我们来进行-测试上传-前的准备">接下来我们来进行 <strong>测试上传</strong> 前的准备</h4>
+<blockquote>
+<p>示例使用 <a href="https://mirrors.aliyun.com/centos/?spm=a2c6h.13651104.0.0.7c6a12b2OaDXQ8"><code>CentOS-7-x86_64-Everything-2003.iso</code></a> 镜像中所有 rpm包，配置到 yum 私服中</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">mount -t auto CentOS-7-x86_64-Everything-2003.iso /mnt/  <span class="c1"># 挂载镜像</span>
+
+mkdir -p /data/centos7/rpm-lists/   <span class="c1"># 文件夹深度对应私服上的深度</span>
+
+<span class="se">\c</span>p -a /mnt/Packages/*.rpm /data/centos7/rpm-lists/  <span class="c1"># 将文件 copy 至上传文件夹下，因挂载的镜像为只读。此时我们也可以在上传文件夹下放置一些我们想上传到私服rpm依赖。</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>上传依赖至私服中</p>
+<blockquote>
+<p>为防止账号密码泄露，可暂时关闭命令记录。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">export</span> <span class="nv">HISTSIZE</span><span class="o">=</span><span class="m">0</span>  <span class="c1"># 关闭当前终端 命令记录。</span>
+
+<span class="k">for</span> i in <span class="sb">`</span>ls<span class="sb">`</span><span class="p">;</span><span class="k">do</span> curl -v --user <span class="s1">&#39;admin:123456&#39;</span> --upload-file /data/centos7/rpm-lists/<span class="s2">&#34;</span><span class="nv">$i</span><span class="s2">&#34;</span> http://192.168.1.9:8081/repository/yum-hosted/7/os/x86_64/<span class="s2">&#34;</span><span class="nv">$i</span><span class="s2">&#34;</span><span class="p">;</span><span class="k">done</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>执行完成上传后 <code>等待 60秒或手动完成索引重建</code></p>
+<p><img src="https://image.coderyzun.cyou/images/2020/09/10/image-20200910182853407.png" alt="image-20200910182853407"></p>
+<p><img src="https://image.coderyzun.cyou/images/2020/09/10/image-20200910182914592.png" alt="image-20200910182914592"></p>
+<h3 id="yum-私服-客户端使用">Yum 私服 客户端使用</h3>
+<p>定义 yum 私服文件</p>
+<blockquote>
+<p>注意下列命令中携带了 <code>转义符</code>，如配置了反向代理，可将主机地址指向 <code>反向代理地址</code>。</p>
+<p><img src="https://image.coderyzun.cyou/images/2020/09/10/image-20200910181438094.png" alt="yum-repo"></p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">mv /etc/yum.repos.d<span class="o">{</span>,.bak<span class="o">}</span>
+mkdir -p /etc/yum.repos.d
+cat &gt; /etc/yum.repos.d/nexus.repo <span class="s">&lt;&lt; EOF
+</span><span class="s">[nexusrepo]
+</span><span class="s">name=Nexus Repository
+</span><span class="s">baseurl=http://192.168.1.9:8081/repository/yum-hub/\$releasever/os/\$basearch/
+</span><span class="s">enabled=1
+</span><span class="s">gpgcheck=0
+</span><span class="s">EOF</span>  <span class="c1"># 注意 baseurl 地址</span>
+
+yum clean all 
+yum makecache  <span class="c1"># 缓存索引</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://image.coderyzun.cyou/images/2020/09/10/image-20200910183110431.png" alt="image-20200910183110431"></p>
+<p><strong>测试一下安装一个包</strong></p>
+<blockquote>
+<p>此包为我在上传前，放到 &ldquo;上传文件夹&quot;下的，所有在我的环境会有，也可以测试安装包替换为 <code>vim</code></p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">yum install -y kubectl  <span class="c1"># or vim</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="配置部署-helm-私服">配置部署 Helm 私服</h2>
+<h3 id="nexus-配置项记录">Nexus 配置项记录</h3>
+<h4 id="创建-helm-专属--blob-stores">创建 helm 专属  <code>blob stores</code></h4>
+<p><img src="https://image.coderyzun.cyou/images/2020/09/18/image-20200918103554963.png" alt="image-20200918103554963"></p>
+<h4 id="创建-helm-hosted-类型仓库">创建 helm <code>hosted</code> 类型仓库</h4>
+<p><img src="https://image.coderyzun.cyou/images/2020/09/18/image-20200918103410484.png" alt="image-20200918103410484"></p>
+<p><img src="https://image.coderyzun.cyou/images/2020/09/18/image-20200918103456336.png" alt="image-20200918103456336"></p>
+<p><img src="https://image.coderyzun.cyou/images/2020/09/18/image-20200918103752200.png" alt="image-20200918103752200"></p>
+<p><img src="https://image.coderyzun.cyou/images/2020/09/18/image-20200918103955596.png" alt="image-20200918103955596"></p>
+<blockquote>
+<p>此处helm，未演示配置 <code>proxy</code> 类型的仓库了，其实现原理就是当客户端访问 nexus proxy 仓库时，如仓库中依赖存在即返回给客户端，如未存在就从proxy配置的远程仓库中拉取依赖返回给客户端，同时在 proxy 私服中进行缓存一份，当第二次访问时，即命中直接从本地 proxy 仓库返回。 <code>nexus3 中proxy 仓库原理多是使用这个机制</code>。</p>
+</blockquote>
+<h3 id="helm-上传依赖包配置">Helm 上传依赖包配置</h3>
+<p>dashboard <code>界面上传</code></p>
+<p><img src="https://image.coderyzun.cyou/images/2020/09/18/image-20200918145618916.png" alt="image-20200918145618916"></p>
+<p><img src="https://image.coderyzun.cyou/images/2020/09/18/image-20200918145646107.png" alt="image-20200918145646107"></p>
+<p>curl <code>命令上传</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">curl -u <span class="s2">&#34;USER_NAME&#34;</span>:<span class="s2">&#34;USER_PASSWD&#34;</span> http://repo.demo.com/repository/helm-demo/ --upload-file ./<span class="s2">&#34;</span><span class="nv">$UPLOADFILE</span><span class="s2">&#34;</span> -v 
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="客户端使用">客户端使用</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">helm repo add  demo http://repo.demo.com/repository/helm-demo  <span class="c1"># helm 3.x</span>
+helm repo update
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="配置部署-pypi-私服">配置部署 pypi 私服</h2>
+<h3 id="nexus-配置项记录-1">Nexus 配置项记录</h3>
+<h4 id="创建-pypi-专属--blob-stores">创建 pypi 专属  <code>blob stores</code></h4>
+<p><img src="https://image.coderyzun.cyou/images/2020/09/18/image-20200918104237876.png" alt="image-20200918104237876"></p>
+<h4 id="创建-pypi-hosted-类型仓库">创建 pypi <code>hosted</code> 类型仓库</h4>
+<p><img src="https://image.coderyzun.cyou/images/2020/09/18/image-20200918104347358.png" alt="image-20200918104347358"></p>
+<h4 id="创建-pypi-group-类型仓库并将上面创建的-hosted-仓库加入至组中">创建 pypi <code>group</code> 类型仓库，并将<code>上面</code>创建的 hosted 仓库加入至组中</h4>
+<p><img src="https://image.coderyzun.cyou/images/2020/09/18/image-20200918104723703.png" alt="image-20200918104723703"></p>
+<blockquote>
+<p>配合完成后，即使用 <code>group</code> 地址</p>
+<p><img src="https://image.coderyzun.cyou/images/2020/09/18/image-20200918104736891.png" alt="image-20200918104736891"></p>
+</blockquote>
+<h3 id="pypi-依赖上传配置">Pypi 依赖上传配置</h3>
+<blockquote>
+<p><code>省略 dashboard 上传，同上 helm 一致，区别于选择仓库</code></p>
+</blockquote>
+<h4 id="命令上传">命令上传</h4>
+<blockquote>
+<p>命令上传，依赖使用 <code>twine</code> 工具。目前 pypi 私服上传且支持 <code>.tar.gz</code> &amp; <code>.whl</code> 两种类型的包</p>
+<p>具体 <a href="https://blog.csdn.net/mouday/article/details/80736312">文档参考</a></p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">python3 setup.py sdist  <span class="c1"># python 打包</span>
+
+pip install twine  <span class="c1"># 安装上传工具</span>
+
+twine upload --repository-url http://repo.ac.com/repository/pypi-demo/ dist/*  -u <span class="si">${</span><span class="nv">USERKEY_USR</span><span class="si">}</span> -p <span class="si">${</span><span class="nv">USERKEY_PSW</span><span class="si">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="pending">pending。。</h1>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yang'zun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-12-22
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/nexus3/">Nexus3</a>
+          <a href="/tags/docker/">Docker</a>
+          <a href="/tags/devops/">Devops</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/intermittent-coredns-hosts/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Coredns 进行解析域名时，某些域名出现间断性无法正常解析问题</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/ingress-to-dashboard/">
+            <span class="next-text nav-default">部署 Nginx-Ingress 并配置暴露 kubernetes dashboard</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
+        appKey: 'siSAWI3rzA6Ow8Tmiv7V4GO4',
+        notify:  true ,
+        verify:  true ,
+        avatar:'',
+        placeholder: '来留下点什么吧~',
+        visitor:  false 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:amoaloas@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/cdryzun" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdryzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js" integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js" integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin="anonymous"></script>
+  <script><!-- NOTE: timeago.js uses the language code format like "zh_CN" (underscore and case sensitive) -->
+    var languageCode = "en-us".replace(/-/g, '_').replace(/_(.*)/, function ($0, $1) {return $0.replace($1, $1.toUpperCase());});
+    timeago().render(document.querySelectorAll('.timeago'), languageCode);
+    timeago.cancel();  
+  </script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script>
+    docsearch({
+    apiKey: "17388eec628e676a77d6235068b458df",
+    indexName: "blog",
+    appId: "KEECS2XKBV",
+    inputSelector: '.docsearch-input',
+    debug: false,
+    });
+</script>
+</body>
+</html>

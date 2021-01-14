@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>持续集成 on 「Yang&#39;zun」的网志博客</title>
+    <link>https://cdryzun.github.io/categories/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/</link>
+    <description>Recent content in 持续集成 on 「Yang&#39;zun」的网志博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 22 Dec 2020 09:24:55 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用 Docker 部署 Nexus3 私服的详细记录总结</title>
+      <link>https://cdryzun.github.io/post/docker-deploy-nexus3-upgrade/</link>
+      <pubDate>Tue, 22 Dec 2020 09:24:55 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/docker-deploy-nexus3-upgrade/</guid>
+      <description>Nexus3.x 说明 功能介绍 Nexus3, 是一款支持仓库种类繁多的私服管理工具，目前大众所知晓的仓库类型如：go、pypi、docker、yum、maven、yum、</description>
+    </item>
+    
+  </channel>
+</rss>

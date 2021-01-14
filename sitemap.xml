@@ -79,6 +79,20 @@
   </url>
   
   <url>
+    <loc>https://cdryzun.github.io/tags/docker/</loc>
+    <lastmod>2020-12-22T09:24:55+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/categories/docker/</loc>
+    <lastmod>2020-12-22T09:24:55+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://cdryzun.github.io/tags/helm/</loc>
     <lastmod>2020-12-22T09:24:55+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -93,7 +107,35 @@
   </url>
   
   <url>
+    <loc>https://cdryzun.github.io/tags/nexus3/</loc>
+    <lastmod>2020-12-22T09:24:55+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/categories/nexus3/</loc>
+    <lastmod>2020-12-22T09:24:55+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://cdryzun.github.io/categories/nginxingress/</loc>
+    <lastmod>2020-12-22T09:24:55+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/post/docker-deploy-nexus3-upgrade/</loc>
+    <lastmod>2020-12-22T09:24:55+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/categories/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/</loc>
     <lastmod>2020-12-22T09:24:55+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -108,13 +150,6 @@
   
   <url>
     <loc>https://cdryzun.github.io/tags/centos/</loc>
-    <lastmod>2020-12-21T13:19:31+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/tags/docker/</loc>
     <lastmod>2020-12-21T13:19:31+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -157,13 +192,6 @@
   
   <url>
     <loc>https://cdryzun.github.io/post/centos-init-config/</loc>
-    <lastmod>2020-12-21T09:34:01+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/categories/docker/</loc>
     <lastmod>2020-12-21T09:34:01+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
