@@ -209,7 +209,7 @@
 <p>group: 即是多个仓库的集合，group中可 <code>包涵多个</code>  hosted, proxy, group 类型的仓库</p>
 <blockquote>
 <p>注意，在 group 中还存在优先级的关系，即示例图中，如 <code>custom</code> 和 <code>aliyun</code> 的docker仓库中多包涵了 <code>centos:7</code> 的镜像，那么在客户端使用 docker pull 拉取的是 <code>custom</code> 中的 centos7，原因为: &ldquo;在nexus3 group仓库中使用为 <code>自上而下</code> 的匹配方式，当匹配后将 <code>不再继续</code> 向下匹配&rdquo;，所以说我们在使用 &ldquo;group&quot;类型参考时还需要考虑一下，各个仓库的 <code>优先级</code>。</p>
-<p><img src="https://image.coderyzun.cyou/images/2021/01/14/image-20210114180247413.png" alt="image-20210114180247413"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2021/01/14/image-20210114180247413.png" alt="image-20210114180247413"></p>
 </blockquote>
 </li>
 <li>
@@ -217,7 +217,7 @@
 <blockquote>
 <p>客户端请求 proxy 类型私服 如仓库中依赖存在即返回给客户端，如未存在就从proxy配置的远程仓库中拉取依赖返回给客户端，同时在 proxy 私服中进行缓存一份，当第二次访问时，即命中直接从本地 proxy 仓库返回</p>
 </blockquote>
-<p><img src="https://image.coderyzun.cyou/images/2021/01/14/357d3e0316900d3b63f60effd442356e.png" alt="未命名绘图"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2021/01/14/357d3e0316900d3b63f60effd442356e.png" alt="未命名绘图"></p>
 <ul>
 <li>hosted: 即是用户自定义的参考</li>
 </ul>
@@ -278,7 +278,7 @@ netstat -lntp <span class="p">|</span>grep <span class="m">8081</span>  <span cl
 </div><blockquote>
 <p>初始安装账号为 <code>admin</code>，初始密码在这个文件里面 <code>/application/nexus3/data/admin.password</code>  (按照我的步骤来的话)，剩下的就是会有一个初始化的过程 也就是让你重置 admin 的密码 和 <code>是否开启匿名</code> 功能 。</p>
 </blockquote>
-<p><img src="https://image.coderyzun.cyou/images/2020/09/10/image-20200910164805785.png" alt="install"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/09/10/image-20200910164805785.png" alt="install"></p>
 <h2 id="配置-nginx-反向代理">配置 nginx 反向代理</h2>
 <blockquote>
 <p>此步骤包涵配置nginx 反向代理，及初始化<code>nexus docker私服</code>。</p>
@@ -482,19 +482,19 @@ nginx -t  <span class="c1"># 测试配置文件,有无错误.</span>
 </div>
 </div><h3 id="配置-docker-私服--配置-nginx-反向代理">配置 Docker 私服 &amp; 配置 nginx 反向代理</h3>
 <h4 id="创建-docker-专属-blob-存储卷"><strong>创建 docker 专属 <code>blob 存储卷</code></strong></h4>
-<p><img src="https://image.coderyzun.cyou/images/2020/09/11/image-202009110915461557169a2c54af26adc.png" alt="image-20200911091546155"></p>
-<p><img src="https://image.coderyzun.cyou/images/2020/09/11/image-20200911091722315.png" alt="image-20200911091722315"></p>
-<h4 id="创建-docker-hosted-类型仓库--image-20200911091224979httpsimagecoderyzuncyouimages20200911image-20200911091224979png"><strong>创建 docker <code>hosted</code> 类型仓库</strong>  <img src="https://image.coderyzun.cyou/images/2020/09/11/image-20200911091224979.png" alt="image-20200911091224979"></h4>
-<h4 id="image-20200911091314192httpsimagecoderyzuncyouimages20200911image-20200911091314192png"><img src="https://image.coderyzun.cyou/images/2020/09/11/image-20200911091314192.png" alt="image-20200911091314192"></h4>
-<h4 id="image-20200911091944505httpsimagecoderyzuncyouimages20200911image-20200911091944505png"><img src="https://image.coderyzun.cyou/images/2020/09/11/image-20200911091944505.png" alt="image-20200911091944505"></h4>
-<h4 id="添加-docker-proxy-类型仓库--image-20200914141738814httpsimagecoderyzuncyouimages20200914image-20200914141738814png"><strong>添加 docker <code>proxy</code> 类型仓库</strong>  <img src="https://image.coderyzun.cyou/images/2020/09/14/image-20200914141738814.png" alt="image-20200914141738814"></h4>
-<h4 id="image-20200914141831948httpsimagecoderyzuncyouimages20200914image-20200914141831948png"><img src="https://image.coderyzun.cyou/images/2020/09/14/image-20200914141831948.png" alt="image-20200914141831948"></h4>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/09/11/image-202009110915461557169a2c54af26adc.png" alt="image-20200911091546155"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/09/11/image-20200911091722315.png" alt="image-20200911091722315"></p>
+<h4 id="创建-docker-hosted-类型仓库--image-20200911091224979httpscoderyzun-imagepeng55xyzimages20200911image-20200911091224979png"><strong>创建 docker <code>hosted</code> 类型仓库</strong>  <img src="https://coderyzun-image.peng55.xyz/images/2020/09/11/image-20200911091224979.png" alt="image-20200911091224979"></h4>
+<h4 id="image-20200911091314192httpscoderyzun-imagepeng55xyzimages20200911image-20200911091314192png"><img src="https://coderyzun-image.peng55.xyz/images/2020/09/11/image-20200911091314192.png" alt="image-20200911091314192"></h4>
+<h4 id="image-20200911091944505httpscoderyzun-imagepeng55xyzimages20200911image-20200911091944505png"><img src="https://coderyzun-image.peng55.xyz/images/2020/09/11/image-20200911091944505.png" alt="image-20200911091944505"></h4>
+<h4 id="添加-docker-proxy-类型仓库--image-20200914141738814httpscoderyzun-imagepeng55xyzimages20200914image-20200914141738814png"><strong>添加 docker <code>proxy</code> 类型仓库</strong>  <img src="https://coderyzun-image.peng55.xyz/images/2020/09/14/image-20200914141738814.png" alt="image-20200914141738814"></h4>
+<h4 id="image-20200914141831948httpscoderyzun-imagepeng55xyzimages20200914image-20200914141831948png"><img src="https://coderyzun-image.peng55.xyz/images/2020/09/14/image-20200914141831948.png" alt="image-20200914141831948"></h4>
 <blockquote>
 <p>图中使用代理仓库地址为:  <code>https://7bezldxe.mirror.aliyuncs.com </code></p>
 </blockquote>
-<p><img src="https://image.coderyzun.cyou/images/2020/09/14/image-20200914141929471.png" alt="image-20200914141929471"></p>
-<h4 id="创建-docker-group-类型仓库-image-20200911092506337httpsimagecoderyzuncyouimages20200911image-20200911092506337png"><strong>创建 docker <code>group</code> 类型仓库</strong> <img src="https://image.coderyzun.cyou/images/2020/09/11/image-20200911092506337.png" alt="image-20200911092506337"></h4>
-<p><img src="https://image.coderyzun.cyou/images/2020/09/14/image-20200914142809316.png" alt="image-20200914142809316"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/09/14/image-20200914141929471.png" alt="image-20200914141929471"></p>
+<h4 id="创建-docker-group-类型仓库-image-20200911092506337httpscoderyzun-imagepeng55xyzimages20200911image-20200911092506337png"><strong>创建 docker <code>group</code> 类型仓库</strong> <img src="https://coderyzun-image.peng55.xyz/images/2020/09/11/image-20200911092506337.png" alt="image-20200911092506337"></h4>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/09/14/image-20200914142809316.png" alt="image-20200914142809316"></p>
 <h4 id="检查配置完成后端口是否有监听是否正常">检查配置完成后，端口是否有监听，是否正常</h4>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -514,8 +514,8 @@ tcp        <span class="m">0</span>      <span class="m">0</span> 0.0.0.0:8082  
 <blockquote>
 <p>此功能不开启将导致 <code>docker私服</code>, 无法正常使用。</p>
 </blockquote>
-<p><img src="https://image.coderyzun.cyou/images/2020/09/11/image-20200911110039179.png" alt="image-20200911110039179"></p>
-<p><img src="https://image.coderyzun.cyou/images/2020/09/11/image-20200911110151341.png" alt="image-20200911110151341"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/09/11/image-20200911110039179.png" alt="image-20200911110039179"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/09/11/image-20200911110151341.png" alt="image-20200911110151341"></p>
 <h4 id="配置-nginx-反向代理-1"><strong>配置 nginx 反向代理</strong></h4>
 <blockquote>
 <p>注意下列命令中带有 <code>转义符号</code>，应直接复制到终端执行即可。</p>
@@ -664,7 +664,7 @@ service nginx restart <span class="se">\
 </div>
 </div></blockquote>
 <h4 id="最终所有仓库展示"><strong>最终所有仓库展示</strong></h4>
-<h4 id="image-20200911104933579httpsimagecoderyzuncyouimages20200911image-20200911104933579png"><img src="https://image.coderyzun.cyou/images/2020/09/11/image-20200911104933579.png" alt="image-20200911104933579"></h4>
+<h4 id="image-20200911104933579httpscoderyzun-imagepeng55xyzimages20200911image-20200911104933579png"><img src="https://coderyzun-image.peng55.xyz/images/2020/09/11/image-20200911104933579.png" alt="image-20200911104933579"></h4>
 <h4 id="docker-私服客户端测试使用"><strong>docker 私服客户端测试使用</strong></h4>
 <blockquote>
 <p>在客户端 docker 容器的配置文件中添加 <code>insecure-registries&quot;: [&quot;idocker.io&quot;] </code>, 并配置对应 hosts记录, 示例中即 <code>idocker.io</code>。</p>
@@ -742,7 +742,7 @@ docker login idocker.io -u admin -p <span class="m">123456</span>  <span class="
 docker push idocker.io/sonatype/nexus3:3.27.0
 </code></pre></td></tr></table>
 </div>
-</div><p><img src="https://image.coderyzun.cyou/images/2020/09/11/image-20200911110428718fa9042b0fd5263d1.png" alt="image-20200911110428718"></p>
+</div><p><img src="https://coderyzun-image.peng55.xyz/images/2020/09/11/image-20200911110428718fa9042b0fd5263d1.png" alt="image-20200911110428718"></p>
 <h1 id="docker-部署如何进行版本升级">Docker 部署，如何进行版本升级。</h1>
 <blockquote>
 <p>示例将 nexus3 版本升级至 <code>3.29.2</code>。笔者在使用 nexus3 一年多以来，老是发现xx版本有xxx漏洞，提示你尽快更新版本进行修复，所有这个升级版本的操作还是比较常用的，官方提供的最佳实践里面也说了，让你经常的更新 nexus3 的版本。</p>
@@ -816,7 +816,7 @@ docker run -dti <span class="se">\
 docker logs -f --tail <span class="m">100</span> nexus3  <span class="c1"># 查看启动有无报错</span>
 </code></pre></td></tr></table>
 </div>
-</div><p><img src="https://image.coderyzun.cyou/images/2021/01/14/image-20210114092823923.png" alt="image-20210114092823923"></p>
+</div><p><img src="https://coderyzun-image.peng55.xyz/images/2021/01/14/image-20210114092823923.png" alt="image-20210114092823923"></p>
 <blockquote>
 <p><code>新容器启动没有问题后，记得删除老容器即</code>。</p>
 <div class="highlight"><div class="chroma">
@@ -835,13 +835,13 @@ docker logs -f --tail <span class="m">100</span> nexus3  <span class="c1"># 查�
 <h2 id="配置部署-yum-私服">配置部署 Yum 私服</h2>
 <h3 id="nexus-具体配置项">Nexus 具体配置项</h3>
 <h4 id="创建-blob-stores">创建 <code>blob stores</code></h4>
-<p><img src="https://image.coderyzun.cyou/images/2020/09/10/image-20200910170348196.png" alt="image-20200910170348196"></p>
-<p><img src="https://image.coderyzun.cyou/images/2020/09/10/image-20200910170438617.png" alt="image-20200910170438617"></p>
-<h4 id="创建-hosted-yum-仓库--image-20200910170153343httpsimagecoderyzuncyouimages20200910image-20200910170153343png">创建 <code>hosted</code> yum 仓库  <img src="https://image.coderyzun.cyou/images/2020/09/10/image-20200910170153343.png" alt="image-20200910170153343"></h4>
-<p><img src="https://image.coderyzun.cyou/images/2020/09/10/image-20200910180549889.png" alt="image-20200910180549889"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/09/10/image-20200910170348196.png" alt="image-20200910170348196"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/09/10/image-20200910170438617.png" alt="image-20200910170438617"></p>
+<h4 id="创建-hosted-yum-仓库--image-20200910170153343httpscoderyzun-imagepeng55xyzimages20200910image-20200910170153343png">创建 <code>hosted</code> yum 仓库  <img src="https://coderyzun-image.peng55.xyz/images/2020/09/10/image-20200910170153343.png" alt="image-20200910170153343"></h4>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/09/10/image-20200910180549889.png" alt="image-20200910180549889"></p>
 <blockquote>
 <p>⚠️ 注意这里的 <code>文件深度</code>，会影响后期的 <code>rpm 包依赖上传</code> , 下面图片中为截取官方文档的说明。</p>
-<p><img src="https://image.coderyzun.cyou/images/2020/09/10/image-20200910180656801.png" alt="image-20200910180656801"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/09/10/image-20200910180656801.png" alt="image-20200910180656801"></p>
 </blockquote>
 <h3 id="rpm-依赖的上传配置">RPM 依赖的上传配置</h3>
 <h4 id="接下来我们来进行-测试上传-前的准备">接下来我们来进行 <strong>测试上传</strong> 前的准备</h4>
@@ -881,13 +881,13 @@ mkdir -p /data/centos7/rpm-lists/   <span class="c1"># 文件夹深度对应私�
 </code></pre></td></tr></table>
 </div>
 </div><p>执行完成上传后 <code>等待 60秒或手动完成索引重建</code></p>
-<p><img src="https://image.coderyzun.cyou/images/2020/09/10/image-20200910182853407.png" alt="image-20200910182853407"></p>
-<p><img src="https://image.coderyzun.cyou/images/2020/09/10/image-20200910182914592.png" alt="image-20200910182914592"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/09/10/image-20200910182853407.png" alt="image-20200910182853407"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/09/10/image-20200910182914592.png" alt="image-20200910182914592"></p>
 <h3 id="yum-私服-客户端使用">Yum 私服 客户端使用</h3>
 <p>定义 yum 私服文件</p>
 <blockquote>
 <p>注意下列命令中携带了 <code>转义符</code>，如配置了反向代理，可将主机地址指向 <code>反向代理地址</code>。</p>
-<p><img src="https://image.coderyzun.cyou/images/2020/09/10/image-20200910181438094.png" alt="yum-repo"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/09/10/image-20200910181438094.png" alt="yum-repo"></p>
 </blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -919,7 +919,7 @@ yum clean all
 yum makecache  <span class="c1"># 缓存索引</span>
 </code></pre></td></tr></table>
 </div>
-</div><p><img src="https://image.coderyzun.cyou/images/2020/09/10/image-20200910183110431.png" alt="image-20200910183110431"></p>
+</div><p><img src="https://coderyzun-image.peng55.xyz/images/2020/09/10/image-20200910183110431.png" alt="image-20200910183110431"></p>
 <p><strong>测试一下安装一个包</strong></p>
 <blockquote>
 <p>此包为我在上传前，放到 &ldquo;上传文件夹&quot;下的，所有在我的环境会有，也可以测试安装包替换为 <code>vim</code></p>
@@ -935,19 +935,19 @@ yum makecache  <span class="c1"># 缓存索引</span>
 </div><h2 id="配置部署-helm-私服">配置部署 Helm 私服</h2>
 <h3 id="nexus-配置项记录">Nexus 配置项记录</h3>
 <h4 id="创建-helm-专属--blob-stores">创建 helm 专属  <code>blob stores</code></h4>
-<p><img src="https://image.coderyzun.cyou/images/2020/09/18/image-20200918103554963.png" alt="image-20200918103554963"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/09/18/image-20200918103554963.png" alt="image-20200918103554963"></p>
 <h4 id="创建-helm-hosted-类型仓库">创建 helm <code>hosted</code> 类型仓库</h4>
-<p><img src="https://image.coderyzun.cyou/images/2020/09/18/image-20200918103410484.png" alt="image-20200918103410484"></p>
-<p><img src="https://image.coderyzun.cyou/images/2020/09/18/image-20200918103456336.png" alt="image-20200918103456336"></p>
-<p><img src="https://image.coderyzun.cyou/images/2020/09/18/image-20200918103752200.png" alt="image-20200918103752200"></p>
-<p><img src="https://image.coderyzun.cyou/images/2020/09/18/image-20200918103955596.png" alt="image-20200918103955596"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/09/18/image-20200918103410484.png" alt="image-20200918103410484"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/09/18/image-20200918103456336.png" alt="image-20200918103456336"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/09/18/image-20200918103752200.png" alt="image-20200918103752200"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/09/18/image-20200918103955596.png" alt="image-20200918103955596"></p>
 <blockquote>
 <p>此处helm，未演示配置 <code>proxy</code> 类型的仓库了，其实现原理就是当客户端访问 nexus proxy 仓库时，如仓库中依赖存在即返回给客户端，如未存在就从proxy配置的远程仓库中拉取依赖返回给客户端，同时在 proxy 私服中进行缓存一份，当第二次访问时，即命中直接从本地 proxy 仓库返回。 <code>nexus3 中proxy 仓库原理多是使用这个机制</code>。</p>
 </blockquote>
 <h3 id="helm-上传依赖包配置">Helm 上传依赖包配置</h3>
 <p>dashboard <code>界面上传</code></p>
-<p><img src="https://image.coderyzun.cyou/images/2020/09/18/image-20200918145618916.png" alt="image-20200918145618916"></p>
-<p><img src="https://image.coderyzun.cyou/images/2020/09/18/image-20200918145646107.png" alt="image-20200918145646107"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/09/18/image-20200918145618916.png" alt="image-20200918145618916"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/09/18/image-20200918145646107.png" alt="image-20200918145646107"></p>
 <p>curl <code>命令上传</code></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -971,14 +971,14 @@ helm repo update
 </div><h2 id="配置部署-pypi-私服">配置部署 pypi 私服</h2>
 <h3 id="nexus-配置项记录-1">Nexus 配置项记录</h3>
 <h4 id="创建-pypi-专属--blob-stores">创建 pypi 专属  <code>blob stores</code></h4>
-<p><img src="https://image.coderyzun.cyou/images/2020/09/18/image-20200918104237876.png" alt="image-20200918104237876"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/09/18/image-20200918104237876.png" alt="image-20200918104237876"></p>
 <h4 id="创建-pypi-hosted-类型仓库">创建 pypi <code>hosted</code> 类型仓库</h4>
-<p><img src="https://image.coderyzun.cyou/images/2020/09/18/image-20200918104347358.png" alt="image-20200918104347358"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/09/18/image-20200918104347358.png" alt="image-20200918104347358"></p>
 <h4 id="创建-pypi-group-类型仓库并将上面创建的-hosted-仓库加入至组中">创建 pypi <code>group</code> 类型仓库，并将<code>上面</code>创建的 hosted 仓库加入至组中</h4>
-<p><img src="https://image.coderyzun.cyou/images/2020/09/18/image-20200918104723703.png" alt="image-20200918104723703"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/09/18/image-20200918104723703.png" alt="image-20200918104723703"></p>
 <blockquote>
 <p>配合完成后，即使用 <code>group</code> 地址</p>
-<p><img src="https://image.coderyzun.cyou/images/2020/09/18/image-20200918104736891.png" alt="image-20200918104736891"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/09/18/image-20200918104736891.png" alt="image-20200918104736891"></p>
 </blockquote>
 <h3 id="pypi-依赖上传配置">Pypi 依赖上传配置</h3>
 <blockquote>

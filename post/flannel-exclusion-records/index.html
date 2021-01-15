@@ -184,7 +184,7 @@
 <h2 id="现象说明">现象说明</h2>
 <blockquote>
 <p>最近在使用k8s集群的时候，发现集群变慢了许多，排查发现 <code>master</code> 节点中 <code>controller-manager</code> 及 <code>scheduler</code> 组件频繁的发生重启
-<img src="https://image.coderyzun.cyou/images/2020/12/22/image-20201222213306595.png" alt="image-20201222213306595"></p>
+<img src="https://coderyzun-image.peng55.xyz/images/2020/12/22/image-20201222213306595.png" alt="image-20201222213306595"></p>
 </blockquote>
 <h1 id="排查记录">排查记录</h1>
 <h2 id="抓取日志">抓取日志</h2>
@@ -200,7 +200,7 @@
 </code></pre></td></tr></table>
 </div>
 </div><h3 id="错误信息如下所示">错误信息如下所示</h3>
-<p><img src="https://image.coderyzun.cyou/images/2020/12/22/image-20201222213552227.png" alt="image-20201222213552227"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/12/22/image-20201222213552227.png" alt="image-20201222213552227"></p>
 <blockquote>
 <p>通过搜索引擎，有人说是etcd性能导致，重试使用了<a href="https://github.com/etcd-io/etcd/blob/master/Documentation/tuning.md"><code>此文档文档</code></a> 进行了etcd的优化，没有什么效果。</p>
 </blockquote>
@@ -226,11 +226,11 @@ dstat -df <span class="c1"># 显示所有磁盘使用情况，  当接口过多�
 </div>
 </div><blockquote>
 <p>排除得到 io 占用高且被flanneld这个进程占用着
-<img src="https://image.coderyzun.cyou/images/2020/12/22/image-20201222215836738.png" alt="image-20201222215836738"></p>
+<img src="https://coderyzun-image.peng55.xyz/images/2020/12/22/image-20201222215836738.png" alt="image-20201222215836738"></p>
 </blockquote>
 <h3 id="找到问题">找到问题</h3>
 <p><strong>发现社区也有人反馈这个问题，但是目前暂没有人员回复</strong>
-<img src="https://image.coderyzun.cyou/images/2020/12/22/image-20201222221012316.png" alt="image-20201222221012316"></p>
+<img src="https://coderyzun-image.peng55.xyz/images/2020/12/22/image-20201222221012316.png" alt="image-20201222221012316"></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -260,7 +260,7 @@ systemctl restart kubelet
 </blockquote>
 <h2 id="更换版本">更换版本</h2>
 <h3 id="检查正在使用的版本">检查正在使用的版本</h3>
-<p><img src="https://image.coderyzun.cyou/images/2020/12/22/image-20201222221312175.png" alt="image-20201222221312175"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/12/22/image-20201222221312175.png" alt="image-20201222221312175"></p>
 <h3 id="降级版本">降级版本</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">

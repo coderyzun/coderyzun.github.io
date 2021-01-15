@@ -253,7 +253,7 @@ service docker restart
 </div>
 </div><blockquote>
 <p>可以看到我们找到了，两个文件</p>
-<p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228202756832.png" alt="image-20201228202756832"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/12/28/image-20201228202756832.png" alt="image-20201228202756832"></p>
 </blockquote>
 <h3 id="查看第一个配置文件并使用-json-格式化工具httpsjsoncn-进行分析">查看第一个配置文件，并使用 json <a href="https://json.cn"><code>格式化工具</code></a> 进行分析</h3>
 <div class="highlight"><div class="chroma">
@@ -264,22 +264,22 @@ service docker restart
 <pre class="chroma"><code class="language-bash" data-lang="bash">cat 33c749acc76fec662a292e7a7fb73a1e32bd2b57ebe4270bb1ad46abc4598011/config.v2.json
 </code></pre></td></tr></table>
 </div>
-</div><p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228202917046.png" alt="image-20201228202917046"></p>
+</div><p><img src="https://coderyzun-image.peng55.xyz/images/2020/12/28/image-20201228202917046.png" alt="image-20201228202917046"></p>
 <blockquote>
 <p>找到了容器运行的镜像名称即 <code>fjudith/glpi</code></p>
 </blockquote>
 <p><strong>检查到容器部署时，使用的端口映射</strong></p>
-<p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228203739158.png" alt="image-20201228203739158"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/12/28/image-20201228203739158.png" alt="image-20201228203739158"></p>
 <blockquote>
 <p><code>内部 80端口</code> 映射到了 <code>宿主机 的30000 端口</code></p>
 </blockquote>
 <p><strong>检查到 使用的存储卷</strong></p>
-<p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228203159841.png" alt="image-20201228203159841"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/12/28/image-20201228203159841.png" alt="image-20201228203159841"></p>
 <blockquote>
 <p>使用了两个储存卷，一个为 <code>宿主机的文件</code> ，一个为创建的的 <code>glpi-app 存储卷</code></p>
 </blockquote>
 <p><strong>容器环境变量</strong></p>
-<p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228203903711.png" alt="image-20201228203903711"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/12/28/image-20201228203903711.png" alt="image-20201228203903711"></p>
 <h4 id="检查查找到的容器镜像是否匹配">检查查找到的容器镜像是否匹配</h4>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -289,7 +289,7 @@ service docker restart
 <pre class="chroma"><code class="language-bash" data-lang="bash">docker image ls 
 </code></pre></td></tr></table>
 </div>
-</div><p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228203018126.png" alt="image-20201228203018126"></p>
+</div><p><img src="https://coderyzun-image.peng55.xyz/images/2020/12/28/image-20201228203018126.png" alt="image-20201228203018126"></p>
 <blockquote>
 <p>可以看到找到的镜像是 <code>匹配</code> 的</p>
 </blockquote>
@@ -302,17 +302,17 @@ service docker restart
 <pre class="chroma"><code class="language-bash" data-lang="bash">cat a967e8f43115ea574ce1929e75b99374b4f050b612264928983baa0fd8109609/config.v2.json
 </code></pre></td></tr></table>
 </div>
-</div><p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228204649277.png" alt="image-20201228204649277"></p>
+</div><p><img src="https://coderyzun-image.peng55.xyz/images/2020/12/28/image-20201228204649277.png" alt="image-20201228204649277"></p>
 <blockquote>
 <p>可以看到这是一个 <code>数据库容器</code></p>
 </blockquote>
 <p><strong>查看 容器对应挂载的数据是否还在</strong></p>
-<p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228204913461.png" alt="image-20201228204913461"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/12/28/image-20201228204913461.png" alt="image-20201228204913461"></p>
 <h3 id="dockerhub-查找相关容器信息">Dockerhub 查找相关容器信息</h3>
 <blockquote>
 <p>在 dockerhub 上 search  <code>fjudith/glpi</code> 镜像，可以看到容器的启动命令。</p>
 </blockquote>
-<p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228203520126.png" alt="image-20201228203520126"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/12/28/image-20201228203520126.png" alt="image-20201228203520126"></p>
 <blockquote>
 <p>可以看到 dockerhub上 此容器的部署说明，和我们查看到了信息也吻合，那么确定了之前的前辈是一个什么部署步骤了</p>
 </blockquote>
@@ -728,9 +728,9 @@ service docker restart
 <pre class="chroma"><code class="language-bash" data-lang="bash">docker logs --tail <span class="m">100</span> -f glpi-db   <span class="c1"># 检测启动日志</span>
 </code></pre></td></tr></table>
 </div>
-</div><p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228210556103.png" alt="image-20201228210556103"></p>
+</div><p><img src="https://coderyzun-image.peng55.xyz/images/2020/12/28/image-20201228210556103.png" alt="image-20201228210556103"></p>
 <h3 id="使用数据库管理工具进行连接">使用数据库管理工具进行连接</h3>
-<p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228210726779.png" alt="image-20201228210726779"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/12/28/image-20201228210726779.png" alt="image-20201228210726779"></p>
 <blockquote>
 <p>自此数据库 <code>恢复成功</code></p>
 </blockquote>
@@ -1072,7 +1072,7 @@ service docker restart
 </div><h3 id="从-json-文件中推理出容器启动命令进行重建-1">从 json 文件中推理出，容器启动命令，进行重建</h3>
 <blockquote>
 <p>重建前，检查一下备份数据中，对应 docker 存储卷中的数据是否还在，可以看到文件什么的多还在 ，按道理我们只需要把文件 <code>copy</code> 到对应的文件夹下应该就可以了</p>
-<p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228204135727.png" alt="image-20201228204135727"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/12/28/image-20201228204135727.png" alt="image-20201228204135727"></p>
 </blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -1102,11 +1102,11 @@ docker run --name<span class="o">=</span>glpi-app -d <span class="se">\
 </span><span class="se"></span>fjudith/glpi    <span class="c1"># 尝试启动，需要注意网卡link的名称为之前启动的数据库容器的名称</span>
 </code></pre></td></tr></table>
 </div>
-</div><p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228212927377.png" alt="image-20201228212927377"></p>
+</div><p><img src="https://coderyzun-image.peng55.xyz/images/2020/12/28/image-20201228212927377.png" alt="image-20201228212927377"></p>
 <blockquote>
 <p>⚠️  <code>无法启动</code></p>
 <p><code>-- links</code>  在高版本的 Docker 中好像被移除了，<a href="https://docs.docker.com/network/links/">文档说明</a></p>
-<p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228212956200.png" alt="image-20201228212956200"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/12/28/image-20201228212956200.png" alt="image-20201228212956200"></p>
 </blockquote>
 <h2 id="使用替换----links-方案">使用替换 <code>-- links</code> 方案</h2>
 <h2 id="创建容器">创建容器</h2>
@@ -1187,8 +1187,8 @@ docker run --name<span class="o">=</span>glpi-app -d <span class="se">\
 <blockquote>
 <p>选择 &ldquo;更新&rdquo; =&gt; &ldquo;选择现有数据库&rdquo;</p>
 </blockquote>
-<p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228213751995.png" alt="image-20201228213751995"></p>
-<p><img src="https://image.coderyzun.cyou/images/2020/12/28/image-20201228214059990.png" alt="image-20201228214059990"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/12/28/image-20201228213751995.png" alt="image-20201228213751995"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/12/28/image-20201228214059990.png" alt="image-20201228214059990"></p>
 <blockquote>
 <p>登录账户后，数据回来了 😺</p>
 </blockquote>

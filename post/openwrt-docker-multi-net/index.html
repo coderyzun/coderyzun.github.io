@@ -237,7 +237,7 @@ chmod a+x /etc/rc.local
 docker network create -d macvlan -o <span class="nv">parent</span><span class="o">=</span>enp0s29u1u2 macnet2
 </code></pre></td></tr></table>
 </div>
-</div><p><img src="https://image.coderyzun.cyou/images/2020/11/18/image-20201118173326706.png" alt="image-20201118173326706"></p>
+</div><p><img src="https://coderyzun-image.peng55.xyz/images/2020/11/18/image-20201118173326706.png" alt="image-20201118173326706"></p>
 <h2 id="容器网络配置">容器网络配置</h2>
 <h3 id="启动容器">启动容器</h3>
 <blockquote>
@@ -278,10 +278,10 @@ docker network create -d macvlan -o <span class="nv">parent</span><span class="o
 </div><blockquote>
 <p>查看 发现没有 IP 我们需要手动配置一下</p>
 </blockquote>
-<p><img src="https://image.coderyzun.cyou/images/2020/11/19/image-20201119174448355.png" alt="image-20201119174448355"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/11/19/image-20201119174448355.png" alt="image-20201119174448355"></p>
 <h3 id="修改网卡配置文件-etcconfignetwork">修改网卡配置文件： <code>/etc/config/network</code></h3>
 <h4 id="默认的配置如下">默认的配置如下:</h4>
-<p><img src="https://image.coderyzun.cyou/images/2020/11/19/image-20201119174511891.png" alt="image-20201119174511891"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/11/19/image-20201119174511891.png" alt="image-20201119174511891"></p>
 <h4 id="修改后的配置展示"><em><strong>修改后的配置展示</strong></em></h4>
 <blockquote>
 <p><em><strong>Lan口配置了静态ip <code>192.168.2.111</code> ，<code>wan口</code> 通过使用 <code>dhcp</code> 的方式自动获取IP使用.</strong></em></p>
@@ -351,11 +351,11 @@ docker network create -d macvlan -o <span class="nv">parent</span><span class="o
 </div>
 </div><blockquote>
 <p><em><strong>再次检查一下 此时我们配置的 ip 已经有了</strong></em></p>
-<p><img src="https://image.coderyzun.cyou/images/2020/11/19/image-20201119172308290.png" alt="image-20201119172308290" /></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/11/19/image-20201119172308290.png" alt="image-20201119172308290" /></p>
 </blockquote>
 <h2 id="客户端使用及优化">客户端使用及优化</h2>
 <h3 id="配置与-lan口-为同一个网段的-ip">配置与 <code>Lan口</code> 为同一个网段的 ip</h3>
-<p><img src="https://image.coderyzun.cyou/images/2020/11/19/image-20201119172657968.png" alt="image-20201119172657968"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/11/19/image-20201119172657968.png" alt="image-20201119172657968"></p>
 <h3 id="访问-dashboard">访问 <code>Dashboard</code></h3>
 <blockquote>
 <p>我使用的这个容器默认的用户名密码为:</p>
@@ -368,8 +368,8 @@ docker network create -d macvlan -o <span class="nv">parent</span><span class="o
 </li>
 </ul>
 </blockquote>
-<p><img src="https://image.coderyzun.cyou/images/2020/11/19/image-20201119172802424e954a00527e2cb9c.png" alt="image-20201119172802424"></p>
-<p><img src="https://image.coderyzun.cyou/images/2020/11/19/image-20201119172904817b910116c02162b5d.png" alt="image-20201119172904817"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/11/19/image-20201119172802424e954a00527e2cb9c.png" alt="image-20201119172802424"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/11/19/image-20201119172904817b910116c02162b5d.png" alt="image-20201119172904817"></p>
 <h3 id="测试上网效果">测试上网效果</h3>
 <h4 id="ping-测试"><code>Ping 测试</code></h4>
 <div class="highlight"><div class="chroma">
@@ -391,14 +391,14 @@ docker network create -d macvlan -o <span class="nv">parent</span><span class="o
 </ul>
 </li>
 </ul>
-<p><img src="https://image.coderyzun.cyou/images/2020/11/19/image-20201119173121314.png" alt="image-20201119173121314"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/11/19/image-20201119173121314.png" alt="image-20201119173121314"></p>
 <p>检查路由发现是正确指向  <code>Lan口</code> 上面的网关的</p>
 <h3 id="导致客户端无法正常上网的解决方案">导致客户端无法正常上网的解决方案</h3>
 <blockquote>
 <p>⚠️  添加防火墙自定义规则进行解决</p>
 </blockquote>
-<p><img src="https://image.coderyzun.cyou/images/2020/11/19/image-20201119173428549c99c37fa46048ce6.png" alt="image-20201119173428549"></p>
-<p><img src="https://image.coderyzun.cyou/images/2020/11/19/image-2020111917351807305b2e8ef2319f700.png" alt="image-20201119173518073"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/11/19/image-20201119173428549c99c37fa46048ce6.png" alt="image-20201119173428549"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/11/19/image-2020111917351807305b2e8ef2319f700.png" alt="image-20201119173518073"></p>
 <h4 id="将下面这个粘贴进去注意修改示例中的网段为你-lan口上的网段-然后重启一下防火墙">将下面这个粘贴进去，注意修改示例中的网段为你 <code>Lan口上的网段</code> ,然后重启一下防火墙</h4>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -408,9 +408,9 @@ docker network create -d macvlan -o <span class="nv">parent</span><span class="o
 <pre class="chroma"><code class="language-bash" data-lang="bash">iptables -t nat -I POSTROUTING -s 192.168.22.0/24  -j MASQUERADE
 </code></pre></td></tr></table>
 </div>
-</div><p><img src="https://image.coderyzun.cyou/images/2020/11/19/image-20201119211209289.png" alt="image-20201119211209289"></p>
+</div><p><img src="https://coderyzun-image.peng55.xyz/images/2020/11/19/image-20201119211209289.png" alt="image-20201119211209289"></p>
 <h4 id="再次测试一下-发现此时的网络已可以ping通-">再次测试一下 发现此时的网络已可以ping通 ~</h4>
-<p>​				<img src="https://image.coderyzun.cyou/images/2020/11/19/image-20201119173800417.png" alt="image-20201119173800417"></p>
+<p>​				<img src="https://coderyzun-image.peng55.xyz/images/2020/11/19/image-20201119173800417.png" alt="image-20201119173800417"></p>
 
     </div>
 

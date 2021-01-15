@@ -565,7 +565,7 @@ chown <span class="k">$(</span>id -u<span class="k">)</span>:<span class="k">$(<
 </code></pre></td></tr></table>
 </div>
 </div><h2 id="配置node加入集群-node">配置node加入集群 (<code>node</code>)</h2>
-<p><img src="https://image.coderyzun.cyou/images/2020/12/21/image-20201221154559403.png" alt="image-20201221154559403"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/12/21/image-20201221154559403.png" alt="image-20201221154559403"></p>
 <blockquote>
 <p>Copy master 初始化后打印的语句，在<code>node节点</code>中执行</p>
 </blockquote>
@@ -579,7 +579,7 @@ chown <span class="k">$(</span>id -u<span class="k">)</span>:<span class="k">$(<
 </span><span class="se"></span>--discovery-token-ca-cert-hash sha256:e390239dde11e9657a2418f309728c422da1823ab6eba1ec2e433c3783eba46
 </code></pre></td></tr></table>
 </div>
-</div><p><img src="https://image.coderyzun.cyou/images/2020/12/21/image-20201221154949889.png" alt="image-20201221154949889"></p>
+</div><p><img src="https://coderyzun-image.peng55.xyz/images/2020/12/21/image-20201221154949889.png" alt="image-20201221154949889"></p>
 <h2 id="部署网络插件-flannel-master">部署网络插件 <code>flannel </code>(<code>master</code>)</h2>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -691,11 +691,11 @@ docker logs -f --tail <span class="m">100</span> rancher <span class="c1"># 查�
 </div>
 </div><h2 id="rancher-导入集群">rancher 导入集群</h2>
 <h3 id="添加集群">添加集群</h3>
-<p><img src="https://image.coderyzun.cyou/images/2020/12/21/image-20201221163052668.png" alt="image-20201221163010517"></p>
-<p><img src="https://image.coderyzun.cyou/images/2020/12/21/image-20201221163052668.png" alt="image-20201221163052668"></p>
-<p><img src="https://image.coderyzun.cyou/images/2020/12/21/image-20201221163143449.png" alt="image-20201221163143449"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/12/21/image-20201221163052668.png" alt="image-20201221163010517"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/12/21/image-20201221163052668.png" alt="image-20201221163052668"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/12/21/image-20201221163143449.png" alt="image-20201221163143449"></p>
 <h3 id="复制命令在kubeadm-管理节点中执行">复制命令在kubeadm 管理节点中执行</h3>
-<p><img src="https://image.coderyzun.cyou/images/2020/12/21/image-20201221163213606.png" alt="image-20201221163213606"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/12/21/image-20201221163213606.png" alt="image-20201221163213606"></p>
 <blockquote>
 <p>发现执行下面语句后，rancher集群显示异常，有点像是版本不兼容的样子</p>
 <div class="highlight"><div class="chroma">
@@ -706,10 +706,10 @@ docker logs -f --tail <span class="m">100</span> rancher <span class="c1"># 查�
 <pre class="chroma"><code class="language-bash" data-lang="bash">curl --insecure -sfL https://192.168.8.66:8443/v3/import/jzrpkrzjpjgv9q5gqqg8hlhm29ldb5gv9mn4xpg8cxgfh5zg4mfs4h.yaml<span class="p">|</span>sed <span class="s1">&#39;s#rbac.authorization.k8s.io/v1beta1#rbac.authorization.k8s.io/v1#g&#39;</span> <span class="p">|</span>kubectl apply -f -
 </code></pre></td></tr></table>
 </div>
-</div><p><img src="https://image.coderyzun.cyou/images/2020/12/21/image-20201221164538840.png" alt="image-20201221164538840"></p>
+</div><p><img src="https://coderyzun-image.peng55.xyz/images/2020/12/21/image-20201221164538840.png" alt="image-20201221164538840"></p>
 </blockquote>
 <h3 id="检查发现-rancher-v248-最高也就支持到-v11812">检查发现 <code>rancher-v2.4.8</code> 最高也就支持到 <code>v1.18.12</code></h3>
-<p><img src="https://image.coderyzun.cyou/images/2020/12/21/image-20201221164718183.png" alt="image-20201221164718183"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/12/21/image-20201221164718183.png" alt="image-20201221164718183"></p>
 <blockquote>
 <p><strong>更换 Rancher 的版本为 latest 进行排查也无法解决 <code>（v2.5.3）</code></strong>，果断放弃Rancher了，还是使用原生的Dashboard吧。</p>
 </blockquote>
@@ -753,9 +753,9 @@ watch kubectl get pod -n kubernetes-dashboard  <span class="c1"># 等待容器�
 </div><blockquote>
 <p>访问地址为 <code>https://&lt;kubectl-ip&gt;:8080</code>, 注意如果chrome浏览器访问不安全的https链接没有继续访问的操作的话，可以尝试使用其他浏览器如: firefox，当然好像也可以降低chrome浏览器的安全级别来解决此问题</p>
 </blockquote>
-<p><img src="https://image.coderyzun.cyou/images/2020/12/21/image-20201221201443582.png" alt="image-20201221201443582"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/12/21/image-20201221201443582.png" alt="image-20201221201443582"></p>
 <p><strong>登录成功后发现抛出大量权限不足错误</strong>
-<img src="https://image.coderyzun.cyou/images/2020/12/21/image-20201221195812459.png" alt="image-20201221195812459"></p>
+<img src="https://coderyzun-image.peng55.xyz/images/2020/12/21/image-20201221195812459.png" alt="image-20201221195812459"></p>
 <h3 id="解决方法-重新绑定默认用户为管理员生产不推荐">解决方法-重新绑定默认用户为管理员(<code>生产不推荐</code>)</h3>
 <p>创建 <code>admin-role.yaml</code> 配置文件内容如下</p>
 <div class="highlight"><div class="chroma">
@@ -801,7 +801,7 @@ watch kubectl get pod -n kubernetes-dashboard  <span class="c1"># 等待容器�
 </code></pre></td></tr></table>
 </div>
 </div><p><strong>再次刷新不再报错了，且集群信息显示正常</strong></p>
-<p><img src="https://image.coderyzun.cyou/images/2020/12/21/image-20201221200401649.png" alt="image-20201221200401649"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2020/12/21/image-20201221200401649.png" alt="image-20201221200401649"></p>
 <h1 id="总结">总结</h1>
 <blockquote>
 <p>再使用一些开源软件的时候还是不要满目的追求最新版本，一般使用最新稳定版本之后的4~5个版本并观察社区用户使用的一些的反馈和软件的兼容性再慢慢过度进行使用为最优。</p>

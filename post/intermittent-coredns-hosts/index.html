@@ -422,16 +422,16 @@ nginx <span class="c1"># 启动</span>
 <pre class="chroma"><code class="language-bash" data-lang="bash"> ./coredns-tools-linux -host sim-gtw.dt.com -c <span class="m">200</span> -d <span class="m">30</span> -l <span class="m">5000</span>
 </code></pre></td></tr></table>
 </div>
-</div><p><img src="https://image.coderyzun.cyou/images/2021/01/07/image-20210107115048562.png" alt="image-20210107115048562"></p>
+</div><p><img src="https://coderyzun-image.peng55.xyz/images/2021/01/07/image-20210107115048562.png" alt="image-20210107115048562"></p>
 <blockquote>
 <p>我们可以看到, 我们使用dns测试程序进行测试时，测试结果接近有 <code>61%</code> 的解析失败率，而解析其他域名时解析是正常的</p>
-<p><img src="https://image.coderyzun.cyou/images/2021/01/07/image-20210107142038042.png" alt="image-20210107142038042"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2021/01/07/image-20210107142038042.png" alt="image-20210107142038042"></p>
 </blockquote>
 <h2 id="排查结果">排查结果</h2>
 <blockquote>
 <p>排查到结果与 Coredns 使用到的<code>上层DNS</code> 有关; 如下如截图所示中，使用同一个域名解析出来的地址, 一个是外网地址一个是内网地址，由此推断出解析域名时分别使用了不同dns server进行解析的。</p>
 </blockquote>
-<p><img src="https://image.coderyzun.cyou/images/2021/01/07/image-20210107111557846.png" alt="image-20210107111557846"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2021/01/07/image-20210107111557846.png" alt="image-20210107111557846"></p>
 <p>为了验证我们刚才的推断，我们在coredns 的 configmap 中开启 hosts 插件，并将相关域名写入其中。类似于主机中的 hosts文件，hosts文件优先于dns server，当拿到地址解析后客户端将不再继续请求上层dns server。</p>
 <h2 id="排查步骤如下">排查步骤如下:</h2>
 <h3 id="步骤一">步骤一:</h3>
@@ -468,7 +468,7 @@ nginx <span class="c1"># 启动</span>
 </code></pre></td></tr></table>
 </div>
 </div><h3 id="修改后的结果展示">修改后的结果展示:</h3>
-<p><img src="https://image.coderyzun.cyou/images/2021/01/07/image-20210107112810631.png" alt="image-20210107112810631"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/images/2021/01/07/image-20210107112810631.png" alt="image-20210107112810631"></p>
 <h3 id="重载配置完成后-我们再测试一下结果">重载配置完成后 我们再测试一下结果</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -482,7 +482,7 @@ nginx <span class="c1"># 启动</span>
 </span><span class="se"></span><span class="o">&amp;&amp;</span> ./coredns-tools-linux -host sim-gtw.dt.com -c <span class="m">200</span> -d <span class="m">30</span> -l <span class="m">5000</span> 
 </code></pre></td></tr></table>
 </div>
-</div><p><img src="https://image.coderyzun.cyou/images/2021/01/07/image-20210107114813398.png" alt="image-20210107114813398"></p>
+</div><p><img src="https://coderyzun-image.peng55.xyz/images/2021/01/07/image-20210107114813398.png" alt="image-20210107114813398"></p>
 <blockquote>
 <p>可以看到, 此时我们再进行测试时，域名解析已不再提示报错了。但是最大延迟显示还是显示有5s左右，这个和我们正在使用的kube-proxy策略有关，默认策略使用的是 <code>iptables 模式</code>，如后期优化可进行更改为性能更高的 <code>ipvs模式</code> 及部署 node-local-dns 服务来减少解析延迟，我这里无法更改 kubelet的启动参数中 dns的地址，貌似 node-local-dns 没有太多效果 。</p>
 </blockquote>
