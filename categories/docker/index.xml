@@ -22,7 +22,7 @@
       <pubDate>Tue, 22 Dec 2020 09:24:55 +0800</pubDate>
       
       <guid>https://cdryzun.github.io/post/docker-deploy-nexus3-upgrade/</guid>
-      <description>Nexus3.x 说明 功能介绍 Nexus3, 是一款支持仓库种类繁多的私服管理工具，目前大众所知晓的仓库类型如：go、pypi、docker、yum、maven、yum、</description>
+      <description>Nexus3.x 说明 功能介绍 Nexus3, 是一款支持仓库种类繁多的私服管理工具，目前大众所知晓的仓库类型如：go、pypi、docker、maven、yum、git、</description>
     </item>
     
     <item>

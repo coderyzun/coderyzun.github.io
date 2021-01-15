@@ -49,7 +49,7 @@
 <meta itemprop="description" content="使用docker部署 nexus3及如何进行版本的迭代更新">
 <meta itemprop="datePublished" content="2020-12-22T09:24:55+08:00" />
 <meta itemprop="dateModified" content="2020-12-22T09:24:55+08:00" />
-<meta itemprop="wordCount" content="2997">
+<meta itemprop="wordCount" content="3011">
 
 
 
@@ -132,8 +132,8 @@
             <a href="/categories/docker/"> Docker </a>
             <a href="/categories/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/"> 持续集成 </a>
             </div>
-          <span class="more-meta"> 约 2997 字 </span>
-          <span class="more-meta"> 预计阅读 6 分钟 </span>
+          <span class="more-meta"> 约 3011 字 </span>
+          <span class="more-meta"> 预计阅读 7 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
     </header>
@@ -155,8 +155,8 @@
         <li><a href="#检查是否正常启动">检查是否正常启动</a></li>
         <li><a href="#配置-nginx-反向代理">配置 nginx 反向代理</a>
           <ul>
-            <li><a href="#nginx-安装及配置调优">nginx 安装及配置调优</a></li>
-            <li><a href="#配置-docker-私服--反向代理">配置 Docker 私服 &amp; 反向代理</a></li>
+            <li><a href="#nginx-安装及-配置文件调优">nginx 安装及 配置文件调优</a></li>
+            <li><a href="#配置-docker-私服--配置-nginx-反向代理">配置 Docker 私服 &amp; 配置 nginx 反向代理</a></li>
           </ul>
         </li>
       </ul>
@@ -200,15 +200,15 @@
       <h1 id="nexus3x-说明">Nexus3.x 说明</h1>
 <h2 id="功能介绍">功能介绍</h2>
 <blockquote>
-<p>Nexus3, 是一款支持仓库种类繁多的私服管理工具，目前大众所知晓的仓库类型如：go、pypi、docker、yum、maven、yum、git、helm、npm、apt &hellip;，且功能非常强大，解决了不同类型的仓库 <code>统一管理</code> 问题。</p>
+<p>Nexus3, 是一款支持仓库种类繁多的私服管理工具，目前大众所知晓的仓库类型如：go、pypi、docker、maven、yum、git、helm、npm、apt &hellip;，且功能非常强大，解决了不同类型的仓库 <code>统一管理</code> 问题。</p>
 </blockquote>
 <h2 id="仓库类型">仓库类型</h2>
-<p>目前Nexus3 仓库类型，可以分为三种，即 <code>hosted</code>, <code>proxy</code>,<code>group</code> 类型参考。</p>
+<p>目前Nexus3 仓库类型，可以分为三种，即 <code>hosted</code>、<code>proxy</code>、<code>group</code> 类型参考。</p>
 <ul>
 <li>
 <p>group: 即是多个仓库的集合，group中可 <code>包涵多个</code>  hosted, proxy, group 类型的仓库</p>
 <blockquote>
-<p>注意，在 group 中还存在优先级的关系，即示例图中，如 <code>custom</code> 和 <code>aliyun</code> 的docker仓库中多包涵了 <code>centos:7</code> 的镜像，那么在 docker pull 的使用客户拉取的是 <code>custom</code>中的 centos7，原因为: &ldquo;在nexus3 group仓库中使用为 <code>自上而下</code> 的匹配方式，当匹配后将 <code>不再继续</code> 向下匹配&rdquo;，所以说我们在使用 &ldquo;group&quot;类型参考时还需要考虑一下，各个仓库的 <code>优先级</code>。</p>
+<p>注意，在 group 中还存在优先级的关系，即示例图中，如 <code>custom</code> 和 <code>aliyun</code> 的docker仓库中多包涵了 <code>centos:7</code> 的镜像，那么在客户端使用 docker pull 拉取的是 <code>custom</code> 中的 centos7，原因为: &ldquo;在nexus3 group仓库中使用为 <code>自上而下</code> 的匹配方式，当匹配后将 <code>不再继续</code> 向下匹配&rdquo;，所以说我们在使用 &ldquo;group&quot;类型参考时还需要考虑一下，各个仓库的 <code>优先级</code>。</p>
 <p><img src="https://image.coderyzun.cyou/images/2021/01/14/image-20210114180247413.png" alt="image-20210114180247413"></p>
 </blockquote>
 </li>
@@ -229,6 +229,7 @@
 <li>Docker 版本: 18.09.9</li>
 <li>代理工具: Nginx</li>
 <li>Helm 版本: 3.x</li>
+<li>Nginx: 1.16.1</li>
 </ul>
 <h1 id="使用-docker-部署">使用 Docker 部署</h1>
 <blockquote>
@@ -275,14 +276,14 @@ netstat -lntp <span class="p">|</span>grep <span class="m">8081</span>  <span cl
 </code></pre></td></tr></table>
 </div>
 </div><blockquote>
-<p>初始安装账号为 admin，初始密码在这个文件里面 <code>/application/nexus3/data/admin.password</code>  (按照我的步骤来的话)，剩下的就是会有一个初始化的过程 也就是让你重置 admin 的密码 和是否开启匿名功能 。</p>
+<p>初始安装账号为 <code>admin</code>，初始密码在这个文件里面 <code>/application/nexus3/data/admin.password</code>  (按照我的步骤来的话)，剩下的就是会有一个初始化的过程 也就是让你重置 admin 的密码 和 <code>是否开启匿名</code> 功能 。</p>
 </blockquote>
 <p><img src="https://image.coderyzun.cyou/images/2020/09/10/image-20200910164805785.png" alt="install"></p>
 <h2 id="配置-nginx-反向代理">配置 nginx 反向代理</h2>
 <blockquote>
 <p>此步骤包涵配置nginx 反向代理，及初始化<code>nexus docker私服</code>。</p>
 </blockquote>
-<h3 id="nginx-安装及配置调优">nginx 安装及配置调优</h3>
+<h3 id="nginx-安装及-配置文件调优">nginx 安装及 配置文件调优</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -479,7 +480,7 @@ cat &gt; /etc/nginx/nginx.conf <span class="s">&lt;&lt; EOF
 nginx -t  <span class="c1"># 测试配置文件,有无错误.</span>
 </code></pre></td></tr></table>
 </div>
-</div><h3 id="配置-docker-私服--反向代理">配置 Docker 私服 &amp; 反向代理</h3>
+</div><h3 id="配置-docker-私服--配置-nginx-反向代理">配置 Docker 私服 &amp; 配置 nginx 反向代理</h3>
 <h4 id="创建-docker-专属-blob-存储卷"><strong>创建 docker 专属 <code>blob 存储卷</code></strong></h4>
 <p><img src="https://image.coderyzun.cyou/images/2020/09/11/image-202009110915461557169a2c54af26adc.png" alt="image-20200911091546155"></p>
 <p><img src="https://image.coderyzun.cyou/images/2020/09/11/image-20200911091722315.png" alt="image-20200911091722315"></p>
@@ -1001,7 +1002,7 @@ helm repo update
 
 pip install twine  <span class="c1"># 安装上传工具</span>
 
-twine upload --repository-url http://repo.ac.com/repository/pypi-demo/ dist/*  -u <span class="si">${</span><span class="nv">USERKEY_USR</span><span class="si">}</span> -p <span class="si">${</span><span class="nv">USERKEY_PSW</span><span class="si">}</span>
+twine upload --repository-url http://repo.demo.com/repository/pypi-demo/ dist/*  -u <span class="si">${</span><span class="nv">USERKEY_USR</span><span class="si">}</span> -p <span class="si">${</span><span class="nv">USERKEY_PSW</span><span class="si">}</span>
 </code></pre></td></tr></table>
 </div>
 </div><h1 id="pending">pending。。</h1>
