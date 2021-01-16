@@ -49,7 +49,7 @@
 <meta itemprop="description" content="使用kubeadm部署kubernetes-v1.19.x集群">
 <meta itemprop="datePublished" content="2020-12-21T13:19:31+08:00" />
 <meta itemprop="dateModified" content="2020-12-21T13:19:31+08:00" />
-<meta itemprop="wordCount" content="2439">
+<meta itemprop="wordCount" content="2586">
 
 
 
@@ -131,8 +131,8 @@
             <a href="/categories/kubernetes/"> Kubernetes </a>
             <a href="/categories/kubeadm/"> Kubeadm </a>
             </div>
-          <span class="more-meta"> 约 2439 字 </span>
-          <span class="more-meta"> 预计阅读 5 分钟 </span>
+          <span class="more-meta"> 约 2586 字 </span>
+          <span class="more-meta"> 预计阅读 6 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
     </header>
@@ -166,6 +166,7 @@
         </li>
         <li><a href="#根据配置文件预拉取镜像-master">根据配置文件预拉取镜像 (<code>master</code>)</a></li>
         <li><a href="#集群初始化-master">集群初始化 (<code>master</code>)</a></li>
+        <li><a href="#清理节点">清理节点</a></li>
         <li><a href="#配置node加入集群-node">配置node加入集群 (<code>node</code>)</a></li>
         <li><a href="#部署网络插件-flannel-master">部署网络插件 <code>flannel </code>(<code>master</code>)</a></li>
         <li><a href="#kubelet-添加额外参数">kubelet 添加额外参数</a></li>
@@ -562,6 +563,40 @@ kubeadm config print init-defaults &gt;&gt; kubeadm-init.yaml
 mkdir -p <span class="nv">$HOME</span>/.kube
 cp -i /etc/kubernetes/admin.conf <span class="nv">$HOME</span>/.kube/config
 chown <span class="k">$(</span>id -u<span class="k">)</span>:<span class="k">$(</span>id -g<span class="k">)</span> <span class="nv">$HOME</span>/.kube/config
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="清理节点">清理节点</h2>
+<p>如果在集群安装过程中，遇到一些不可描述的问题，我们可以使用下面的命令进行重置节点</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">kubeadm reset
+ifconfig cni0 down <span class="o">&amp;&amp;</span> ip link delete cni0
+ifconfig flannel.1 down <span class="o">&amp;&amp;</span> ip link delete flannel.1
+rm -rf /var/lib/cni/
+
+<span class="c1"># 清理Iptables表</span>
+<span class="c1">## 注意：如果节点Iptables有特殊配置，以下命令请谨慎操作</span>
+sudo iptables --flush
+sudo iptables --flush --table nat
+sudo iptables --flush --table filter
+sudo iptables --table nat --delete-chain
+sudo iptables --table filter --delete-chain
+systemctl restart docker
 </code></pre></td></tr></table>
 </div>
 </div><h2 id="配置node加入集群-node">配置node加入集群 (<code>node</code>)</h2>
