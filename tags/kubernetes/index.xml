@@ -6,7 +6,16 @@
     <description>Recent content in Kubernetes on 「Yang&#39;zun」的网志博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 07 Jan 2021 14:34:16 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 16 Jan 2021 14:39:59 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Rancher 单机部署，进行升级后，导致docker无法正常启动</title>
+      <link>https://cdryzun.github.io/post/rancher-upgrade-docker/</link>
+      <pubDate>Sat, 16 Jan 2021 14:39:59 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/rancher-upgrade-docker/</guid>
+      <description>环境说明 操作系统: Centos 7.9.2009 Docker Version: 18.09.9 模拟复现 rancher 安装 1 2 3 4 5 6 7 8 docker pull rancher/rancher:v2.3.5 docker run -d \ --restart=unless-stopped \ --name rancher \ -p 80:80 -p 443:443 \ --privileged \ rancher/rancher:v2.3.5 升级 rancher 示例将 v2.3.5 升级至 v2.5.0 创建备份 1 2 3 4 5 docker</description>
+    </item>
+    
     <item>
       <title>Coredns 进行解析域名时，某些域名出现间断性无法正常解析问题</title>
       <link>https://cdryzun.github.io/post/intermittent-coredns-hosts/</link>

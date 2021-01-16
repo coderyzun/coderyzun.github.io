@@ -45,7 +45,7 @@
 <meta property="og:description" content="个人网志博客「记录一些自己的成长经历」" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://cdryzun.github.io/" />
-<meta property="og:updated_time" content="2021-01-14T20:09:58+08:00" />
+<meta property="og:updated_time" content="2021-01-16T14:39:59+08:00" />
 <meta itemprop="name" content="「Yang&#39;zun」的网志博客">
 <meta itemprop="description" content="个人网志博客「记录一些自己的成长经历」">
 <meta name="twitter:card" content="summary"/>
@@ -117,6 +117,30 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/rancher-upgrade-docker/">Rancher 单机部署，进行升级后，导致docker无法正常启动</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-01-16 </span>
+      <div class="post-category">
+          <a href="/categories/rancher/"> Rancher </a>
+          <a href="/categories/%E9%94%99%E8%AF%AF%E4%BF%AE%E5%A4%8D/"> 错误修复 </a>
+          </div>
+        <span class="more-meta"> 约 619 字 </span>
+        <span class="more-meta"> 预计阅读 2 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      环境说明 操作系统: Centos 7.9.2009 Docker Version: 18.09.9 模拟复现 rancher 安装 1 2 3 4 5 6 7 8 docker pull rancher/rancher:v2.3.5 docker run -d \ --restart=unless-stopped \ --name rancher \ -p 80:80 -p 443:443 \ --privileged \ rancher/rancher:v2.3.5 升级 rancher 示例将 v2.3.5 升级至 v2.5.0 创建备份 1 2 3 4 5 docker
+    </div>
+    <div class="read-more">
+      <a href="/post/rancher-upgrade-docker/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/delete-container-reset/">记录一次，因误删容器导致的容器恢复过程</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2021-01-14 </span>
@@ -124,14 +148,14 @@
           <a href="/categories/docker/"> Docker </a>
           <a href="/categories/datarecovery/"> DataRecovery </a>
           </div>
-        <span class="more-meta"> 约 2097 字 </span>
+        <span class="more-meta"> 约 2094 字 </span>
         <span class="more-meta"> 预计阅读 5 分钟 </span>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      环境说明 因在日常维护过程中升级了docker的版本 ，碰到了一个 docker 的一个bug, 导致 docker 服务无法正常启动。在恢复 docker 服务的过程中把 /var/lib/docker/containers 下的所有文件给
+      环境说明 因在日常维护过程中升级了docker的版本 ，碰到了一个 docker 的一个 bug, 导致 docker 服务无法正常启动。在恢复 docker 服务的过程中把 /var/lib/docker/containers 下的所有文件给 清空 了
     </div>
     <div class="read-more">
       <a href="/post/delete-container-reset/" class="read-more-link">阅读更多</a>
@@ -208,30 +232,6 @@
     </div>
     <div class="read-more">
       <a href="/post/ingress-to-dashboard/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/kubeadm-deploy-k8s1.9/">Kubeadm 部署 kubernetes-v1.19.x 集群</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2020-12-21 </span>
-      <div class="post-category">
-          <a href="/categories/kubernetes/"> Kubernetes </a>
-          <a href="/categories/kubeadm/"> Kubeadm </a>
-          </div>
-        <span class="more-meta"> 约 2434 字 </span>
-        <span class="more-meta"> 预计阅读 5 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      系统环境说明 使用操作系统: Centos-7.9.2009 操作系统内核版本: 4.4.248 (lt) Docker容器版本: 18.09.9 Kubeadm 版本: 1.19.6 节点说明: master01: 192.168.8.70 ,192.168.88.70 node01: 192.168.8.71 ,192.168.88.71 (备注: 为每个节点配置了两个ip，
-    </div>
-    <div class="read-more">
-      <a href="/post/kubeadm-deploy-k8s1.9/" class="read-more-link">阅读更多</a>
     </div>
   </div>
 </article>

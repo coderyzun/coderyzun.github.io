@@ -49,7 +49,7 @@
 <meta itemprop="description" content="记录一次因误操作删除了容器的，容器恢复过程">
 <meta itemprop="datePublished" content="2021-01-14T20:09:58+08:00" />
 <meta itemprop="dateModified" content="2021-01-14T20:09:58+08:00" />
-<meta itemprop="wordCount" content="2097">
+<meta itemprop="wordCount" content="2094">
 
 
 
@@ -131,7 +131,7 @@
             <a href="/categories/docker/"> Docker </a>
             <a href="/categories/datarecovery/"> DataRecovery </a>
             </div>
-          <span class="more-meta"> 约 2097 字 </span>
+          <span class="more-meta"> 约 2094 字 </span>
           <span class="more-meta"> 预计阅读 5 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -187,7 +187,7 @@
     <div class="post-content">
       <h1 id="环境说明">环境说明</h1>
 <blockquote>
-<p>因在日常维护过程中<code>升级了docker的版本</code> ，碰到了一个 docker 的一个<code>bug</code>, 导致 docker 服务无法正常启动。在恢复 docker 服务的过程中把 <code>/var/lib/docker/containers</code> 下的所有文件给 <code>清空</code> 了，清空后 docker 服务可以正常运行，但发现原来的服务中还存留着一个还在使用的 <code>cmdb</code> 系统也被我跟着删除了，是之前的前辈部署的。好在自己有 <code>做备份</code> 的习惯，现记录一下被删除容器的恢复过程。</p>
+<p>因在日常维护过程中<code>升级了docker的版本</code> ，碰到了一个 docker 的一个 <a href="https://coderyzun.cyou/post/rancher-upgrade-docker"><code>bug</code></a>, 导致 docker 服务无法正常启动。在恢复 docker 服务的过程中把 <code>/var/lib/docker/containers</code> 下的所有文件给 <code>清空</code> 了，清空后 docker 服务可以正常运行，但发现原来的服务中还存留着一个还在使用的 <code>cmdb</code> 系统也被我跟着删除了，是之前的前辈部署的。好在自己有 <code>做备份</code> 的习惯，现记录一下被删除容器的恢复过程。</p>
 </blockquote>
 <ul>
 <li>
@@ -1220,7 +1220,11 @@ docker run --name<span class="o">=</span>glpi-app -d <span class="se">\
           <a href="/tags/centos/">Centos</a>
           </div>
       <nav class="post-nav">
-        
+        <a class="prev" href="/post/rancher-upgrade-docker/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Rancher 单机部署，进行升级后，导致docker无法正常启动</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
         <a class="next" href="/post/intermittent-coredns-hosts/">
             <span class="next-text nav-default">Coredns 进行解析域名时，某些域名出现间断性无法正常解析问题</span>
             <span class="next-text nav-mobile">下一篇</span>

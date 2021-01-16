@@ -13,7 +13,7 @@
       <pubDate>Thu, 14 Jan 2021 20:09:58 +0800</pubDate>
       
       <guid>https://cdryzun.github.io/post/delete-container-reset/</guid>
-      <description>环境说明 因在日常维护过程中升级了docker的版本 ，碰到了一个 docker 的一个bug, 导致 docker 服务无法正常启动。在恢复 docker 服务的过程中把 /var/lib/docker/containers 下的所有文件给</description>
+      <description>环境说明 因在日常维护过程中升级了docker的版本 ，碰到了一个 docker 的一个 bug, 导致 docker 服务无法正常启动。在恢复 docker 服务的过程中把 /var/lib/docker/containers 下的所有文件给 清空 了</description>
     </item>
     
     <item>
