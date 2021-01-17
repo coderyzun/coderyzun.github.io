@@ -49,7 +49,7 @@
 <meta itemprop="description" content="kubernetes集群中controller-manager及scheduler组件频繁重启的一次排查解决">
 <meta itemprop="datePublished" content="2020-12-18T16:24:43+08:00" />
 <meta itemprop="dateModified" content="2020-12-18T16:24:43+08:00" />
-<meta itemprop="wordCount" content="694">
+<meta itemprop="wordCount" content="711">
 
 
 
@@ -131,7 +131,7 @@
             <a href="/categories/kubernetes/"> Kubernetes </a>
             <a href="/categories/%E9%94%99%E8%AF%AF%E4%BF%AE%E5%A4%8D/"> 错误修复 </a>
             </div>
-          <span class="more-meta"> 约 694 字 </span>
+          <span class="more-meta"> 约 711 字 </span>
           <span class="more-meta"> 预计阅读 2 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -166,9 +166,9 @@
             <li><a href="#降级版本">降级版本</a></li>
           </ul>
         </li>
+        <li><a href="#绑定网卡">绑定网卡</a></li>
       </ul>
     </li>
-    <li><a href="#总结">总结</a></li>
   </ul>
 </nav>
   </div>
@@ -289,8 +289,59 @@ watch kubectl get pod -n kube-system  # 等待 pod 启动完成
 </code></pre></td></tr></table>
 </div>
 </div></blockquote>
-<h1 id="总结">总结</h1>
-<p>更换版本后集群暂时恢复正常，之后要是还有异常得使用观察一段时间才知道，因为这个是的自己的测试环境，再使用其他一些生产环境的时候还是不要动不动就将flannel删除。再经历过这次问题后，再次深刻了在使用一些软件的时候还是尽量不要使用一些较新版本，如非要使用时，因使用官方稳定版本中的包较宜。</p>
+<h2 id="绑定网卡">绑定网卡</h2>
+<blockquote>
+<p>降低 flannel 的版本后，还是会出现 io 较高的情况。 后测试出，是因为我的集群机器中 <code>存在着多张网卡</code>，解决方法就是: 在 flannel 资源清单中添加一下 <code>--iface=ethX</code> 来绑定一下网卡 ，这里就要求集群中每一个节点 <code>多存在</code> 此网卡。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">wget https://raw.githubusercontent.com/coreos/flannel/v0.13.0/Documentation/kube-flannel.yml
+
+vim kube-flannel.yml
+</code></pre></td></tr></table>
+</div>
+</div><p>修改后的配置展示</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">      containers:
+      - name: kube-flannel
+        image: quay.io/coreos/flannel:v0.13.0
+        command:
+        - /opt/bin/flanneld
+        args:
+        - --ip-masq
+        - --kube-subnet-mgr
+        - --iface<span class="o">=</span>eth0
+</code></pre></td></tr></table>
+</div>
+</div><p>再次部署创建</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl apply -f kube-flannel.yml
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>执行后，没有再次出现 io 占用高的情况了</p>
+</blockquote>
 
     </div>
 

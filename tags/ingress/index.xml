@@ -6,7 +6,16 @@
     <description>Recent content in Ingress on 「Yang&#39;zun」的网志博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 22 Dec 2020 09:24:55 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/ingress/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 17 Jan 2021 16:15:32 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/ingress/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>初次实践 traefik ingress gateway</title>
+      <link>https://cdryzun.github.io/post/ingress-traefik/</link>
+      <pubDate>Sun, 17 Jan 2021 16:15:32 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/ingress-traefik/</guid>
+      <description>Traefik 基础概念说明 Traefik 是一个 开源 的边缘路由器，使发布服务变得有趣而轻松，是你整个平台的大门，拦截并匹配每一个传入的请求：它掌管着所有的匹配逻辑和路</description>
+    </item>
+    
     <item>
       <title>部署 Nginx-Ingress 并配置暴露 kubernetes dashboard</title>
       <link>https://cdryzun.github.io/post/ingress-to-dashboard/</link>
