@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>在 Kubernetes 中部署 nfs strage class - 「Yang&#39;zun」的网志博客</title>
+  <title>在 Kubernetes 中部署 nfs storage class - 「Yang&#39;zun」的网志博客</title>
   <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Yang&#39;zun" /><meta name="description" content="在 Kubernetes 中部署安装 nfs strage class" /><meta name="keywords" content="Kubernetes, strageClass, nfs, strageclass 部署安装" />
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="在 Kubernetes 中部署安装 nfs storageClass" /><meta name="keywords" content="Kubernetes, storageClass, nfs, storageclass 部署安装" />
 
 
 
@@ -39,24 +39,24 @@
 <link rel="stylesheet" href="https://coderyzun-image.peng55.xyz/blog-css/jquery.fancybox.min.css" crossorigin="anonymous">
 
 
-<meta property="og:title" content="在 Kubernetes 中部署 nfs strage class" />
-<meta property="og:description" content="在 Kubernetes 中部署安装 nfs strage class" />
+<meta property="og:title" content="在 Kubernetes 中部署 nfs storage class" />
+<meta property="og:description" content="在 Kubernetes 中部署安装 nfs storageClass" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://cdryzun.github.io/post/k8s-nfs-strage-class/" />
 <meta property="article:published_time" content="2021-01-19T14:54:30+08:00" />
 <meta property="article:modified_time" content="2021-01-19T14:54:30+08:00" />
-<meta itemprop="name" content="在 Kubernetes 中部署 nfs strage class">
-<meta itemprop="description" content="在 Kubernetes 中部署安装 nfs strage class">
+<meta itemprop="name" content="在 Kubernetes 中部署 nfs storage class">
+<meta itemprop="description" content="在 Kubernetes 中部署安装 nfs storageClass">
 <meta itemprop="datePublished" content="2021-01-19T14:54:30+08:00" />
 <meta itemprop="dateModified" content="2021-01-19T14:54:30+08:00" />
-<meta itemprop="wordCount" content="1106">
+<meta itemprop="wordCount" content="1105">
 
 
 
-<meta itemprop="keywords" content="Kubernetes,strageClass,nfs," />
+<meta itemprop="keywords" content="Kubernetes,storageClass,nfs," />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="在 Kubernetes 中部署 nfs strage class"/>
-<meta name="twitter:description" content="在 Kubernetes 中部署安装 nfs strage class"/>
+<meta name="twitter:title" content="在 Kubernetes 中部署 nfs storage class"/>
+<meta name="twitter:description" content="在 Kubernetes 中部署安装 nfs storageClass"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -123,14 +123,14 @@
           <article class="post">
     
     <header class="post-header">
-      <h1 class="post-title">在 Kubernetes 中部署 nfs strage class</h1>
+      <h1 class="post-title">在 Kubernetes 中部署 nfs storage class</h1>
 
       <div class="post-meta">
         <span class="post-time"> 2021-01-19 </span>
         <div class="post-category">
             <a href="/categories/devops/"> devOps </a>
             </div>
-          <span class="more-meta"> 约 1106 字 </span>
+          <span class="more-meta"> 约 1105 字 </span>
           <span class="more-meta"> 预计阅读 3 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -155,7 +155,7 @@
         <li><a href="#客户端测试挂载">客户端测试挂载</a></li>
       </ul>
     </li>
-    <li><a href="#部署-nfs-strage-class">部署 nfs strage class</a>
+    <li><a href="#部署-nfs-storageclass">部署 nfs storageClass</a>
       <ul>
         <li><a href="#helm-添加仓库">helm 添加仓库</a></li>
         <li><a href="#创建-helm-部署文件">创建 helm 部署文件</a></li>
@@ -324,7 +324,7 @@ systemctl <span class="nb">enable</span> rpcbind
 </code></pre></td></tr></table>
 </div>
 </div></blockquote>
-<h1 id="部署-nfs-strage-class">部署 nfs strage class</h1>
+<h1 id="部署-nfs-storageclass">部署 nfs storageClass</h1>
 <h2 id="helm-添加仓库">helm 添加仓库</h2>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -366,18 +366,18 @@ helm repo update
 </blockquote>
 <h2 id="部署">部署</h2>
 <blockquote>
-<p>部署至 <code>kube-system</code> 命名空间， strageClass 为 <code>集群</code> 概念，集群内任意命名空间多可以使用。</p>
+<p>部署至 <code>kube-system</code> 命名空间， storageClass 为 <code>集群</code> 概念，集群内任意命名空间多可以使用。</p>
 </blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">helm upgrade --install nfs-strage-class -f ./prod-values.yaml -n kube-system stable/nfs-client-provisioner
+<pre class="chroma"><code class="language-bash" data-lang="bash">helm upgrade --install nfs-storage-class -f ./prod-values.yaml -n kube-system stable/nfs-client-provisioner
 </code></pre></td></tr></table>
 </div>
-</div><p><img src="https://coderyzun-image.peng55.xyz/img/image-20210119200915434.png" alt="image-20210119200915434"></p>
-<p><img src="https://coderyzun-image.peng55.xyz/img/image-20210119200929683.png" alt="image-20210119200929683"></p>
+</div><p><img src="https://coderyzun-image.peng55.xyz/img/image-20210119205725301.png" alt="image-20210119205725301"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/img/image-20210119205744586.png" alt="image-20210119205744586"></p>
 <h2 id="部署后的测试">部署后的测试</h2>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -508,7 +508,7 @@ helm repo update
 <footer class="post-footer">
       <div class="post-tags">
           <a href="/tags/kubernetes/">Kubernetes</a>
-          <a href="/tags/strageclass/">strageClass</a>
+          <a href="/tags/storageclass/">storageClass</a>
           <a href="/tags/nfs/">nfs</a>
           </div>
       <nav class="post-nav">
