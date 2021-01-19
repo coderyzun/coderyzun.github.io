@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>使用 Confluentinc 在 Kubernetes 集群中部署 Kafka 集群  - 「Yang&#39;zun」的网志博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="使用 confluentinc 在 kubernetes 集群中部署 kafka 集群" /><meta name="keywords" content="Kubernetes, kafka, confluentinc, kafka 部署" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.2 with theme even" />
+
+
+<link rel="canonical" href="https://cdryzun.github.io/post/k8s-deploy-kafka-cluster/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://coderyzun-image.peng55.xyz/blog-css/jquery.fancybox.min.css" crossorigin="anonymous">
+
+
+<meta property="og:title" content="使用 Confluentinc 在 Kubernetes 集群中部署 Kafka 集群 " />
+<meta property="og:description" content="使用 confluentinc 在 kubernetes 集群中部署 kafka 集群" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdryzun.github.io/post/k8s-deploy-kafka-cluster/" />
+<meta property="article:published_time" content="2021-01-19T13:44:03+08:00" />
+<meta property="article:modified_time" content="2021-01-19T13:44:03+08:00" />
+<meta itemprop="name" content="使用 Confluentinc 在 Kubernetes 集群中部署 Kafka 集群 ">
+<meta itemprop="description" content="使用 confluentinc 在 kubernetes 集群中部署 kafka 集群">
+<meta itemprop="datePublished" content="2021-01-19T13:44:03+08:00" />
+<meta itemprop="dateModified" content="2021-01-19T13:44:03+08:00" />
+<meta itemprop="wordCount" content="1253">
+
+
+
+<meta itemprop="keywords" content="Kubernetes,kafka,Zookeeper," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用 Confluentinc 在 Kubernetes 集群中部署 Kafka 集群 "/>
+<meta name="twitter:description" content="使用 confluentinc 在 kubernetes 集群中部署 kafka 集群"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://coderyzun-image.peng55.xyz/blog-js/html5shiv.min.js"></script>
+  <script src="https://coderyzun-image.peng55.xyz/blog-js/respond.min.js"></script>
+<![endif]-->
+
+<link rel="stylesheet" href="https://coderyzun-image.peng55.xyz/blog-css/docsearch.min.css" />
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+</div>
+
+<nav class="site-navbar">
+
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul><li style="display:inline-block;margin-right:10px;">
+    <input type="search" class="docsearch-input" placeholder="Search" />
+  </li></nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">使用 Confluentinc 在 Kubernetes 集群中部署 Kafka 集群 </h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-01-19 </span>
+        <div class="post-category">
+            <a href="/categories/kubernetes/"> Kubernetes </a>
+            <a href="/categories/kafka/"> kafka </a>
+            </div>
+          <span class="more-meta"> 约 1253 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#部署说明">部署说明</a></li>
+    <li><a href="#环境说明">环境说明</a></li>
+    <li><a href="#集群部署">集群部署</a>
+      <ul>
+        <li><a href="#helm-应用下载">Helm 应用下载</a></li>
+        <li><a href="#部署镜像转储">部署镜像转储</a>
+          <ul>
+            <li><a href="#将需要的-容器转储为-tar-包">将需要的 容器转储为 tar 包</a></li>
+          </ul>
+        </li>
+        <li><a href="#创建-helm-部署文件">创建 helm 部署文件</a></li>
+      </ul>
+    </li>
+    <li><a href="#部署-kafka-工具">部署 kafka 工具</a>
+      <ul>
+        <li><a href="#创建资源部署文件">创建资源部署文件</a></li>
+        <li><a href="#部署资源清单">部署资源清单</a></li>
+        <li><a href="#创建-traefik-ingress--资源对象">创建 traefik ingress  资源对象</a>
+          <ul>
+            <li><a href="#使用-htpasswd-生成用户及密码">使用 <code>htpasswd</code> 生成用户及密码</a></li>
+            <li><a href="#配置-traefik-资源清单文件">配置 traefik 资源清单文件</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#kafka-manage-的使用">kafka manage 的使用</a>
+      <ul>
+        <li><a href="#添加集群">添加集群</a></li>
+      </ul>
+    </li>
+    <li><a href="#总结">总结</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="部署说明">部署说明</h1>
+<ul>
+<li>
+<p>kafka &amp; zookeeper  集群部署工具:  <a href="https://github.com/confluentinc">confluentinc</a></p>
+<blockquote>
+<p>使用 helm 进行部署，并部署一个外置的 kafka 管理工具。</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="环境说明">环境说明</h1>
+<ul>
+<li>kubernetes version: v1.17.4</li>
+<li>helm version: v3.3.1</li>
+<li>traefik version: v2.3.6</li>
+<li>docker version:  18.09.6</li>
+</ul>
+<h1 id="集群部署">集群部署</h1>
+<h2 id="helm-应用下载">Helm 应用下载</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">git clone https://github.com/confluentinc/cp-helm-charts.git
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="部署镜像转储">部署镜像转储</h2>
+<h3 id="将需要的-容器转储为-tar-包">将需要的 容器转储为 tar 包</h3>
+<p>镜像查看脚本</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat print-image-list.sh  <span class="c1"># 匹配出 chart 中需要的容器</span>
+<span class="c1">#!/bin/bash</span>
+<span class="k">for</span> APP_IMAGE_EACH in <span class="sb">`</span>cat values.yaml charts/cp-kafka/values.yaml <span class="p">|</span>grep -A <span class="m">1</span> image:<span class="p">|</span>awk <span class="s1">&#39;{print $2}&#39;</span><span class="sb">`</span><span class="p">;</span><span class="k">do</span>
+                <span class="nv">count</span><span class="o">=</span><span class="k">$((</span> <span class="nv">$count</span> <span class="o">+</span> <span class="m">1</span> <span class="k">))</span>
+                <span class="k">if</span> <span class="o">[</span> <span class="k">$((</span> <span class="nv">$count</span><span class="o">%</span><span class="m">2</span><span class="k">))</span> -eq <span class="m">1</span> <span class="o">]</span>
+                <span class="k">then</span>
+                        <span class="k">if</span> <span class="o">[</span> -z <span class="s2">&#34;</span><span class="nv">$LIST</span><span class="s2">&#34;</span> <span class="o">]</span>
+                        <span class="k">then</span>
+                                <span class="nv">LIST</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$APP_IMAGE_EACH</span><span class="s2">&#34;</span>
+                        <span class="k">else</span>
+                                <span class="nv">LIST</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$LIST</span><span class="s2">\n</span><span class="nv">$APP_IMAGE_EACH</span><span class="s2">&#34;</span>
+                        <span class="k">fi</span>
+                <span class="k">else</span>
+                        <span class="nv">LIST</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$LIST</span><span class="s2">:</span><span class="nv">$APP_IMAGE_EACH</span><span class="s2">&#34;</span>
+                <span class="k">fi</span>
+<span class="k">done</span>
+
+<span class="nb">echo</span> -e <span class="s2">&#34;</span><span class="nv">$LIST</span><span class="s2">&#34;</span>
+
+
+chmod a+x print-image-list.sh 
+
+./print-image-list.sh &gt; image-list.txt
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://coderyzun-image.peng55.xyz/img/image-20210119114824466.png" alt="image-20210119114824466"></p>
+<p>转储为 tar 包</p>
+<blockquote>
+<p>因 chart 中还包涵了其他组件，有些组件 <code>不是必要开启的</code>，我们只需 <code>针对性选择部署</code> 即可。</p>
+<p><code>最小化部署</code> 需要容器列表展示</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat image-list.txt
+confluentinc/cp-zookeeper:6.0.1
+confluentinc/cp-enterprise-kafka:6.0.1
+solsson/kafka-prometheus-jmx-exporter@sha256:6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">pack_List</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+
+<span class="k">for</span> i in <span class="sb">`</span>cat image-list.txt<span class="sb">`</span><span class="p">;</span><span class="k">do</span> <span class="nv">pack_List</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$pack_List</span><span class="s2"> </span><span class="nv">$i</span><span class="s2">&#34;</span><span class="p">;</span><span class="k">done</span>
+
+docker save <span class="k">$(</span><span class="nb">echo</span> <span class="si">${</span><span class="nv">pack_List</span><span class="si">}</span><span class="k">)</span> <span class="p">|</span> gzip --stdout &gt; confluentinc-Minimal.tar
+</code></pre></td></tr></table>
+</div>
+</div><p>加载 tar包中的容器，并上传至私服</p>
+<blockquote>
+<p>更具 具体情况 <code>替换掉</code> <code>idocker.io</code> 为你实际使用的 <code>容器私服</code>。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">docker load --input confluentinc-Minimal.tar
+
+<span class="k">for</span> i in <span class="sb">`</span>cat image-list.txt<span class="sb">`</span><span class="p">;</span><span class="k">do</span> docker tag <span class="s2">&#34;</span><span class="nv">$i</span><span class="s2">&#34;</span> idocker.io/<span class="s2">&#34;</span><span class="nv">$i</span><span class="s2">&#34;</span><span class="p">;</span>docker push idocker.io/<span class="s1">&#39;$i&#39;</span><span class="p">;</span><span class="k">done</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="创建-helm-部署文件">创建 helm 部署文件</h2>
+<blockquote>
+<p>打印 <code>默认</code> 的 values.yaml 文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat cp-helm-charts/values.yaml
+
+helm show values ./cp-helm-charts
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<p>创建 <code>cp-deploy-helm.yaml</code>  helm 部署文件，将默认进行 <code>配置覆盖</code></p>
+<blockquote>
+<p>此次演示部署，依赖于一个 <code>strage class</code> 来进行 pv &amp; pvc 的动态管理</p>
+<p>如 <code>使用离线部署</code>，还需要将 <code>镜像地址进行替换</code></p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat &gt; cp-deploy-helm.yaml <span class="s">&lt;&lt; EOF
+</span><span class="s">cp-kafka-rest:
+</span><span class="s">  enabled: false
+</span><span class="s">cp-kafka-connect:
+</span><span class="s">  enabled: false
+</span><span class="s">cp-schema-registry:
+</span><span class="s">  enabled: false
+</span><span class="s">cp-ksql-server:
+</span><span class="s">  enabled: false
+</span><span class="s">cp-kafka:
+</span><span class="s">  replicas: &#34;3&#34;
+</span><span class="s">  persistence:
+</span><span class="s">    enabled: true
+</span><span class="s">    size: &#34;5Gi&#34;
+</span><span class="s">    storageClass: &#34;nfs-retain&#34;
+</span><span class="s">cp-zookeeper:
+</span><span class="s">  persistence:
+</span><span class="s">    enabled: true
+</span><span class="s">    dataDirSize: &#34;10Gi&#34;
+</span><span class="s">    dataDirStorageClass: &#34;nfs-retain&#34;
+</span><span class="s">    dataLogDirSize: &#34;10Gi&#34;
+</span><span class="s">    dataLogDirStorageClass: &#34;nfs-retain&#34;
+</span><span class="s">cp-control-center:
+</span><span class="s">  enabled: false
+</span><span class="s">EOF</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>创建命名空间， 并执行安装</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl create ns kafka-box-demo
+
+helm upgrade --install kafka-box -f ./cp-deploy-helm.yaml -n kafka-box-demo .
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://coderyzun-image.peng55.xyz/img/image-20210118172146561.png" alt="image-20210118172146561"></p>
+<h1 id="部署-kafka-工具">部署 kafka 工具</h1>
+<blockquote>
+<p>部署 <code>kafka</code> 管理工具<a href="https://github.com/yahoo/CMAK.git"><code>kafka-manage</code></a>, 我们这里采用 容器化部署，使用别人制作好的容器即 <a href="https://hub.docker.com/r/sheepkiller/kafka-manager"><code>sheepkiller/kafka-manager</code></a></p>
+</blockquote>
+<h2 id="创建资源部署文件">创建资源部署文件</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat &gt; kafka-manage.yaml <span class="s">&lt;&lt; EOF
+</span><span class="s">apiVersion: apps/v1
+</span><span class="s">kind: Deployment
+</span><span class="s">metadata:
+</span><span class="s">  name: kafka-manage
+</span><span class="s">  namespace: kafka-box-demo  # 同上面的 kafka 集群设置同一个命名空间
+</span><span class="s">spec:
+</span><span class="s">  selector:
+</span><span class="s">    matchLabels:
+</span><span class="s">      app: kafka-manage
+</span><span class="s">  template:
+</span><span class="s">    metadata:
+</span><span class="s">      labels:
+</span><span class="s">        app: kafka-manage
+</span><span class="s">    spec:
+</span><span class="s">      containers:
+</span><span class="s">      - env:
+</span><span class="s">        - name: APPLICATION_SECRET
+</span><span class="s">          value: letmein
+</span><span class="s">        - name: ZK_HOSTS
+</span><span class="s">          value: kafka-box-cp-zookeeper:2181
+</span><span class="s">        image: sheepkiller/kafka-manager
+</span><span class="s">        imagePullPolicy: Always
+</span><span class="s">        name: kafka-manage
+</span><span class="s">        resources:
+</span><span class="s">          limits:
+</span><span class="s">            memory: &#34;1024Mi&#34;
+</span><span class="s">            cpu: &#34;500m&#34;
+</span><span class="s">        ports:
+</span><span class="s">        - containerPort: 9000
+</span><span class="s">
+</span><span class="s">---
+</span><span class="s">apiVersion: v1
+</span><span class="s">kind: Service
+</span><span class="s">metadata:
+</span><span class="s">  name: kafka-manage
+</span><span class="s">  namespace: kafka-box-demo # 同上面的 kafka 集群设置同一个命名空间
+</span><span class="s">spec:
+</span><span class="s">  ports:
+</span><span class="s">  - name: http-kafka-manage
+</span><span class="s">    port: 9000
+</span><span class="s">    protocol: TCP
+</span><span class="s">    targetPort: 9000
+</span><span class="s">  selector:
+</span><span class="s">    app: kafka-manage
+</span><span class="s">EOF</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="部署资源清单">部署资源清单</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">kubectl apply -f kafka-manage.yaml
+
+watch kubectl get pod -n kafka-box-demo
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://coderyzun-image.peng55.xyz/img/image-20210118173830009.png" alt="image-20210118173830009"></p>
+<h2 id="创建-traefik-ingress--资源对象">创建 traefik ingress  资源对象</h2>
+<blockquote>
+<p>因默认的 kafka-manage 未做任何加密处理，同样我们使用 traefik 中的 <code>BasicAuth</code> 中间件来配置一层加密。</p>
+</blockquote>
+<h3 id="使用-htpasswd-生成用户及密码">使用 <code>htpasswd</code> 生成用户及密码</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">yum install httpd-tools -y
+
+htpasswd -nb admin ancun123 <span class="p">|</span>base64  <span class="c1"># 生成用户密码信息，并转换为 base64</span>
+YWRtaW46JGFwcjEkOHJjc2dCdE8kQS5zZnZ2a2JiUWljRlAyaHp2SzhELwoK
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="配置-traefik-资源清单文件">配置 traefik 资源清单文件</h3>
+<blockquote>
+<p>下面资源清单文件中，配置了 <code>\</code> 转义符，直接复制至终端执行即可</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat <span class="s">&lt;&lt;EOF | kubectl apply -f -
+</span><span class="s">apiVersion: traefik.containo.us/v1alpha1
+</span><span class="s">kind: Middleware
+</span><span class="s">metadata:
+</span><span class="s">  name: kafka-manage-auth
+</span><span class="s">  namespace: kafka-box-demo
+</span><span class="s">spec:
+</span><span class="s">  basicAuth:
+</span><span class="s">    secret: authsecret
+</span><span class="s">    removeHeader: true
+</span><span class="s">    
+</span><span class="s">---
+</span><span class="s">apiVersion: traefik.containo.us/v1alpha1
+</span><span class="s">kind: Middleware
+</span><span class="s">metadata:
+</span><span class="s">  name: stripprefix
+</span><span class="s">  namespace: kafka-box-demo
+</span><span class="s">spec:
+</span><span class="s">  stripPrefix:
+</span><span class="s">    forceSlash: false
+</span><span class="s">    prefixes:
+</span><span class="s">    - /kafka-manage
+</span><span class="s">---
+</span><span class="s">apiVersion: traefik.containo.us/v1alpha1
+</span><span class="s">kind: IngressRoute
+</span><span class="s">metadata:
+</span><span class="s">  name: kafka-manage
+</span><span class="s">  namespace: kafka-box-demo
+</span><span class="s">spec:
+</span><span class="s">  entryPoints:
+</span><span class="s">  - web
+</span><span class="s">  routes:
+</span><span class="s">  - match: Host(\`kafka.dt.com\`) # 访问 kafka.dt.com 路由到 kafka manage
+</span><span class="s">    kind: Rule
+</span><span class="s">    services:
+</span><span class="s">    - name: kafka-manage  # kafka-manage service 名称
+</span><span class="s">      port: 9000  # service 的端口，配置端口名称无效
+</span><span class="s">    middlewares:
+</span><span class="s">    - name: kafka-manage-auth
+</span><span class="s">    - name: stripprefix
+</span><span class="s">EOF</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>因此容器内的服务无法，修改 <code>baseurl</code>, 比如配置添加 <code>PathPrefix</code> 匹配路径，会导致 前端的 <code>css &amp; js</code> 无法正常被路由到。</p>
+<p><img src="https://coderyzun-image.peng55.xyz/img/image-20210119103314956.png" alt="image-20210119103314956"></p>
+</blockquote>
+<h1 id="kafka-manage-的使用">kafka manage 的使用</h1>
+<h2 id="添加集群">添加集群</h2>
+<p><img src="https://coderyzun-image.peng55.xyz/img/image-20210119103428668.png" alt="image-20210119103428668"></p>
+<p>填入 <code>kafka-box-cp-zookeeper.kafka-box-demo.svc.cluster.local</code> k8s 中 完整地址</p>
+<p><img src="https://coderyzun-image.peng55.xyz/img/image-20210119103650670.png" alt="image-20210119103650670"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/img/image-20210119103744482.png" alt="image-20210119103744482"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/img/image-20210119103759271.png" alt="image-20210119103759271"></p>
+<blockquote>
+<p>Done</p>
+</blockquote>
+<h1 id="总结">总结</h1>
+<p>在 k8s 中使用 confluentinc 部署 kafka 集群还是非常轻便的，但是目前还存在一个问题就是无法在 k8s 集群外部连接部署的 kafka 集群，因为集群使用 k8s 内部网络进行通讯，在外部的客户端无法访问 zookeeper 的地址，就算将 zookeeper 的监听端口改用 hostport 暴露出来，连接 zookeeper 中返回的 kafka 注册地址，也无法正常解析主机名和存在端口无法访问问题。唯一解决方法就是全部组件使用 <code>host 网络模式</code> 进行部署，貌似 <code>confluentinc</code> chart 中未有可配置项。如有深度定制的需求，可以更改 chart 中的渲染逻辑。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yang'zun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-01-19
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/kubernetes/">Kubernetes</a>
+          <a href="/tags/kafka/">kafka</a>
+          <a href="/tags/zookeeper/">Zookeeper</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/ingress-traefik/">
+            <span class="next-text nav-default">初探 Traefik ingress gateway</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+  <div id="vcomments"></div>
+  <script src="https://coderyzun-image.peng55.xyz/blog-js/av-min.js"></script>
+  <script src="https://coderyzun-image.peng55.xyz/blog-js/Valine.min.js"></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
+        appKey: 'siSAWI3rzA6Ow8Tmiv7V4GO4',
+        notify:  true ,
+        verify:  true ,
+        avatar:'',
+        placeholder: '来留下点什么吧~',
+        visitor:  false 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:amoaloas@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/cdryzun" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdryzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动 
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    Image cdn power by <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" target="_blank" rel="nofollow"><img src="https://coderyzun-image.peng55.xyz/img/upyun.png" width="56" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"></a>
+  </span>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun</span>
+    </span>
+
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://coderyzun-image.peng55.xyz/blog-js/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="https://coderyzun-image.peng55.xyz/blog-js/slideout.min.js" crossorigin="anonymous"></script>
+  <script src="https://coderyzun-image.peng55.xyz/blog-js/jquery.fancybox.min.js"crossorigin="anonymous"></script>
+    <script src="https://coderyzun-image.peng55.xyz/blog-js/timeago.min.js" crossorigin="anonymous"></script>
+    <script src="https://coderyzun-image.peng55.xyz/blog-js/timeago.locales.min.js" crossorigin="anonymous"></script>
+  <script><!-- NOTE: timeago.js uses the language code format like "zh_CN" (underscore and case sensitive) -->
+    var languageCode = "en-us".replace(/-/g, '_').replace(/_(.*)/, function ($0, $1) {return $0.replace($1, $1.toUpperCase());});
+    timeago().render(document.querySelectorAll('.timeago'), languageCode);
+    timeago.cancel();  
+  </script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://coderyzun-image.peng55.xyz/blog-js/docsearch.min.js"></script>
+<script>
+    docsearch({
+    apiKey: "17388eec628e676a77d6235068b458df",
+    indexName: "blog",
+    appId: "KEECS2XKBV",
+    inputSelector: '.docsearch-input',
+    debug: false,
+    });
+</script>
+</body>
+</html>

@@ -45,7 +45,7 @@
 <meta property="og:description" content="个人网志博客「记录一些自己的成长经历」" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://cdryzun.github.io/" />
-<meta property="og:updated_time" content="2021-01-17T16:15:32+08:00" />
+<meta property="og:updated_time" content="2021-01-19T13:44:03+08:00" />
 <meta itemprop="name" content="「Yang&#39;zun」的网志博客">
 <meta itemprop="description" content="个人网志博客「记录一些自己的成长经历」">
 <meta name="twitter:card" content="summary"/>
@@ -117,7 +117,31 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/ingress-traefik/">初探 traefik ingress gateway</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/k8s-deploy-kafka-cluster/">使用 Confluentinc 在 Kubernetes 集群中部署 Kafka 集群 </a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-01-19 </span>
+      <div class="post-category">
+          <a href="/categories/kubernetes/"> Kubernetes </a>
+          <a href="/categories/kafka/"> kafka </a>
+          </div>
+        <span class="more-meta"> 约 1253 字 </span>
+        <span class="more-meta"> 预计阅读 3 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      部署说明 kafka &amp; zookeeper 集群部署工具: confluentinc 使用 helm 进行部署，并部署一个外置的 kafka 管理工具。 环境说明 kubernetes version: v1.17.4 helm version: v3.3.1 traefik version: v2.3.6 docker version: 18.09.6 集群部署 Helm 应用下载 1 git clone https://github.com/confluentinc/cp-helm-charts.git 部署镜像
+    </div>
+    <div class="read-more">
+      <a href="/post/k8s-deploy-kafka-cluster/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/ingress-traefik/">初探 Traefik ingress gateway</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2021-01-17 </span>
       <div class="post-category">
@@ -209,31 +233,6 @@
     </div>
     <div class="read-more">
       <a href="/post/intermittent-coredns-hosts/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/docker-deploy-nexus3-upgrade/">使用 Docker 部署 Nexus3 私服的详细记录总结</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2020-12-22 </span>
-      <div class="post-category">
-          <a href="/categories/nexus3/"> Nexus3 </a>
-          <a href="/categories/docker/"> Docker </a>
-          <a href="/categories/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/"> 持续集成 </a>
-          </div>
-        <span class="more-meta"> 约 3011 字 </span>
-        <span class="more-meta"> 预计阅读 7 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      Nexus3.x 说明 功能介绍 Nexus3, 是一款支持仓库种类繁多的私服管理工具，目前大众所知晓的仓库类型如：go、pypi、docker、maven、yum、git、
-    </div>
-    <div class="read-more">
-      <a href="/post/docker-deploy-nexus3-upgrade/" class="read-more-link">阅读更多</a>
     </div>
   </div>
 </article>

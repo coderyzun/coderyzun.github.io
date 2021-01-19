@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>kafka on 「Yang&#39;zun」的网志博客</title>
+    <link>https://cdryzun.github.io/tags/kafka/</link>
+    <description>Recent content in kafka on 「Yang&#39;zun」的网志博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 19 Jan 2021 13:44:03 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/kafka/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用 Confluentinc 在 Kubernetes 集群中部署 Kafka 集群 </title>
+      <link>https://cdryzun.github.io/post/k8s-deploy-kafka-cluster/</link>
+      <pubDate>Tue, 19 Jan 2021 13:44:03 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/k8s-deploy-kafka-cluster/</guid>
+      <description>部署说明 kafka &amp;amp; zookeeper 集群部署工具: confluentinc 使用 helm 进行部署，并部署一个外置的 kafka 管理工具。 环境说明 kubernetes version: v1.17.4 helm version: v3.3.1 traefik version: v2.3.6 docker version: 18.09.6 集群部署 Helm 应用下载 1 git clone https://github.com/confluentinc/cp-helm-charts.git 部署镜像</description>
+    </item>
+    
+  </channel>
+</rss>
