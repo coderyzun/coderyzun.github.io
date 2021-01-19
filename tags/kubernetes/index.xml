@@ -8,7 +8,7 @@
     <language>en-us</language>
     <lastBuildDate>Tue, 19 Jan 2021 14:54:30 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>在 Kubernetes 中部署 nfs storage class</title>
+      <title>在 Kubernetes 中部署 nfs storageClass</title>
       <link>https://cdryzun.github.io/post/k8s-nfs-strage-class/</link>
       <pubDate>Tue, 19 Jan 2021 14:54:30 +0800</pubDate>
       
