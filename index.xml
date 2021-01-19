@@ -6,14 +6,23 @@
     <description>Recent content on 「Yang&#39;zun」的网志博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 19 Jan 2021 13:44:03 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 19 Jan 2021 14:54:30 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在 Kubernetes 中部署 nfs strage class</title>
+      <link>https://cdryzun.github.io/post/k8s-nfs-strage-class/</link>
+      <pubDate>Tue, 19 Jan 2021 14:54:30 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/k8s-nfs-strage-class/</guid>
+      <description>环境说明： helm version: v3.4.2 kubernetes version: v1.19.6 nfs server: 192.168.8.66 sub-net: 192.168.8.0/24 nfs 服务端配置 1 2 3 4 5 6 yum install rpcbind nfs-utils -y mkdir -p /data/nfs.sharedir chown -R nfsnobody /data/nfs.sharedir 创建用户 &amp;amp; 数据目录 1 2 3 4 5 6 7 8 9 groupadd -g 2233 nfs-user useradd nfs-user -M -s /sbin/nologin -u 2233 -g</description>
+    </item>
+    
     <item>
       <title>使用 Confluentinc 在 Kubernetes 集群中部署 Kafka 集群 </title>
       <link>https://cdryzun.github.io/post/k8s-deploy-kafka-cluster/</link>
       <pubDate>Tue, 19 Jan 2021 13:44:03 +0800</pubDate>
       
       <guid>https://cdryzun.github.io/post/k8s-deploy-kafka-cluster/</guid>
-      <description>部署说明 kafka &amp;amp; zookeeper 集群部署工具: confluentinc 使用 helm 进行部署，并部署一个外置的 kafka 管理工具。 环境说明 kubernetes version: v1.17.4 helm version: v3.3.1 traefik version: v2.3.6 docker version: 18.09.6 k8s strage class: nfs 集群部署 Helm 应用下载 1 git clone https://github.com/confluentinc/cp-helm-charts.git</description>
+      <description>部署说明 kafka &amp;amp; zookeeper 集群部署工具: confluentinc 使用 helm 进行部署，并部署一个外置的 kafka 管理工具。 环境说明 kubernetes version: v1.17.4 helm version: v3.3.1 traefik version: v2.3.6 docker version: 18.09.6 k8s strage class: nfs kafka dashboard: kafka-manager 集群部署 Helm 应用下载 1</description>
     </item>
     
     <item>

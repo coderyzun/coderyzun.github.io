@@ -49,7 +49,7 @@
 <meta itemprop="description" content="使用 confluentinc 在 kubernetes 集群中部署 kafka 集群">
 <meta itemprop="datePublished" content="2021-01-19T13:44:03+08:00" />
 <meta itemprop="dateModified" content="2021-01-19T13:44:03+08:00" />
-<meta itemprop="wordCount" content="1262">
+<meta itemprop="wordCount" content="1278">
 
 
 
@@ -131,7 +131,7 @@
             <a href="/categories/kubernetes/"> Kubernetes </a>
             <a href="/categories/kafka/"> kafka </a>
             </div>
-          <span class="more-meta"> 约 1262 字 </span>
+          <span class="more-meta"> 约 1278 字 </span>
           <span class="more-meta"> 预计阅读 3 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -194,6 +194,7 @@
 <li>traefik version: v2.3.6</li>
 <li>docker version: 18.09.6</li>
 <li>k8s strage class: nfs</li>
+<li>kafka dashboard: kafka-manager</li>
 </ul>
 <h1 id="集群部署">集群部署</h1>
 <h2 id="helm-应用下载">Helm 应用下载</h2>
@@ -264,7 +265,7 @@ chmod a+x print-image-list.sh
 <p>转储为 tar 包</p>
 <blockquote>
 <p>因 chart 中还包涵了其他组件，有些组件 <code>不是必要开启的</code>，我们只需 <code>针对性选择部署</code> 即可。</p>
-<p>此次 <code>最小化部署</code> 需要容器列表展示:</p>
+<p>此次 <code>最小化部署</code> ，需要容器列表展示如下所示:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -281,7 +282,8 @@ solsson/kafka-prometheus-jmx-exporter@sha256:6f82e2b0464f50da8104acd7363fb9b9950
 sheepkiller/kafka-manager:latest
 </code></pre></td></tr></table>
 </div>
-</div></blockquote>
+</div><p>包涵 <code>kafka manage </code>容器</p>
+</blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -293,7 +295,7 @@ sheepkiller/kafka-manager:latest
 <td class="lntd">
 <pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">pack_List</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
 
-<span class="k">for</span> i in <span class="sb">`</span>cat image-list.txt<span class="sb">`</span><span class="p">;</span><span class="k">do</span> <span class="nv">pack_List</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$pack_List</span><span class="s2"> </span><span class="nv">$i</span><span class="s2">&#34;</span><span class="p">;</span><span class="k">done</span>
+<span class="k">for</span> i in <span class="sb">`</span>cat image-list.txt<span class="sb">`</span><span class="p">;</span><span class="k">do</span> docker pull <span class="s2">&#34;</span><span class="nv">$i</span><span class="s2">&#34;</span><span class="p">;</span><span class="nv">pack_List</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$pack_List</span><span class="s2"> </span><span class="nv">$i</span><span class="s2">&#34;</span><span class="p">;</span><span class="k">done</span>
 
 docker save <span class="k">$(</span><span class="nb">echo</span> <span class="si">${</span><span class="nv">pack_List</span><span class="si">}</span><span class="k">)</span> <span class="p">|</span> gzip --stdout &gt; confluentinc-Minimal.tar
 </code></pre></td></tr></table>
@@ -677,7 +679,11 @@ YWRtaW46JGFwcjEkOHJjc2dCdE8kQS5zZnZ2a2JiUWljRlAyaHp2SzhELwoK
           <a href="/tags/zookeeper/">Zookeeper</a>
           </div>
       <nav class="post-nav">
-        
+        <a class="prev" href="/post/k8s-nfs-strage-class/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">在 Kubernetes 中部署 nfs strage class</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
         <a class="next" href="/post/ingress-traefik/">
             <span class="next-text nav-default">初探 Traefik ingress gateway</span>
             <span class="next-text nav-mobile">下一篇</span>

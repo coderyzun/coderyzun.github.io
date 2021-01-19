@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>在 Kubernetes 中部署 nfs strage class - 「Yang&#39;zun」的网志博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="在 Kubernetes 中部署安装 nfs strage class" /><meta name="keywords" content="Kubernetes, strageClass, nfs, strageclass 部署安装" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.2 with theme even" />
+
+
+<link rel="canonical" href="https://cdryzun.github.io/post/k8s-nfs-strage-class/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://coderyzun-image.peng55.xyz/blog-css/jquery.fancybox.min.css" crossorigin="anonymous">
+
+
+<meta property="og:title" content="在 Kubernetes 中部署 nfs strage class" />
+<meta property="og:description" content="在 Kubernetes 中部署安装 nfs strage class" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdryzun.github.io/post/k8s-nfs-strage-class/" />
+<meta property="article:published_time" content="2021-01-19T14:54:30+08:00" />
+<meta property="article:modified_time" content="2021-01-19T14:54:30+08:00" />
+<meta itemprop="name" content="在 Kubernetes 中部署 nfs strage class">
+<meta itemprop="description" content="在 Kubernetes 中部署安装 nfs strage class">
+<meta itemprop="datePublished" content="2021-01-19T14:54:30+08:00" />
+<meta itemprop="dateModified" content="2021-01-19T14:54:30+08:00" />
+<meta itemprop="wordCount" content="1106">
+
+
+
+<meta itemprop="keywords" content="Kubernetes,strageClass,nfs," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在 Kubernetes 中部署 nfs strage class"/>
+<meta name="twitter:description" content="在 Kubernetes 中部署安装 nfs strage class"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://coderyzun-image.peng55.xyz/blog-js/html5shiv.min.js"></script>
+  <script src="https://coderyzun-image.peng55.xyz/blog-js/respond.min.js"></script>
+<![endif]-->
+
+<link rel="stylesheet" href="https://coderyzun-image.peng55.xyz/blog-css/docsearch.min.css" />
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+</div>
+
+<nav class="site-navbar">
+
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul><li style="display:inline-block;margin-right:10px;">
+    <input type="search" class="docsearch-input" placeholder="Search" />
+  </li></nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">在 Kubernetes 中部署 nfs strage class</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-01-19 </span>
+        <div class="post-category">
+            <a href="/categories/devops/"> devOps </a>
+            </div>
+          <span class="more-meta"> 约 1106 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#环境说明">环境说明：</a></li>
+    <li><a href="#nfs-服务端配置">nfs 服务端配置</a>
+      <ul>
+        <li><a href="#创建用户--数据目录">创建用户 &amp; 数据目录</a></li>
+        <li><a href="#服务端-配置文件修改">服务端 配置文件修改</a></li>
+        <li><a href="#执行配置-生效">执行配置 生效</a></li>
+        <li><a href="#启动服务--设置服务开机自启">启动服务 &amp; 设置服务开机自启</a></li>
+      </ul>
+    </li>
+    <li><a href="#nfs-客户端配置">nfs 客户端配置</a>
+      <ul>
+        <li><a href="#客户端测试挂载">客户端测试挂载</a></li>
+      </ul>
+    </li>
+    <li><a href="#部署-nfs-strage-class">部署 nfs strage class</a>
+      <ul>
+        <li><a href="#helm-添加仓库">helm 添加仓库</a></li>
+        <li><a href="#创建-helm-部署文件">创建 helm 部署文件</a></li>
+        <li><a href="#部署">部署</a></li>
+        <li><a href="#部署后的测试">部署后的测试</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="环境说明">环境说明：</h1>
+<ul>
+<li>helm version: v3.4.2</li>
+<li>kubernetes version: v1.19.6</li>
+<li>nfs server: 192.168.8.66</li>
+<li>sub-net: 192.168.8.0/24</li>
+</ul>
+<h1 id="nfs-服务端配置">nfs 服务端配置</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">yum install rpcbind nfs-utils -y
+
+mkdir -p /data/nfs.sharedir
+
+
+chown -R nfsnobody /data/nfs.sharedir
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="创建用户--数据目录">创建用户 &amp; 数据目录</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">groupadd -g <span class="m">2233</span> nfs-user
+
+useradd nfs-user -M -s /sbin/nologin -u <span class="m">2233</span> -g nfs-user
+
+id  nfs-user
+
+mkdir -p /data/nfs.sharedir
+
+chown -R nfs-user /data/nfs.sharedir
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="服务端-配置文件修改">服务端 配置文件修改</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat /etc/exports <span class="c1"># 配置文件 如下:</span>
+
+/data/nfs.sharedir 192.168.8.0/24<span class="o">(</span>rw,no_root_squash,no_all_squash,sync,anonuid<span class="o">=</span>2233,anongid<span class="o">=</span>2233<span class="o">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>​	参数说明:</p>
+<ul>
+<li>read-write，可读写；</li>
+<li>ro：read-only，只读；</li>
+<li>sync：文件同时写入硬盘和内存；</li>
+<li>async：文件暂存于内存，而不是直接写入内存；</li>
+<li>no_root_squash：NFS客户端连接服务端时如果使用的是 root 的话，那么对服务端分享的目录来说，也拥有 root 权限。显然开启这项是不安全的。</li>
+<li>root_squash：NFS客户端连接服务端时如果使用的是 root 的话，那么对服务端分享的目录来说，拥有匿名用户权限，通常他将使用 nobody 或 nfsnobody 身份；</li>
+<li>all_squash：不论NFS客户端连接服务端时使用什么用户，对服务端分享的目录来说都是拥有匿名用户权限；</li>
+<li>anonuid：匿名用户的 UID 值，可以在此处自行设定。</li>
+<li>anongid：匿名用户的 GID 值</li>
+</ul>
+</blockquote>
+<h2 id="执行配置-生效">执行配置 生效</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">exportfs -r
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="启动服务--设置服务开机自启">启动服务 &amp; 设置服务开机自启</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">service rpcbind start  
+
+service nfs start
+
+systemctl <span class="nb">enable</span> nfs <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> systemctl <span class="nb">enable</span> rpcbind  
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="nfs-客户端配置">nfs 客户端配置</h1>
+<blockquote>
+<p>⚠️ 注意如果在 <code>k8s</code> 中使用 nfs时，需要在每一个节点中多配置安装 <code>rpcbind</code>，因为 nfs 依赖于使用 rpc 协议进行通讯。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">yum install rpcbind  rpcbind nfs-utils -y
+
+service rpcbind start 
+systemctl <span class="nb">enable</span> rpcbind  
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<h2 id="客户端测试挂载">客户端测试挂载</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">showmount -e <span class="o">[</span>nfs-server<span class="o">]</span>  <span class="c1"># 查看服务端 可挂载目录</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>示例	<code>showmount -e 192.168.8.66</code></p>
+<p><img src="https://coderyzun-image.peng55.xyz/img/image-20210119170611572.png" alt="image-20210119170611572"></p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">mount -t nfs 192.168.8.66:/data/nfs.sharedir /mnt
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>如网络不太稳定时，可以尝试切换为 <code>tcp</code> 协议</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">mount -t nfs 192.168.8.66:/data/nfs.sharedir /mnt -o <span class="nv">proto</span><span class="o">=</span>tcp -o nolock
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<h1 id="部署-nfs-strage-class">部署 nfs strage class</h1>
+<h2 id="helm-添加仓库">helm 添加仓库</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">helm repo add stable https://charts.helm.sh/stable
+
+helm repo update
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="创建-helm-部署文件">创建 helm 部署文件</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat &gt; prod-values.yaml <span class="s">&lt;&lt; EOF
+</span><span class="s">storageClass:
+</span><span class="s">  name: nfs-retain  
+</span><span class="s">  reclaimPolicy: Retain 
+</span><span class="s">nfs:
+</span><span class="s">  server: 192.168.8.66
+</span><span class="s">  path: &#39;/data/nfs.sharedir&#39;
+</span><span class="s">EOF</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p><code>reclaimPolicy</code> 即 <code>PersistentVolumes（pv）</code>  的回收策略，包括 &ldquo;Retain&rdquo;、&ldquo;Recycle&rdquo; 和 &ldquo;Delete&rdquo;。 对于动态配置的 PersistentVolumes 来说，默认回收策略为 &ldquo;Delete&rdquo;。 这表示当用户删除对应的 PersistentVolumeClaim 时，动态配置的 volume 将被自动删除。 如果 volume 包含重要数据时，这种自动行为可能是不合适的。 那种情况下，更适合使用 &ldquo;Retain&rdquo; 策略。 使用 &ldquo;Retain&rdquo; 时，如果用户删除 PersistentVolumeClaim，对应的 PersistentVolume 不会被删除。 相反，它将变为 Released 状态，表示所有的数据可以被手动恢复。</p>
+</blockquote>
+<h2 id="部署">部署</h2>
+<blockquote>
+<p>部署至 <code>kube-system</code> 命名空间， strageClass 为 <code>集群</code> 概念，集群内任意命名空间多可以使用。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">helm upgrade --install nfs-strage-class -f ./prod-values.yaml -n kube-system stable/nfs-client-provisioner
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://coderyzun-image.peng55.xyz/img/image-20210119200915434.png" alt="image-20210119200915434"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/img/image-20210119200929683.png" alt="image-20210119200929683"></p>
+<h2 id="部署后的测试">部署后的测试</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat <span class="s">&lt;&lt;EOF | kubectl apply -f -
+</span><span class="s">apiVersion: v1
+</span><span class="s">kind: PersistentVolumeClaim
+</span><span class="s">metadata:
+</span><span class="s">  name: sc-nginx-pvc
+</span><span class="s">spec:
+</span><span class="s">  accessModes:
+</span><span class="s">    - ReadWriteOnce
+</span><span class="s">  storageClassName: nfs-retain
+</span><span class="s">  resources:
+</span><span class="s">    requests:
+</span><span class="s">      storage: 1Gi
+</span><span class="s">
+</span><span class="s">---
+</span><span class="s">apiVersion: apps/v1
+</span><span class="s">kind: Deployment
+</span><span class="s">metadata:
+</span><span class="s">  name: sc-nginx
+</span><span class="s">  namespace: default
+</span><span class="s">  labels:
+</span><span class="s">    name: sc-nginx
+</span><span class="s">spec:
+</span><span class="s">  replicas: 2
+</span><span class="s">  selector:
+</span><span class="s">    matchLabels:
+</span><span class="s">      name: sc-nginx
+</span><span class="s">  template:
+</span><span class="s">    metadata:
+</span><span class="s">      labels:
+</span><span class="s">       name: sc-nginx
+</span><span class="s">    spec:
+</span><span class="s">      containers:
+</span><span class="s">      - name: sc-nginx
+</span><span class="s">        image: nginx:1.16.0
+</span><span class="s">        volumeMounts:
+</span><span class="s">        - mountPath: /usr/share/nginx/html
+</span><span class="s">          name: nginx-data
+</span><span class="s">        ports:
+</span><span class="s">        - containerPort: 80
+</span><span class="s">      volumes:
+</span><span class="s">      - name: nginx-data
+</span><span class="s">        persistentVolumeClaim:
+</span><span class="s">          claimName: sc-nginx-pvc
+</span><span class="s">EOF</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://coderyzun-image.peng55.xyz/img/image-20210119201907839.png" alt="image-20210119201907839"></p>
+<p>nfs server 端口 <code>echo</code> 数据 至目录下的 <code>index.html</code> 文件内</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s1">&#39;hello&#39;</span> &gt;&gt;  /data/nfs.sharedir/default-sc-nginx-pvc-pvc-bd14929c-ed1f-4ede-baa7-a39de13ee169/index.html
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://coderyzun-image.peng55.xyz/img/image-20210119202614660.png" alt="image-20210119202614660"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yang'zun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-01-19
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/kubernetes/">Kubernetes</a>
+          <a href="/tags/strageclass/">strageClass</a>
+          <a href="/tags/nfs/">nfs</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/k8s-deploy-kafka-cluster/">
+            <span class="next-text nav-default">使用 Confluentinc 在 Kubernetes 集群中部署 Kafka 集群 </span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+  <div id="vcomments"></div>
+  <script src="https://coderyzun-image.peng55.xyz/blog-js/av-min.js"></script>
+  <script src="https://coderyzun-image.peng55.xyz/blog-js/Valine.min.js"></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
+        appKey: 'siSAWI3rzA6Ow8Tmiv7V4GO4',
+        notify:  true ,
+        verify:  true ,
+        avatar:'',
+        placeholder: '来留下点什么吧~',
+        visitor:  false 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:amoaloas@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/cdryzun" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdryzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动 
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    Image cdn power by <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" target="_blank" rel="nofollow"><img src="https://coderyzun-image.peng55.xyz/img/upyun.png" width="56" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"></a>
+  </span>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun</span>
+    </span>
+
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://coderyzun-image.peng55.xyz/blog-js/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="https://coderyzun-image.peng55.xyz/blog-js/slideout.min.js" crossorigin="anonymous"></script>
+  <script src="https://coderyzun-image.peng55.xyz/blog-js/jquery.fancybox.min.js"crossorigin="anonymous"></script>
+    <script src="https://coderyzun-image.peng55.xyz/blog-js/timeago.min.js" crossorigin="anonymous"></script>
+    <script src="https://coderyzun-image.peng55.xyz/blog-js/timeago.locales.min.js" crossorigin="anonymous"></script>
+  <script><!-- NOTE: timeago.js uses the language code format like "zh_CN" (underscore and case sensitive) -->
+    var languageCode = "en-us".replace(/-/g, '_').replace(/_(.*)/, function ($0, $1) {return $0.replace($1, $1.toUpperCase());});
+    timeago().render(document.querySelectorAll('.timeago'), languageCode);
+    timeago.cancel();  
+  </script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://coderyzun-image.peng55.xyz/blog-js/docsearch.min.js"></script>
+<script>
+    docsearch({
+    apiKey: "17388eec628e676a77d6235068b458df",
+    indexName: "blog",
+    appId: "KEECS2XKBV",
+    inputSelector: '.docsearch-input',
+    debug: false,
+    });
+</script>
+</body>
+</html>

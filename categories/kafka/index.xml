@@ -13,7 +13,7 @@
       <pubDate>Tue, 19 Jan 2021 13:44:03 +0800</pubDate>
       
       <guid>https://cdryzun.github.io/post/k8s-deploy-kafka-cluster/</guid>
-      <description>部署说明 kafka &amp;amp; zookeeper 集群部署工具: confluentinc 使用 helm 进行部署，并部署一个外置的 kafka 管理工具。 环境说明 kubernetes version: v1.17.4 helm version: v3.3.1 traefik version: v2.3.6 docker version: 18.09.6 k8s strage class: nfs 集群部署 Helm 应用下载 1 git clone https://github.com/confluentinc/cp-helm-charts.git</description>
+      <description>部署说明 kafka &amp;amp; zookeeper 集群部署工具: confluentinc 使用 helm 进行部署，并部署一个外置的 kafka 管理工具。 环境说明 kubernetes version: v1.17.4 helm version: v3.3.1 traefik version: v2.3.6 docker version: 18.09.6 k8s strage class: nfs kafka dashboard: kafka-manager 集群部署 Helm 应用下载 1</description>
     </item>
     
   </channel>
