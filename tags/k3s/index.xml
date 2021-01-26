@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>K3s on 「Yang&#39;zun」的网志博客</title>
+    <link>https://cdryzun.github.io/tags/k3s/</link>
+    <description>Recent content in K3s on 「Yang&#39;zun」的网志博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 26 Jan 2021 09:26:39 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/k3s/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用 斐讯n1 &amp; openWrt 搭建 k3s 集群</title>
+      <link>https://cdryzun.github.io/post/n1-openwrt-k3s-deploy/</link>
+      <pubDate>Tue, 26 Jan 2021 09:26:39 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/n1-openwrt-k3s-deploy/</guid>
+      <description>环境说明 软件说明 K3s version : v1.19.7+k3s1 Docker version: 19.03.13 (n1)，19.03.12 (openwrt) 写盘工具: balenaEtcher 机器说明 IP 地址 机型 配置 操作系统 角色 192.168.8.1 占美 (机型不详) 4c 2g ( cpu N2940 ) ope</description>
+    </item>
+    
+  </channel>
+</rss>

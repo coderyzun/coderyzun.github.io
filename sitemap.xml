@@ -3,7 +3,63 @@
   
   <url>
     <loc>https://cdryzun.github.io/categories/</loc>
-    <lastmod>2021-01-19T14:54:30+08:00</lastmod>
+    <lastmod>2021-01-26T09:26:39+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/k3s/</loc>
+    <lastmod>2021-01-26T09:26:39+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/categories/k3s/</loc>
+    <lastmod>2021-01-26T09:26:39+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/n1/</loc>
+    <lastmod>2021-01-26T09:26:39+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/openwrt/</loc>
+    <lastmod>2021-01-26T09:26:39+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/post/</loc>
+    <lastmod>2021-01-26T09:26:39+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/</loc>
+    <lastmod>2021-01-26T09:26:39+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/</loc>
+    <lastmod>2021-01-26T09:26:39+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/post/n1-openwrt-k3s-deploy/</loc>
+    <lastmod>2021-01-26T09:26:39+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -30,28 +86,7 @@
   </url>
   
   <url>
-    <loc>https://cdryzun.github.io/post/</loc>
-    <lastmod>2021-01-19T14:54:30+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://cdryzun.github.io/tags/storageclass/</loc>
-    <lastmod>2021-01-19T14:54:30+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/tags/</loc>
-    <lastmod>2021-01-19T14:54:30+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/</loc>
     <lastmod>2021-01-19T14:54:30+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -387,22 +422,8 @@
   </url>
   
   <url>
-    <loc>https://cdryzun.github.io/tags/openwrt/</loc>
-    <lastmod>2020-11-19T17:56:52+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://cdryzun.github.io/categories/%E8%BD%AF%E8%B7%AF%E7%94%B1/</loc>
     <lastmod>2020-11-19T17:56:52+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/tags/n1/</loc>
-    <lastmod>2020-11-15T16:09:10+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

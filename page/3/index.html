@@ -45,7 +45,7 @@
 <meta property="og:description" content="个人网志博客「记录一些自己的成长经历」" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://cdryzun.github.io/" />
-<meta property="og:updated_time" content="2021-01-19T14:54:30+08:00" />
+<meta property="og:updated_time" content="2021-01-26T09:26:39+08:00" />
 <meta itemprop="name" content="「Yang&#39;zun」的网志博客">
 <meta itemprop="description" content="个人网志博客「记录一些自己的成长经历」">
 <meta name="twitter:card" content="summary"/>
@@ -115,6 +115,30 @@
       <div class="content-wrapper">
         <div id="content" class="content">
           <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/centos-init-config/">Centos7 安装之后必要的初始化操作</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2020-12-21 </span>
+      <div class="post-category">
+          <a href="/categories/centos/"> Centos </a>
+          <a href="/categories/docker/"> Docker </a>
+          </div>
+        <span class="more-meta"> 约 1517 字 </span>
+        <span class="more-meta"> 预计阅读 4 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      ⚠️ 注意此些操作在Centos7中得到验证且可行，其他发行版本请自己尝试 OS 调优 内核优化 ⚠️ 请更具实践业务场景进行调整，此示例中较适合kube
+    </div>
+    <div class="read-more">
+      <a href="/post/centos-init-config/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
     <article class="post">
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/flannel-exclusion-records/">kubernetes集群中 controller-manager 及 scheduler 组件频繁发生重启的一次排查解决</a></h1>
@@ -208,29 +232,6 @@
   </div>
 </article>
 
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/first-kind/">Kind 部署本地k8s集群的使用记录</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2020-11-15 </span>
-      <div class="post-category">
-          <a href="/categories/kubernetes/"> Kubernetes </a>
-          </div>
-        <span class="more-meta"> 约 344 字 </span>
-        <span class="more-meta"> 预计阅读 1 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      参考资料 Github 地址 参考博客 安装 1 2 3 curl -Lo ./kind &#34;https://kind.sigs.k8s.io/dl/v0.9.0/kind-$(uname)-amd64&#34; chmod +x ./kind mv ./kind /some-dir-in-your-PATH/kind 启动集群 注意启动集群前 请确认 docker 服务是否启动 1 2 3 4 5 6 7 8 9 10 11 12 docker info|grep -A 2 Server # 确认 是否启
-    </div>
-    <div class="read-more">
-      <a href="/post/first-kind/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
     </section>
   
   <nav class="pagination">
@@ -238,7 +239,10 @@
         <i class="iconfont icon-left"></i>
         <span class="prev-text">上一页</span>
       </a>
-    
+    <a class="next" href="/page/4/">
+        <span class="next-text">下一页</span>
+        <i class="iconfont icon-right"></i>
+      </a>
   </nav>
         </div>
         

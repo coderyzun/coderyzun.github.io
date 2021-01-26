@@ -6,7 +6,16 @@
     <description>Recent content in Posts on 「Yang&#39;zun」的网志博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 19 Jan 2021 14:54:30 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 26 Jan 2021 09:26:39 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用 斐讯n1 &amp; openWrt 搭建 k3s 集群</title>
+      <link>https://cdryzun.github.io/post/n1-openwrt-k3s-deploy/</link>
+      <pubDate>Tue, 26 Jan 2021 09:26:39 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/n1-openwrt-k3s-deploy/</guid>
+      <description>环境说明 软件说明 K3s version : v1.19.7+k3s1 Docker version: 19.03.13 (n1)，19.03.12 (openwrt) 写盘工具: balenaEtcher 机器说明 IP 地址 机型 配置 操作系统 角色 192.168.8.1 占美 (机型不详) 4c 2g ( cpu N2940 ) ope</description>
+    </item>
+    
     <item>
       <title>在 Kubernetes 中部署 nfs storageClass</title>
       <link>https://cdryzun.github.io/post/k8s-nfs-strage-class/</link>

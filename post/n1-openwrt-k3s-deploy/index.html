@@ -1,0 +1,1875 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>使用 斐讯n1 &amp; openWrt 搭建 k3s 集群 - 「Yang&#39;zun」的网志博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="使用斐讯 n1 和 x86-openwrt 搭建 k3s集群" /><meta name="keywords" content="软路由, docker, openwrt, k3s, 集群" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.2 with theme even" />
+
+
+<link rel="canonical" href="https://cdryzun.github.io/post/n1-openwrt-k3s-deploy/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.c7bc1becf36bcf6a9ebd25d2947e43a2eb745ddb0c9a32b43126fd7fa460c351.css" rel="stylesheet">
+<link rel="stylesheet" href="https://coderyzun-image.peng55.xyz/blog-css/jquery.fancybox.min.css" crossorigin="anonymous">
+
+
+<meta property="og:title" content="使用 斐讯n1 &amp; openWrt 搭建 k3s 集群" />
+<meta property="og:description" content="使用斐讯 n1 和 x86-openwrt 搭建 k3s集群" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdryzun.github.io/post/n1-openwrt-k3s-deploy/" />
+<meta property="article:published_time" content="2021-01-26T09:26:39+08:00" />
+<meta property="article:modified_time" content="2021-01-26T09:26:39+08:00" />
+<meta itemprop="name" content="使用 斐讯n1 &amp; openWrt 搭建 k3s 集群">
+<meta itemprop="description" content="使用斐讯 n1 和 x86-openwrt 搭建 k3s集群">
+<meta itemprop="datePublished" content="2021-01-26T09:26:39+08:00" />
+<meta itemprop="dateModified" content="2021-01-26T09:26:39+08:00" />
+<meta itemprop="wordCount" content="3829">
+
+
+
+<meta itemprop="keywords" content="OpenWrt,N1,K3s," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用 斐讯n1 &amp; openWrt 搭建 k3s 集群"/>
+<meta name="twitter:description" content="使用斐讯 n1 和 x86-openwrt 搭建 k3s集群"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://coderyzun-image.peng55.xyz/blog-js/html5shiv.min.js"></script>
+  <script src="https://coderyzun-image.peng55.xyz/blog-js/respond.min.js"></script>
+<![endif]-->
+
+<link rel="stylesheet" href="https://coderyzun-image.peng55.xyz/blog-css/docsearch.min.css" />
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+</div>
+
+<nav class="site-navbar">
+
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul><li style="display:inline-block;margin-right:10px;">
+    <input type="search" class="docsearch-input" placeholder="Search" />
+  </li></nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">使用 斐讯n1 &amp; openWrt 搭建 k3s 集群</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-01-26 </span>
+        <div class="post-category">
+            <a href="/categories/k3s/"> k3s </a>
+            </div>
+          <span class="more-meta"> 约 3829 字 </span>
+          <span class="more-meta"> 预计阅读 8 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#环境说明">环境说明</a>
+      <ul>
+        <li><a href="#软件说明">软件说明</a></li>
+        <li><a href="#机器说明">机器说明</a></li>
+      </ul>
+    </li>
+    <li><a href="#openwrt-自编译">openWrt 自编译</a>
+      <ul>
+        <li><a href="#fork-仓库代码">fork 仓库代码</a></li>
+        <li><a href="#git-clone--代码">git clone  代码</a></li>
+        <li><a href="#修改配置文件">修改配置文件</a>
+          <ul>
+            <li><a href="#修改工作流文件">修改工作流文件</a></li>
+            <li><a href="#修改构建文件">修改构建文件</a></li>
+            <li><a href="#配置参考资料">配置参考资料</a></li>
+          </ul>
+        </li>
+        <li><a href="#构建固件">构建固件</a>
+          <ul>
+            <li><a href="#触发构建">触发构建</a></li>
+            <li><a href="#下载固件">下载固件</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#n1-k3s-master-部署">N1 k3s master 部署</a>
+      <ul>
+        <li><a href="#docker-配置文件">docker 配置文件</a></li>
+        <li><a href="#部署前的检查">部署前的检查</a></li>
+        <li><a href="#部署-k3s">部署 k3s</a></li>
+      </ul>
+    </li>
+    <li><a href="#openwrt-k3s-agent-部署">openWrt k3s agent 部署</a>
+      <ul>
+        <li><a href="#docker-配置">Docker 配置</a></li>
+        <li><a href="#k3s-agent-部署">k3s agent 部署</a>
+          <ul>
+            <li><a href="#下载安装包">下载安装包</a></li>
+            <li><a href="#升级-k3s-版本">升级 k3s 版本</a></li>
+            <li><a href="#部署前的检查-1">部署前的检查</a></li>
+            <li><a href="#修改-k3s-服务配置">修改 k3s 服务配置</a></li>
+          </ul>
+        </li>
+        <li><a href="#启动服务">启动服务</a></li>
+        <li><a href="#问题记录">问题记录</a></li>
+        <li><a href="#openwrt-开放防火墙">openWrt 开放防火墙</a></li>
+      </ul>
+    </li>
+    <li><a href="#部署应用">部署应用</a></li>
+    <li><a href="#配置使用-dashboard">配置使用 dashboard</a>
+      <ul>
+        <li><a href="#lens-添加主机">lens 添加主机</a></li>
+        <li><a href="#开启监控">开启监控</a></li>
+      </ul>
+    </li>
+    <li><a href="#done">Done。。。</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="环境说明">环境说明</h1>
+<h2 id="软件说明">软件说明</h2>
+<ul>
+<li>
+<p>K3s version : v1.19.7+k3s1</p>
+</li>
+<li>
+<p>Docker version:  19.03.13 (n1)，19.03.12 (openwrt)</p>
+</li>
+<li>
+<p>写盘工具: balenaEtcher</p>
+</li>
+</ul>
+<h2 id="机器说明">机器说明</h2>
+<table>
+<thead>
+<tr>
+<th>IP 地址</th>
+<th>机型</th>
+<th>配置</th>
+<th>操作系统</th>
+<th style="text-align:left">角色</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>192.168.8.1</td>
+<td>占美 (机型不详)</td>
+<td>4c  2g  ( cpu N2940 )</td>
+<td>openWrt（X86_64 <code>自编译</code>）</td>
+<td style="text-align:left">node/agent</td>
+</tr>
+<tr>
+<td>192.168.8.112</td>
+<td>斐讯 N1</td>
+<td>4c  2g</td>
+<td>Armbian  ( 5.0.2-aml-s905)</td>
+<td style="text-align:left">master/server</td>
+</tr>
+</tbody>
+</table>
+<h1 id="openwrt-自编译">openWrt 自编译</h1>
+<p>需要自编译的原因是因为，之前使用 esir 打包提供的高大全 op 固件，部署k3s 时发现，内核没有开启<code>vxlan</code>的特性，导致部署不成功，如你使用的 op 固件已开启了 <code>vxlan</code> 特性可省略此步骤，查看方法:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">root@OpenWrt:~# lsmod<span class="p">|</span>grep -i vxlan  <span class="c1"># 打印输入表示具有 vxlan 特性</span>
+ip6_udp_tunnel         <span class="m">16384</span>  <span class="m">1</span> vxlan
+udp_tunnel             <span class="m">16384</span>  <span class="m">1</span> vxlan
+vxlan                  <span class="m">53248</span>  <span class="m">0</span> 
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>此处感谢 <code>esir  等大佬</code> 提供的 <code>github actions ci 工作流</code></p>
+<p><a href="https://github.com/esirplayground/AutoBuild-OpenWrt">仓库地址</a>    <a href="https://www.youtube.com/watch?v=9YO7nxNry-4">视频教程</a></p>
+</blockquote>
+<h2 id="fork-仓库代码">fork 仓库代码</h2>
+<p>登录 github, 并将 代码 fork 至自己仓库
+<img src="https://coderyzun-image.peng55.xyz/img/image-20210126095535833.png" alt="image-20210126095535833"></p>
+<h2 id="git-clone--代码">git clone  代码</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">git clone fork https://github.com.cnpmjs.org/cdryzun/AutoBuild-OpenWrt.git
+
+<span class="nb">cd</span> AutoBuild-OpenWrt 
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="修改配置文件">修改配置文件</h2>
+<h3 id="修改工作流文件">修改工作流文件</h3>
+<p>打开自己心爱的编辑器</p>
+<blockquote>
+<p>且 演示 <code>x86_64 平台</code></p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"> code .github/workflows/Build_OP_x86_64.yml  <span class="c1"># 编辑 ci 构建脚本</span>
+ 
+ ...
+   push:
+   branches: 
+     - master  <span class="c1"># 打开注释，注意空格</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="修改构建文件">修改构建文件</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">code x86_64.config
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="配置参考资料">配置参考资料</h3>
+<ul>
+<li><a href="https://www.right.com.cn/forum/thread-344825-1-1.html">添加插件说明</a></li>
+<li><a href="https://github.com/discordianfish/k3s-openwrt">k3s-openwrt</a>
+<ul>
+<li><img src="https://coderyzun-image.peng55.xyz/img/image-20210126102710432.png" alt="image-20210126102710432"></li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span><span class="lnt">174
+</span><span class="lnt">175
+</span><span class="lnt">176
+</span><span class="lnt">177
+</span><span class="lnt">178
+</span><span class="lnt">179
+</span><span class="lnt">180
+</span><span class="lnt">181
+</span><span class="lnt">182
+</span><span class="lnt">183
+</span><span class="lnt">184
+</span><span class="lnt">185
+</span><span class="lnt">186
+</span><span class="lnt">187
+</span><span class="lnt">188
+</span><span class="lnt">189
+</span><span class="lnt">190
+</span><span class="lnt">191
+</span><span class="lnt">192
+</span><span class="lnt">193
+</span><span class="lnt">194
+</span><span class="lnt">195
+</span><span class="lnt">196
+</span><span class="lnt">197
+</span><span class="lnt">198
+</span><span class="lnt">199
+</span><span class="lnt">200
+</span><span class="lnt">201
+</span><span class="lnt">202
+</span><span class="lnt">203
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">CONFIG_PACKAGE_grub2-efi<span class="o">=</span>y
+<span class="nv">CONFIG_EFI_IMAGES</span><span class="o">=</span>y
+<span class="nv">CONFIG_TARGET_IMAGES_GZIP</span><span class="o">=</span>y
+<span class="nv">CONFIG_TARGET_KERNEL_PARTSIZE</span><span class="o">=</span><span class="m">16</span>
+<span class="nv">CONFIG_TARGET_ROOTFS_PARTSIZE</span><span class="o">=</span><span class="m">300</span>
+<span class="c1"># CONFIG_GRUB_CONSOLE is not set</span>
+CONFIG_PACKAGE_luci-app-docker<span class="o">=</span>y
+CONFIG_PACKAGE_luci-i18n-docker-zh-cn<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-ssr-plus<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Simple_obfs<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_V2ray_plugin<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_V2ray<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Trojan<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Kcptun<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Server<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Socks<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_NaiveProxy<span class="o">=</span>y
+CONFIG_PACKAGE_luci-theme-argon<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-mwan3<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-mwan3helper<span class="o">=</span>y
+CONFIG_PACKAGE_luci-i18n-mwan3-zh-cn<span class="o">=</span>y
+CONFIG_PACKAGE_luci-i18n-mwan3helper-zh-cn<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-syncdial<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-sfe<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-ttyd<span class="o">=</span>y
+CONFIG_PACKAGE_luci-i18n-ttyd-zh-cn<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-webadmin<span class="o">=</span>y
+CONFIG_PACKAGE_luci-i18n-webadmin-zh-cn<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-zerotier<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-frpc<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-kodexplorer<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-nfs<span class="o">=</span>y
+<span class="nv">CONFIG_PACKAGE_ss</span><span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-nps<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-ntpc<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-rclone<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-radicale<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-qbittorrent<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-samba<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-wol<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-xlnetacc<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-bird1-ipv4<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-bird1-ipv6<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-commands<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-diskman<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-dnscrypt-proxy<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-dnsforwarder<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-familycloud<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-hd-idle<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-netdata<span class="o">=</span>y
+<span class="nv">CONFIG_PACKAGE_ipv6helper</span><span class="o">=</span>y
+<span class="nv">CONFIG_PACKAGE_dnsmasq_full_auth</span><span class="o">=</span>y
+<span class="nv">CONFIG_PACKAGE_dnsmasq_full_conntrack</span><span class="o">=</span>y
+<span class="nv">CONFIG_PACKAGE_dnsmasq_full_dnssec</span><span class="o">=</span>y
+<span class="nv">CONFIG_PACKAGE_curl</span><span class="o">=</span>y
+<span class="nv">CONFIG_PACKAGE_htop</span><span class="o">=</span>y
+<span class="nv">CONFIG_PACKAGE_wget</span><span class="o">=</span>y
+<span class="nv">CONFIG_PACKAGE_lrzsz</span><span class="o">=</span>y
+<span class="nv">CONFIG_PACKAGE_vim</span><span class="o">=</span>y
+<span class="nv">CONFIG_PACKAGE_zip</span><span class="o">=</span>y
+CONFIG_PACKAGE_kmod-kvm-amd<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-kvm-intel<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-kvm-x86<span class="o">=</span>y
+<span class="nv">CONFIG_OPENSSL_ENGINE_CRYPTO</span><span class="o">=</span>y
+<span class="nv">CONFIG_OPENSSL_ENGINE_DIGEST</span><span class="o">=</span>y
+<span class="nv">CONFIG_OPENSSL_WITH_CAMELLIA</span><span class="o">=</span>y
+<span class="nv">CONFIG_OPENSSL_WITH_COMPRESSION</span><span class="o">=</span>y
+<span class="nv">CONFIG_OPENSSL_WITH_DTLS</span><span class="o">=</span>y
+<span class="nv">CONFIG_OPENSSL_WITH_EC2M</span><span class="o">=</span>y
+<span class="nv">CONFIG_OPENSSL_WITH_ERROR_MESSAGES</span><span class="o">=</span>y
+<span class="nv">CONFIG_OPENSSL_WITH_GOST</span><span class="o">=</span>y
+<span class="nv">CONFIG_OPENSSL_WITH_IDEA</span><span class="o">=</span>y
+<span class="nv">CONFIG_OPENSSL_WITH_MDC2</span><span class="o">=</span>y
+<span class="nv">CONFIG_OPENSSL_WITH_RFC3779</span><span class="o">=</span>y
+<span class="nv">CONFIG_OPENSSL_WITH_SEED</span><span class="o">=</span>y
+<span class="nv">CONFIG_OPENSSL_WITH_WHIRLPOOL</span><span class="o">=</span>y
+<span class="nv">CONFIG_OPENVPN_openssl_ENABLE_DEF_AUTH</span><span class="o">=</span>y
+<span class="nv">CONFIG_OPENVPN_openssl_ENABLE_FRAGMENT</span><span class="o">=</span>y
+<span class="nv">CONFIG_OPENVPN_openssl_ENABLE_LZ4</span><span class="o">=</span>y
+<span class="nv">CONFIG_OPENVPN_openssl_ENABLE_LZO</span><span class="o">=</span>y
+<span class="nv">CONFIG_OPENVPN_openssl_ENABLE_MULTIHOME</span><span class="o">=</span>y
+<span class="nv">CONFIG_OPENVPN_openssl_ENABLE_PF</span><span class="o">=</span>y
+<span class="nv">CONFIG_OPENVPN_openssl_ENABLE_PORT_SHARE</span><span class="o">=</span>y
+<span class="nv">CONFIG_OPENVPN_openssl_ENABLE_SERVER</span><span class="o">=</span>y
+<span class="nv">CONFIG_OPENVPN_openssl_ENABLE_SMALL</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_BUILD_USER</span><span class="o">=</span><span class="s2">&#34;treeSir Playground&#34;</span>
+<span class="nv">CONFIG_GRUB_TITLE</span><span class="o">=</span><span class="s2">&#34;OpenWrt AutoBuild by treeSirPlayground&#34;</span>
+CONFIG_PACKAGE_kmod-usb-ohci<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-usb-ohci-pci<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-usb-storage-uas<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-usb-uhci<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-sdhci<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-usb-ehci<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-usb2<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-usb2-pci<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-passwall<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Brook<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Trojan<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Trojan_GO<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-passwall_INCLUDE_simple-obfs<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-passwall_INCLUDE_v2ray-plugin<span class="o">=</span>y
+CONFIG_PACKAGE_luci-app-passwall_INCLUDE_https_dns_proxy<span class="o">=</span>n
+<span class="c1"># CONFIG_PACKAGE_naiveproxy=y</span>
+<span class="c1"># CONFIG_PACKAGE_nspr=y</span>
+<span class="c1"># CONFIG_PACKAGE_shadowsocks-libev-ss-server=y</span>
+<span class="c1"># CONFIG_PACKAGE_ssocks=y</span>
+<span class="c1"># CONFIG_PACKAGE_ssocksd=y</span>
+<span class="c1"># CONFIG_PACKAGE_trojan-go=y</span>
+<span class="c1"># CONFIG_PACKAGE_trojan-plus=y</span>
+<span class="c1"># CONFIG_PACKAGE_chinadns-ng=y</span>
+<span class="nv">CONFIG_TARGET_x86</span><span class="o">=</span>y
+<span class="nv">CONFIG_TARGET_x86_64</span><span class="o">=</span>y
+<span class="nv">CONFIG_TARGET_x86_64_Generic</span><span class="o">=</span>y
+<span class="nv">CONFIG_FEED_luci</span><span class="o">=</span>y
+<span class="nv">CONFIG_FEED_packages</span><span class="o">=</span>y
+<span class="nv">CONFIG_FEED_routing</span><span class="o">=</span>y
+<span class="nv">CONFIG_FEED_telephony</span><span class="o">=</span>y
+<span class="nv">CONFIG_IPTABLES_CONNLABEL</span><span class="o">=</span>y
+<span class="nv">CONFIG_IPTABLES_NFTABLES</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_BLK_CGROUP</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_CFS_BANDWIDTH</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_CGROUPS</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_CGROUP_CPUACCT</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_CGROUP_DEVICE</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_CGROUP_FREEZER</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_CGROUP_PIDS</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_CGROUP_SCHED</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_CPUSETS</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_DEVPTS_MULTIPLE_INSTANCES</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_FAIR_GROUP_SCHED</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_FREEZER</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_IPC_NS</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_KEYS</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_LXC_MISC</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_MEMCG</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_MM_OWNER</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_NAMESPACES</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_NETPRIO_CGROUP</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_NET_CLS_CGROUP</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_NET_NS</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_PID_NS</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_POSIX_MQUEUE</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_PROC_PID_CPUSET</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_RESOURCE_COUNTERS</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_SECCOMP</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_SECCOMP_FILTER</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_USER_NS</span><span class="o">=</span>y
+<span class="nv">CONFIG_KERNEL_UTS_NS</span><span class="o">=</span>y
+CONFIG_PACKAGE_block-mount<span class="o">=</span>y
+CONFIG_PACKAGE_ip-bridge<span class="o">=</span>y
+CONFIG_PACKAGE_ip-full<span class="o">=</span>y
+<span class="nv">CONFIG_PACKAGE_ipset</span><span class="o">=</span>y
+CONFIG_PACKAGE_iptables-mod-conntrack-extra<span class="o">=</span>y
+CONFIG_PACKAGE_iptables-mod-extra<span class="o">=</span>y
+CONFIG_PACKAGE_iptables-mod-ipopt<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-asn1-decoder<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-br-netfilter<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-crypto-aead<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-crypto-authenc<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-crypto-crc32c<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-crypto-hash<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-crypto-hw-ccp<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-crypto-manager<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-crypto-null<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-crypto-pcompress<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-crypto-rsa<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-crypto-sha1<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-crypto-sha256<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-fuse<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-ikconfig<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-ipt-conntrack-extra<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-ipt-extra<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-ipt-ipopt<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-ipt-ipset<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-ipt-raw<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-iptunnel<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-leds-gpio<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-lib-crc32c<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-nf-conntrack-netlink<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-nf-ipvs<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-nfnetlink<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-nls-base<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-random-core<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-softdog<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-sound-core<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-udptunnel4<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-udptunnel6<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-usb-core<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-usb3<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-veth<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-vxlan<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-ppp<span class="o">=</span>y
+CONFIG_PACKAGE_kmod-pppox<span class="o">=</span>y
+<span class="nv">CONFIG_PACKAGE_libipset</span><span class="o">=</span>y
+<span class="nv">CONFIG_PACKAGE_libmnl</span><span class="o">=</span>y
+CONFIG_PACKAGE_libnetfilter-conntrack<span class="o">=</span>y
+<span class="nv">CONFIG_PACKAGE_libnfnetlink</span><span class="o">=</span>y
+<span class="nv">CONFIG_PACKAGE_libnftnl</span><span class="o">=</span>y
+<span class="nv">CONFIG_TARGET_ROOTFS_PARTSIZE</span><span class="o">=</span><span class="m">1024</span>
+<span class="c1"># CONFIG_PACKAGE_iptables-mod-conntrack-label is not set</span>
+<span class="c1"># CONFIG_PACKAGE_kmod-ipt-conntrack-label is not set</span>
+CONFIG_PACKAGE_kmod-lib-crc-ccitt<span class="o">=</span>y
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p><code>示例配置且供参考使用</code></p>
+</blockquote>
+<h2 id="构建固件">构建固件</h2>
+<h3 id="触发构建">触发构建</h3>
+<p>提交代码</p>
+<p><img src="https://coderyzun-image.peng55.xyz/img/image-20210126102255870.png" alt="image-20210126102255870"></p>
+<blockquote>
+<p>提交代码前，检查一下 <code>actions</code> 是否是打开状态</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">git add .github/workflows/Build_OP_x86_64.yml
+git add ./x86_64.config
+
+git commit -m <span class="s2">&#34;build custom openwrt&#34;</span>
+
+git push
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>提交完成后，等待构建结束</p>
+</blockquote>
+<h3 id="下载固件">下载固件</h3>
+<p>构建完成后如何下载 <code>op固件</code> 文件</p>
+<p><img src="https://coderyzun-image.peng55.xyz/img/image-20210126102444462.png" alt="image-20210126102444462"></p>
+<p>点击后 往下面拉，点击进行下载</p>
+<p><img src="https://coderyzun-image.peng55.xyz/img/image-20210126102631119.png" alt="image-20210126102631119"></p>
+<p><strong>省略 op 写入步骤, 下载固件后解压进入 <code>OpenWrt/targets/x86/64</code> 目录, 就可以看到固件了。</strong></p>
+<p><img src="https://coderyzun-image.peng55.xyz/img/image-20210126104146816.png" alt="image-20210126104146816"></p>
+<h1 id="n1-k3s-master-部署">N1 k3s master 部署</h1>
+<blockquote>
+<p>n1 使用系统为 <code>Armbian</code>，同样省略写入步骤，n1怎么刷入 armbian 系统在网上资料还是非常多的。</p>
+</blockquote>
+<h2 id="docker-配置文件">docker 配置文件</h2>
+<blockquote>
+<p>此处为 <code>n1</code> docker 配置文件，不一定适合你，可截取部分参考使用。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"> cat /etc/docker/daemon.json 
+<span class="o">{</span>
+  <span class="s2">&#34;experimental&#34;</span>: false,
+  <span class="s2">&#34;registry-mirrors&#34;</span>: <span class="o">[</span>
+    <span class="s2">&#34;https://7bezldxe.mirror.aliyuncs.com&#34;</span>
+  <span class="o">]</span>,
+  <span class="s2">&#34;oom-score-adjust&#34;</span>: -1000,
+  <span class="s2">&#34;log-driver&#34;</span>: <span class="s2">&#34;json-file&#34;</span>,
+  <span class="s2">&#34;log-opts&#34;</span>: <span class="o">{</span>
+    <span class="s2">&#34;max-size&#34;</span>: <span class="s2">&#34;100m&#34;</span>,
+    <span class="s2">&#34;max-file&#34;</span>: <span class="s2">&#34;3&#34;</span>
+  <span class="o">}</span>,
+  <span class="s2">&#34;max-concurrent-downloads&#34;</span>: 10,
+  <span class="s2">&#34;max-concurrent-uploads&#34;</span>: 10,
+  <span class="s2">&#34;features&#34;</span>: <span class="o">{</span>
+    <span class="s2">&#34;buildkit&#34;</span>: <span class="nb">true</span>
+  <span class="o">}</span>,
+  <span class="s2">&#34;insecure-registries&#34;</span>: <span class="o">[</span>
+    <span class="s2">&#34;idocker.io&#34;</span>
+  <span class="o">]</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>配置项简短说明:</p>
+<ul>
+<li>“log-driver”: “json-file” 设置json 格式日志</li>
+<li>“oom-score-adjust”: -1000 防止容器被 内核 oom</li>
+<li>“log-opts” 设置容器日志大小</li>
+<li>“max-concurrent-downloads”: 10 并行下载容器数量</li>
+<li>“max-concurrent-uploads”: 10 并行上传</li>
+<li>“storage-driver”: “overlay2” 设置存储驱动为 overlay2</li>
+<li>“bip” 容器默认的网段</li>
+<li>“registry-mirrors” 配置镜像下载加速这里使用的是阿里云的</li>
+<li>“insecure-registries” 信任的私服地址</li>
+</ul>
+</blockquote>
+<p>如若修改了配置，记得重启一下服务查看是否生效</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">service docker restart
+
+docker info
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="部署前的检查">部署前的检查</h2>
+<blockquote>
+<p>这个打印的内容是 <code>部署完成后打印</code> 的，部署前的检查忘记做记录了。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span><span class="lnt">83
+</span><span class="lnt">84
+</span><span class="lnt">85
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">root@n1:/# k3s check-config
+
+Verifying binaries in /var/lib/rancher/k3s/data/ad8f0f93ebb9db5c507884fcdec249d73dd348293dac194e01462c57815cca46/bin:
+- sha256sum: good
+- links: good
+
+System:
+- /sbin iptables v1.6.1: older than v1.8
+- swap: should be disabled
+- routes: default CIDRs 10.42.0.0/16 or 10.43.0.0/16 already routed
+
+Limits:
+- /proc/sys/kernel/keys/root_maxkeys: <span class="m">1000000</span>
+
+info: reading kernel config from /proc/config.gz ...
+
+Generally Necessary:
+- cgroup hierarchy: properly mounted <span class="o">[</span>/sys/fs/cgroup<span class="o">]</span>
+- CONFIG_NAMESPACES: enabled
+- CONFIG_NET_NS: enabled
+- CONFIG_PID_NS: enabled
+- CONFIG_IPC_NS: enabled
+- CONFIG_UTS_NS: enabled
+- CONFIG_CGROUPS: enabled
+- CONFIG_CGROUP_CPUACCT: enabled
+- CONFIG_CGROUP_DEVICE: enabled
+- CONFIG_CGROUP_FREEZER: enabled
+- CONFIG_CGROUP_SCHED: enabled
+- CONFIG_CPUSETS: enabled
+- CONFIG_MEMCG: enabled
+- CONFIG_KEYS: enabled
+- CONFIG_VETH: enabled <span class="o">(</span>as module<span class="o">)</span>
+- CONFIG_BRIDGE: enabled <span class="o">(</span>as module<span class="o">)</span>
+- CONFIG_BRIDGE_NETFILTER: enabled <span class="o">(</span>as module<span class="o">)</span>
+- CONFIG_IP_NF_FILTER: enabled <span class="o">(</span>as module<span class="o">)</span>
+- CONFIG_IP_NF_TARGET_MASQUERADE: enabled <span class="o">(</span>as module<span class="o">)</span>
+- CONFIG_NETFILTER_XT_MATCH_ADDRTYPE: enabled <span class="o">(</span>as module<span class="o">)</span>
+- CONFIG_NETFILTER_XT_MATCH_CONNTRACK: enabled <span class="o">(</span>as module<span class="o">)</span>
+- CONFIG_NETFILTER_XT_MATCH_IPVS: enabled <span class="o">(</span>as module<span class="o">)</span>
+- CONFIG_IP_NF_NAT: enabled <span class="o">(</span>as module<span class="o">)</span>
+- CONFIG_NF_NAT: enabled <span class="o">(</span>as module<span class="o">)</span>
+- CONFIG_POSIX_MQUEUE: enabled
+
+Optional Features:
+- CONFIG_USER_NS: enabled
+- CONFIG_SECCOMP: enabled
+- CONFIG_CGROUP_PIDS: enabled
+- CONFIG_BLK_CGROUP: enabled
+- CONFIG_BLK_DEV_THROTTLING: enabled
+- CONFIG_CGROUP_PERF: enabled
+- CONFIG_CGROUP_HUGETLB: enabled
+- CONFIG_NET_CLS_CGROUP: enabled <span class="o">(</span>as module<span class="o">)</span>
+- CONFIG_CGROUP_NET_PRIO: enabled
+- CONFIG_CFS_BANDWIDTH: enabled
+- CONFIG_FAIR_GROUP_SCHED: enabled
+- CONFIG_RT_GROUP_SCHED: enabled
+- CONFIG_IP_NF_TARGET_REDIRECT: enabled <span class="o">(</span>as module<span class="o">)</span>
+- CONFIG_IP_SET: enabled <span class="o">(</span>as module<span class="o">)</span>
+- CONFIG_IP_VS: enabled <span class="o">(</span>as module<span class="o">)</span>
+- CONFIG_IP_VS_NFCT: enabled
+- CONFIG_IP_VS_PROTO_TCP: enabled
+- CONFIG_IP_VS_PROTO_UDP: enabled
+- CONFIG_IP_VS_RR: enabled <span class="o">(</span>as module<span class="o">)</span>
+- CONFIG_EXT4_FS: enabled
+- CONFIG_EXT4_FS_POSIX_ACL: enabled
+- CONFIG_EXT4_FS_SECURITY: enabled
+- Network Drivers:
+  - <span class="s2">&#34;overlay&#34;</span>:
+    - CONFIG_VXLAN: enabled <span class="o">(</span>as module<span class="o">)</span>
+      Optional <span class="o">(</span><span class="k">for</span> encrypted networks<span class="o">)</span>:
+      - CONFIG_CRYPTO: enabled
+      - CONFIG_CRYPTO_AEAD: enabled
+      - CONFIG_CRYPTO_GCM: enabled <span class="o">(</span>as module<span class="o">)</span>
+      - CONFIG_CRYPTO_SEQIV: enabled
+      - CONFIG_CRYPTO_GHASH: enabled <span class="o">(</span>as module<span class="o">)</span>
+      - CONFIG_XFRM: enabled
+      - CONFIG_XFRM_USER: enabled <span class="o">(</span>as module<span class="o">)</span>
+      - CONFIG_XFRM_ALGO: enabled <span class="o">(</span>as module<span class="o">)</span>
+      - CONFIG_INET_ESP: enabled <span class="o">(</span>as module<span class="o">)</span>
+      - CONFIG_INET_XFRM_MODE_TRANSPORT: enabled
+- Storage Drivers:
+  - <span class="s2">&#34;overlay&#34;</span>:
+    - CONFIG_OVERLAY_FS: enabled
+
+STATUS: pass
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="部署-k3s">部署 k3s</h2>
+<blockquote>
+<p>官方提供了部署脚本，部署起来还是非常方便的</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">export</span> <span class="nv">INSTALL_K3S_VERSION</span><span class="o">=</span>v1.19.7+k3s1
+
+<span class="nb">export</span> <span class="nv">INSTALL_K3S_EXEC</span><span class="o">=</span><span class="s2">&#34;--docker --kube-apiserver-arg service-node-port-range=40000-65000 --no-deploy traefik --write-kubeconfig  ~/.kube/config --write-kubeconfig-mode 666&#34;</span>
+
+curl -sfL http://rancher-mirror.cnrancher.com/k3s/k3s-install.sh <span class="p">|</span> <span class="nv">INSTALL_K3S_MIRROR</span><span class="o">=</span>cn sh -
+ 
+root@n1:~#  kubectl get nodes
+NAME   STATUS   ROLES    AGE   VERSION
+n1     Ready    master   6s    v1.19.7+k3s1
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="openwrt-k3s-agent-部署">openWrt k3s agent 部署</h1>
+<p>在 openwrt 中部署 k3s 时就不能使用 官方提供的自动部署脚本了，运行脚本时会提示错误  <code>[ERROR]  Can not find systemd or openrc to use as a process supervisor for k3s</code> ,提示说明已经非常清楚了，好在 github 上有位大佬提供了 openwrt k3s 的安装包，谢谢这位大佬。</p>
+<h2 id="docker-配置">Docker 配置</h2>
+<blockquote>
+<p>此处为 openwrt 中 docker 配置，配置项说明请参考上面 n1 中 docker 配置项说明。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"> cat /etc/docker/daemon.json 
+<span class="o">{</span>
+<span class="s2">&#34;data-root&#34;</span>: <span class="s2">&#34;/data/docker-root&#34;</span>,
+<span class="s2">&#34;log-level&#34;</span>: <span class="s2">&#34;warn&#34;</span>,
+<span class="s2">&#34;oom-score-adjust&#34;</span>: -1000,
+<span class="s2">&#34;log-driver&#34;</span>: <span class="s2">&#34;json-file&#34;</span>,
+  <span class="s2">&#34;log-opts&#34;</span>: <span class="o">{</span>
+   <span class="s2">&#34;max-size&#34;</span>: <span class="s2">&#34;100m&#34;</span>,
+   <span class="s2">&#34;max-file&#34;</span>: <span class="s2">&#34;3&#34;</span>
+<span class="o">}</span>,
+<span class="s2">&#34;max-concurrent-downloads&#34;</span>: 10,
+<span class="s2">&#34;max-concurrent-uploads&#34;</span>: 10,
+<span class="s2">&#34;insecure-registries&#34;</span>: <span class="o">[</span><span class="s2">&#34;idocker.io&#34;</span><span class="o">]</span>,
+<span class="s2">&#34;registry-mirrors&#34;</span>: <span class="o">[</span><span class="s2">&#34;https://7bezldxe.mirror.aliyuncs.com&#34;</span><span class="o">]</span>,
+<span class="s2">&#34;storage-driver&#34;</span>: <span class="s2">&#34;overlay2&#34;</span>,
+<span class="s2">&#34;storage-opts&#34;</span>: <span class="o">[</span>
+   <span class="s2">&#34;overlay2.override_kernel_check=true&#34;</span>
+<span class="o">]</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>⚠️ 注意: 配置项修改后，多需要重启一下 <code>docker</code> 才会生效</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">/etc/init.d/dockerd restart
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<h2 id="k3s-agent-部署">k3s agent 部署</h2>
+<ul>
+<li><a href="https://github.com/discordianfish/k3s-openwrt">安装包 Github 仓库地址</a></li>
+</ul>
+<h3 id="下载安装包">下载安装包</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">wget https://github.com/discordianfish/k3s-openwrt/releases/download/9/k3s_1.17.4+k3s1_x86_64.opk
+
+opkg install ./k3s_1.17.4+k3s1_x86_64.opk
+
+root@OpenWrt:/opt/tools# /usr/bin/k3s --version
+k3s version v1.17.4+k3s1 <span class="o">(</span>3eee8ac3<span class="o">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="升级-k3s-版本">升级 k3s 版本</h3>
+<blockquote>
+<p>可以看的，默认的安装包中，k3s的版本为 <code>v1.17.4+k3s1</code>,与我们的 n1 上的 master 不匹配。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">wget https://github.com/k3s-io/k3s/releases/download/v1.19.7%2Bk3s1/k3s
+
+chmod a+x k3s
+
+mv /usr/bin/k3s /usr/bin/k3s.old
+
+cp -a k3s /usr/bin/k3s
+
+root@OpenWrt:/opt/tools# k3s --version
+k3s version v1.19.7+k3s1 <span class="o">(</span>5a00e38d<span class="o">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="部署前的检查-1">部署前的检查</h3>
+<blockquote>
+<p>同样这个打印的内容是 <code>部署完成后打印</code> 的</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span><span class="lnt">83
+</span><span class="lnt">84
+</span><span class="lnt">85
+</span><span class="lnt">86
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">root@OpenWrt:~# k3s check-config
+
+Verifying binaries in /var/lib/rancher/k3s/data/30740d1d67da51fe92b10367ecce4d580e552c634ad4a6c4dd13297ffd1f3edd/bin:
+- sha256sum: good
+- links: good
+
+System:
+- /usr/sbin iptables v1.8.4 <span class="o">(</span>legacy<span class="o">)</span>: ok
+- swap: disabled
+- routes: default CIDRs 10.42.0.0/16 or 10.43.0.0/16 already routed
+
+Limits:
+- /proc/sys/kernel/keys/root_maxkeys: <span class="m">1000000</span>
+
+info: reading kernel config from /proc/config.gz ...
+
+Generally Necessary:
+- cgroup hierarchy: properly mounted <span class="o">[</span>/sys/fs/cgroup<span class="o">]</span>
+- CONFIG_NAMESPACES: enabled
+- CONFIG_NET_NS: enabled
+- CONFIG_PID_NS: enabled
+- CONFIG_IPC_NS: enabled
+- CONFIG_UTS_NS: enabled
+- CONFIG_CGROUPS: enabled
+- CONFIG_CGROUP_CPUACCT: enabled
+- CONFIG_CGROUP_DEVICE: enabled
+- CONFIG_CGROUP_FREEZER: enabled
+- CONFIG_CGROUP_SCHED: enabled
+- CONFIG_CPUSETS: enabled
+- CONFIG_MEMCG: enabled
+- CONFIG_KEYS: enabled
+- CONFIG_VETH: enabled <span class="o">(</span>as module<span class="o">)</span>
+- CONFIG_BRIDGE: enabled
+- CONFIG_BRIDGE_NETFILTER: enabled <span class="o">(</span>as module<span class="o">)</span>
+- CONFIG_IP_NF_FILTER: enabled <span class="o">(</span>as module<span class="o">)</span>
+- CONFIG_IP_NF_TARGET_MASQUERADE: enabled <span class="o">(</span>as module<span class="o">)</span>
+- CONFIG_NETFILTER_XT_MATCH_ADDRTYPE: enabled <span class="o">(</span>as module<span class="o">)</span>
+- CONFIG_NETFILTER_XT_MATCH_CONNTRACK: enabled <span class="o">(</span>as module<span class="o">)</span>
+- CONFIG_NETFILTER_XT_MATCH_IPVS: enabled <span class="o">(</span>as module<span class="o">)</span>
+- CONFIG_IP_NF_NAT: enabled <span class="o">(</span>as module<span class="o">)</span>
+- CONFIG_NF_NAT: enabled <span class="o">(</span>as module<span class="o">)</span>
+- CONFIG_POSIX_MQUEUE: enabled
+
+Optional Features:
+- CONFIG_USER_NS: enabled
+- CONFIG_SECCOMP: enabled
+- CONFIG_CGROUP_PIDS: enabled
+- CONFIG_BLK_CGROUP: enabled
+- CONFIG_BLK_DEV_THROTTLING: missing
+- CONFIG_CGROUP_PERF: missing
+- CONFIG_CGROUP_HUGETLB: missing
+- CONFIG_NET_CLS_CGROUP: enabled
+- CONFIG_CGROUP_NET_PRIO: enabled
+- CONFIG_CFS_BANDWIDTH: enabled
+- CONFIG_FAIR_GROUP_SCHED: enabled
+- CONFIG_RT_GROUP_SCHED: enabled
+- CONFIG_IP_NF_TARGET_REDIRECT: enabled <span class="o">(</span>as module<span class="o">)</span>
+- CONFIG_IP_SET: enabled <span class="o">(</span>as module<span class="o">)</span>
+- CONFIG_IP_VS: enabled <span class="o">(</span>as module<span class="o">)</span>
+- CONFIG_IP_VS_NFCT: enabled
+- CONFIG_IP_VS_PROTO_TCP: enabled
+- CONFIG_IP_VS_PROTO_UDP: enabled
+- CONFIG_IP_VS_RR: enabled <span class="o">(</span>as module<span class="o">)</span>
+- CONFIG_EXT4_FS: enabled
+- CONFIG_EXT4_FS_POSIX_ACL: missing
+- CONFIG_EXT4_FS_SECURITY: missing
+    <span class="nb">enable</span> these ext4 configs <span class="k">if</span> you are using ext3 or ext4 as backing filesystem
+- Network Drivers:
+  - <span class="s2">&#34;overlay&#34;</span>:
+    - CONFIG_VXLAN: enabled <span class="o">(</span>as module<span class="o">)</span>
+      Optional <span class="o">(</span><span class="k">for</span> encrypted networks<span class="o">)</span>:
+      - CONFIG_CRYPTO: enabled
+      - CONFIG_CRYPTO_AEAD: enabled
+      - CONFIG_CRYPTO_GCM: missing
+      - CONFIG_CRYPTO_SEQIV: missing
+      - CONFIG_CRYPTO_GHASH: missing
+      - CONFIG_XFRM: enabled
+      - CONFIG_XFRM_USER: enabled <span class="o">(</span>as module<span class="o">)</span>
+      - CONFIG_XFRM_ALGO: enabled <span class="o">(</span>as module<span class="o">)</span>
+      - CONFIG_INET_ESP: enabled <span class="o">(</span>as module<span class="o">)</span>
+      - CONFIG_INET_XFRM_MODE_TRANSPORT: missing
+- Storage Drivers:
+  - <span class="s2">&#34;overlay&#34;</span>:
+    - CONFIG_OVERLAY_FS: enabled
+
+STATUS: pass
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p><strong>第一次部署检查的使用，显示有两项未通过，与 <a href="https://www.gitmemory.com/issue/rancher/k3s/1291/574224027">此链接</a> 中描述类似</strong></p>
+</blockquote>
+<h3 id="修改-k3s-服务配置">修改 k3s 服务配置</h3>
+<blockquote>
+<p><a href="https://docs.rancher.cn/k3s/">K3s 中文文档</a></p>
+</blockquote>
+<p>默认安装服务后的配置文件是 <code>/etc/config/k3s</code>， 这个文件默认是没有的，需要我们自己创建</p>
+<p><code>--token</code> 后的配置为在 n1 master 中 <code>cat /var/lib/rancher/k3s/server/node-token</code> 的配置</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">root@n1:/# cat /var/lib/rancher/k3s/server/node-token
+K106ccb265579f1e400312844312787c9ce4dd8528b6c58e26894e953661c9a907ef5d2::server:484323236840cb1c3bea454570f85
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>服务配置文件 <code>/etc/config/k3s</code></strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat /etc/config/k3s
+config globals <span class="s1">&#39;globals&#39;</span>
+        option opts <span class="s1">&#39;--server https://192.168.8.112:6443 --token K106ccb265579f1e400312844312787c9ce4dd8528b6c58e26894e953661c9a907ef5d2::server:484323236840cb1c3bea454570f85 --docker --kube-apiserver-arg service-node-port-range=40000-65000 --no-deploy traefik --write-kubeconfig ~/.kube/config --write-kubeconfig-mode 666&#39;</span>
+        option root <span class="s1">&#39;/application/k3s&#39;</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>配置文件，更具自己的实际使用情况增删即可</p>
+</blockquote>
+<p><strong>服务启动脚本 <code>/etc/init.d/k3s</code></strong></p>
+<blockquote>
+<p><strong>修改说明:</strong> 下面展示的启动脚本中，将 <code>uci_get</code> 替换使用成了 <code>uci get</code>。 将 <code>-- server </code> 修改成了 <code>-- agent </code> 如你部署的是 server 端那么此处你可以不做修改，且 <code>/etc/config/k3s</code> 中也得修改为 server 端的配置项。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">root@OpenWrt:~# cat /etc/init.d/k3s
+<span class="c1">#!/bin/sh /etc/rc.common</span>
+
+<span class="nv">START</span><span class="o">=</span><span class="m">60</span>
+<span class="nv">STOP</span><span class="o">=</span><span class="m">20</span>
+
+<span class="nv">PIDFILE</span><span class="o">=</span>/var/run/k3s.pid
+<span class="nv">EXEC</span><span class="o">=</span><span class="s2">&#34;/usr/bin/k3s&#34;</span>
+
+ensure_cgroup_mount<span class="o">()</span> <span class="o">{</span>
+  <span class="c1"># Unmount /sys/fs/cgroup if mounted as cgroup</span>
+  grep -q <span class="s1">&#39; /sys/fs/cgroup cgroup&#39;</span> /proc/self/mounts <span class="o">&amp;&amp;</span> umount /sys/fs/cgroup
+
+  grep -q <span class="s1">&#39; /sys/fs/cgroup tmpfs&#39;</span> /proc/self/mounts <span class="se">\
+</span><span class="se"></span>    <span class="o">||</span> mount -t tmpfs -o <span class="nv">uid</span><span class="o">=</span>0,gid<span class="o">=</span>0,mode<span class="o">=</span><span class="m">0755</span> cgroup /sys/fs/cgroup
+
+  <span class="k">for</span> sys in <span class="k">$(</span>awk <span class="s1">&#39;!/^#/ { if ($4 == 1) print $1 }&#39;</span> /proc/cgroups<span class="k">)</span><span class="p">;</span> <span class="k">do</span>
+    <span class="nv">mnt</span><span class="o">=</span><span class="s2">&#34;/sys/fs/cgroup/</span><span class="nv">$sys</span><span class="s2">&#34;</span>
+    grep -q <span class="s2">&#34;cgroup </span><span class="nv">$mnt</span><span class="s2"> &#34;</span> /proc/self/mounts <span class="o">&amp;&amp;</span> <span class="k">continue</span>
+    mkdir -p <span class="s2">&#34;</span><span class="nv">$mnt</span><span class="s2">&#34;</span>
+    mount -n -t cgroup -o <span class="nv">$sys</span> cgroup <span class="s2">&#34;</span><span class="nv">$mnt</span><span class="s2">&#34;</span>
+  <span class="k">done</span>
+<span class="o">}</span>
+
+start<span class="o">()</span> <span class="o">{</span>
+  ensure_cgroup_mount
+  start-stop-daemon -S -b -x <span class="s2">&#34;</span><span class="nv">$EXEC</span><span class="s2">&#34;</span> -m -p <span class="s2">&#34;</span><span class="nv">$PIDFILE</span><span class="s2">&#34;</span> <span class="se">\
+</span><span class="se"></span>    -- agent <span class="k">$(</span>uci get k3s.globals.opts<span class="k">)</span> <span class="se">\
+</span><span class="se"></span>    --data-dir <span class="k">$(</span>uci get k3s.globals.root<span class="k">)</span>
+<span class="o">}</span>
+
+stop<span class="o">()</span> <span class="o">{</span>
+  start-stop-daemon -K -p <span class="s2">&#34;</span><span class="nv">$PIDFILE</span><span class="s2">&#34;</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="启动服务">启动服务</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">/etc/init.d/k3s start  <span class="c1"># 启动命令</span>
+
+root@OpenWrt:~# ps -ef<span class="p">|</span>grep k3s
+ <span class="m">3451</span> root      867m S    <span class="o">{</span>k3s-agent<span class="o">}</span> /usr/bin/k3s agent   <span class="c1"># 启动成功后，会有进程在后台运行</span>
+<span class="m">21059</span> root      <span class="m">1096</span> S    grep k3s
+
+
+root@n1:/# kubectl get nodes
+NAME      STATUS   ROLES    AGE    VERSION
+n1        Ready    master   2d3h   v1.19.7+k3s1
+openwrt   Ready    &lt;none&gt;   2d2h   v1.19.7+k3s1
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>如你运行启动命令后，没有任何的响应，可先前台手动运行一步一步进行 <code>debug</code>, 如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"> k3s agent --server https://192.168.8.112:6443 --token K106ccb265579f1e400312844312787c9ce4dd8528b6c58e26894e953661c9a907ef5d2::server:484323236840cb1c3bea454570f85 --docker --kube-apiserver-arg service-node-port-range<span class="o">=</span>40000-65000 --no-deploy traefik --write-kubeconfig ~/.kube/config --write-kubeconfig-mode <span class="m">666</span>
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<h2 id="问题记录">问题记录</h2>
+<p>启动 agent 时显示 <code>level=error msg=&quot;Node password rejected, duplicate hostname or contents of '/etc/rancher/node/password' may not match server nod e-passwd entry, try enabling a unique node name with the --with-node-id flag&quot;</code> 错误 。</p>
+<blockquote>
+<p>此问题的原因是之前部署时部署未成功，但 server 端还留有 agent 端的 <code>server id</code> ，当 agent 端再次注册到 server 端时，server 端通过主机名称进行匹配，发现 id 匹配不对时就导致了冲突。解决方法就是在 server 端删除老的 <code>server id</code> 或 更改 agent 端的主机名称（<code>推荐使用在 server 端删除</code>）。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat /etc/rancher/node/password  <span class="c1"># agent</span>
+92a18abb46
+
+cat /var/lib/rancher/k3s/server/cred/node-passwd
+898170dfe92a18abb46,n1,n1,
+9185b3215d3afcab9,openwrt,openwrt,  <span class="c1"># 将此行删除</span>
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<h2 id="openwrt-开放防火墙">openWrt 开放防火墙</h2>
+<p>编辑 <code>/etc/config/network</code> 配置文件, 添加如下类容</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">config interface <span class="s1">&#39;k8s&#39;</span>
+	option proto <span class="s1">&#39;none&#39;</span>
+	option ifname <span class="s1">&#39;cni0&#39;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>编辑 <code>/etc/config/firewall</code> 添加如下类容</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">config zone
+        option name <span class="s1">&#39;k8s&#39;</span>
+        option input <span class="s1">&#39;ACCEPT&#39;</span>
+        option output <span class="s1">&#39;ACCEPT&#39;</span>
+        option forward <span class="s1">&#39;ACCEPT&#39;</span>
+        option network <span class="s1">&#39;k8s&#39;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>重启一下 <code>op 系统</code> ，使配置生效</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">reboot
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="部署应用">部署应用</h1>
+<blockquote>
+<p>此处我们部署一个 <code>deployment</code> 类型的 nginx 服务，来简单测试一下 <code>k3s 集群完整性</code>。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat <span class="s">&lt;&lt;EOF | kubectl apply -f -
+</span><span class="s">apiVersion: v1
+</span><span class="s">kind: Service
+</span><span class="s">metadata:
+</span><span class="s">  name: nginx
+</span><span class="s">spec:
+</span><span class="s">  ports:
+</span><span class="s">    - protocol: TCP
+</span><span class="s">      name: web
+</span><span class="s">      port: 80
+</span><span class="s">  selector:
+</span><span class="s">    app: nginx
+</span><span class="s">
+</span><span class="s">---
+</span><span class="s">kind: Deployment
+</span><span class="s">apiVersion: apps/v1
+</span><span class="s">metadata:
+</span><span class="s">  name: nginx
+</span><span class="s">  labels:
+</span><span class="s">    app: nginx
+</span><span class="s">spec:
+</span><span class="s">  replicas: 4
+</span><span class="s">  selector:
+</span><span class="s">    matchLabels:
+</span><span class="s">      app: nginx
+</span><span class="s">  template:
+</span><span class="s">    metadata:
+</span><span class="s">      labels:
+</span><span class="s">        app: nginx
+</span><span class="s">    spec:
+</span><span class="s">      containers:
+</span><span class="s">        - name: nginx
+</span><span class="s">          image: nginx:1.16.1
+</span><span class="s">          ports:
+</span><span class="s">            - name: web
+</span><span class="s">              containerPort: 80
+</span><span class="s">EOF</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">watch kubectl get pod -o wide
+
+NAME                    READY   STATUS    RESTARTS   AGE    IP           NODE      NOMINATED NODE   READINESS GATES
+nginx-bcf5bbd7d-n2lfx   1/1     Running   <span class="m">0</span>          3m2s   10.42.0.14   n1        &lt;none&gt;           &lt;none&gt;
+nginx-bcf5bbd7d-zhj6j   1/1     Running   <span class="m">0</span>          78s    10.42.0.15   n1        &lt;none&gt;           &lt;none&gt;
+nginx-bcf5bbd7d-sxlvp   1/1     Running   <span class="m">0</span>          78s    10.42.1.17   openwrt   &lt;none&gt;           &lt;none&gt;
+nginx-bcf5bbd7d-bsxtn   1/1     Running   <span class="m">0</span>          78s    10.42.1.18   openwrt   &lt;none&gt;           &lt;none&gt;
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>可以看到上述打印 <code>n1</code> 和 <code>openwrt</code> 分别启动了 2 个容器，现在我们分别在两台机器上使用 <code>curl</code> 测试一下对方主机中 pod 的 ip，来检查网络是否可以连通。</p>
+</blockquote>
+<p><strong><code>n1</code>, 测试 curl 10.42.1.17 和 10.42.1.18</strong></p>
+<p><img src="https://coderyzun-image.peng55.xyz/img/image-20210126132703410.png" alt="image-20210126132703410"></p>
+<p><strong><code>openWrt</code>, 测试 curl 10.42.0.14 和 10.42.0.15</strong></p>
+<p><img src="https://coderyzun-image.peng55.xyz/img/image-20210126132810261.png" alt="image-20210126132810261"></p>
+<blockquote>
+<p>经过简单的测试，可以看到 k3s 集群使用起来没有什么问题。</p>
+</blockquote>
+<h1 id="配置使用-dashboard">配置使用 dashboard</h1>
+<p>原本打算使用 <code>rancher</code> 来作为 dashboard 的，考虑其资源的占用什么的，还是选择使用了 <code>lens</code>，即将 dashboard 部署在客户端。</p>
+<p><a href="https://github.com/lensapp/lens">Lens Github地址</a></p>
+<blockquote>
+<p>省略。安装过程。。。。</p>
+</blockquote>
+<p>查看 <code>n1</code> 即 master 中的 kubelet 配置文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">root@n1:/# cat ~/.kube/config
+</code></pre></td></tr></table>
+</div>
+</div><p>将打印内容复制，粘贴到客户端的电脑上</p>
+<blockquote>
+<p>内容保存在至 <code>~/.kube/k3s-config</code> 中</p>
+</blockquote>
+<h2 id="lens-添加主机">lens 添加主机</h2>
+<p><img src="https://coderyzun-image.peng55.xyz/img/image-20210126134036320.png" alt="image-20210126134036320"></p>
+<blockquote>
+<p>如若提示证书验证错，这里使用一个小技巧即可，在主机中 <code>hosts</code> 文件中添加对应映射，并修改 <code>kubelet 配置文件中</code> 的 <code>server 地址</code> 为映射的域名即可。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat /etc/hosts
+192.168.8.102 n1
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://coderyzun-image.peng55.xyz/img/image-20210126134624679.png" alt="image-20210126134624679"></p>
+</blockquote>
+<h2 id="开启监控">开启监控</h2>
+<p>鼠标移到到集群，右键，然后点击 <code>settings</code></p>
+<p><img src="https://coderyzun-image.peng55.xyz/img/image-20210126135339985.png" alt="image-20210126135339985"></p>
+<p>拉到后面，然后点击进行安装</p>
+<p><img src="https://coderyzun-image.peng55.xyz/img/image-20210126135403341.png" alt="image-20210126135403341"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/img/image-20210126135820673.png" alt="image-20210126135820673"></p>
+<p><img src="https://coderyzun-image.peng55.xyz/img/image-20210126135947717.png" alt="image-20210126135947717"></p>
+<h1 id="done">Done。。。</h1>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yang'zun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-01-26
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/openwrt/">OpenWrt</a>
+          <a href="/tags/n1/">N1</a>
+          <a href="/tags/k3s/">K3s</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/k8s-nfs-strage-class/">
+            <span class="next-text nav-default">在 Kubernetes 中部署 nfs storageClass</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+  <div id="vcomments"></div>
+  <script src="https://coderyzun-image.peng55.xyz/blog-js/av-min.js"></script>
+  <script src="https://coderyzun-image.peng55.xyz/blog-js/Valine.min.js"></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
+        appKey: 'siSAWI3rzA6Ow8Tmiv7V4GO4',
+        notify:  true ,
+        verify:  true ,
+        avatar:'',
+        placeholder: '来留下点什么吧~',
+        visitor:  false 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:amoaloas@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/cdryzun" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdryzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动 
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    Image cdn power by <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" target="_blank" rel="nofollow"><img src="https://coderyzun-image.peng55.xyz/img/upyun.png" width="56" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"></a>
+  </span>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun</span>
+    </span>
+
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://coderyzun-image.peng55.xyz/blog-js/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="https://coderyzun-image.peng55.xyz/blog-js/slideout.min.js" crossorigin="anonymous"></script>
+  <script src="https://coderyzun-image.peng55.xyz/blog-js/jquery.fancybox.min.js"crossorigin="anonymous"></script>
+    <script src="https://coderyzun-image.peng55.xyz/blog-js/timeago.min.js" crossorigin="anonymous"></script>
+    <script src="https://coderyzun-image.peng55.xyz/blog-js/timeago.locales.min.js" crossorigin="anonymous"></script>
+  <script><!-- NOTE: timeago.js uses the language code format like "zh_CN" (underscore and case sensitive) -->
+    var languageCode = "en-us".replace(/-/g, '_').replace(/_(.*)/, function ($0, $1) {return $0.replace($1, $1.toUpperCase());});
+    timeago().render(document.querySelectorAll('.timeago'), languageCode);
+    timeago.cancel();  
+  </script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://coderyzun-image.peng55.xyz/blog-js/docsearch.min.js"></script>
+<script>
+    docsearch({
+    apiKey: "17388eec628e676a77d6235068b458df",
+    indexName: "blog",
+    appId: "KEECS2XKBV",
+    inputSelector: '.docsearch-input',
+    debug: false,
+    });
+</script>
+</body>
+</html>
