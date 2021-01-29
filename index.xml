@@ -8,6 +8,15 @@
     <language>en-us</language>
     <lastBuildDate>Tue, 26 Jan 2021 09:26:39 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>About</title>
+      <link>https://cdryzun.github.io/about/</link>
+      <pubDate>Fri, 29 Jan 2021 13:18:49 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/about/</guid>
+      <description>嗯..在这里写一些关于自己的吧..</description>
+    </item>
+    
+    <item>
       <title>使用 斐讯n1 &amp; openWrt 搭建 k3s 集群</title>
       <link>https://cdryzun.github.io/post/n1-openwrt-k3s-deploy/</link>
       <pubDate>Tue, 26 Jan 2021 09:26:39 +0800</pubDate>
