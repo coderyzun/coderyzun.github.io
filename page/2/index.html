@@ -117,79 +117,6 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/delete-container-reset/">记录一次，因误删容器导致的容器恢复过程</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-01-14 </span>
-      <div class="post-category">
-          <a href="/categories/docker/"> Docker </a>
-          <a href="/categories/datarecovery/"> DataRecovery </a>
-          </div>
-        <span class="more-meta"> 约 2094 字 </span>
-        <span class="more-meta"> 预计阅读 5 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      环境说明 因在日常维护过程中升级了docker的版本 ，碰到了一个 docker 的一个 bug, 导致 docker 服务无法正常启动。在恢复 docker 服务的过程中把 /var/lib/docker/containers 下的所有文件给 清空 了
-    </div>
-    <div class="read-more">
-      <a href="/post/delete-container-reset/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/intermittent-coredns-hosts/">Coredns 进行解析域名时，某些域名出现间断性无法正常解析问题</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-01-07 </span>
-      <div class="post-category">
-          <a href="/categories/kubernetes/"> Kubernetes </a>
-          <a href="/categories/coredns/"> Coredns </a>
-          </div>
-        <span class="more-meta"> 约 1672 字 </span>
-        <span class="more-meta"> 预计阅读 4 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      问题描述: Kubernetes 节点中，有一台节点使用 coredns 进行解析某个域名时，出现间断性无法正常解析问题，而解析另外一个域名时不会出现解析问题。 再次重复一下问题重
-    </div>
-    <div class="read-more">
-      <a href="/post/intermittent-coredns-hosts/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/docker-deploy-nexus3-upgrade/">使用 Docker 部署 Nexus3 私服的详细记录总结</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2020-12-22 </span>
-      <div class="post-category">
-          <a href="/categories/nexus3/"> Nexus3 </a>
-          <a href="/categories/docker/"> Docker </a>
-          <a href="/categories/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/"> 持续集成 </a>
-          </div>
-        <span class="more-meta"> 约 3011 字 </span>
-        <span class="more-meta"> 预计阅读 7 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      Nexus3.x 说明 功能介绍 Nexus3, 是一款支持仓库种类繁多的私服管理工具，目前大众所知晓的仓库类型如：go、pypi、docker、maven、yum、git、
-    </div>
-    <div class="read-more">
-      <a href="/post/docker-deploy-nexus3-upgrade/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/ingress-to-dashboard/">部署 Nginx-Ingress 并配置暴露 kubernetes dashboard</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2020-12-22 </span>
@@ -236,6 +163,146 @@
   </div>
 </article>
 
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/centos-init-config/">Centos7 安装之后必要的初始化操作</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2020-12-21 </span>
+      <div class="post-category">
+          <a href="/categories/centos/"> Centos </a>
+          <a href="/categories/docker/"> Docker </a>
+          </div>
+        <span class="more-meta"> 约 1517 字 </span>
+        <span class="more-meta"> 预计阅读 4 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      ⚠️ 注意此些操作在Centos7中得到验证且可行，其他发行版本请自己尝试 OS 调优 内核优化 ⚠️ 请更具实践业务场景进行调整，此示例中较适合kube
+    </div>
+    <div class="read-more">
+      <a href="/post/centos-init-config/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/flannel-exclusion-records/">kubernetes集群中 controller-manager 及 scheduler 组件频繁发生重启的一次排查解决</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2020-12-18 </span>
+      <div class="post-category">
+          <a href="/categories/kubernetes/"> Kubernetes </a>
+          <a href="/categories/%E9%94%99%E8%AF%AF%E4%BF%AE%E5%A4%8D/"> 错误修复 </a>
+          </div>
+        <span class="more-meta"> 约 711 字 </span>
+        <span class="more-meta"> 预计阅读 2 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      环境说明 Kubernetes 版本: v1.19.6 使用操作系统: Centos-7.9.2009 现象说明 最近在使用k8s集群的时候，发现集群变慢了许多，排查发现 master 节点中 controller-manager 及 scheduler 组件频繁的发生重启 排查记录 抓
+    </div>
+    <div class="read-more">
+      <a href="/post/flannel-exclusion-records/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/docker-quickstart-redis/">Docker Quickstart Redis Server</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2020-11-30 </span>
+      <div class="post-category">
+          <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"> 数据库 </a>
+          </div>
+        <span class="more-meta"> 约 192 字 </span>
+        <span class="more-meta"> 预计阅读 1 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      环境说明: 系统镜像: Redis:5.x （示例容器为: redis:5.0.4 ） 操作系统: Centos Docker 版本: 19.03.8 具体实现步骤 操作系统简单优化 1 2 3 4 5 6 echo &#39;vm.overcommit_memory=1 net.core.somaxconn=65535&#39; &gt;&gt; /etc/sysctl.conf sysctl -p echo never &gt; /sys/kernel/mm/transparent_hugepage/enable 下载容器 1 docker pull redis:5.0.4
+    </div>
+    <div class="read-more">
+      <a href="/post/docker-quickstart-redis/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/openwrt-docker-multi-net/">Docker 部署多网口软路由</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2020-11-19 </span>
+      <div class="post-category">
+          <a href="/categories/%E8%BD%AF%E8%B7%AF%E7%94%B1/"> 软路由 </a>
+          </div>
+        <span class="more-meta"> 约 834 字 </span>
+        <span class="more-meta"> 预计阅读 2 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      环境说明: 操作系统: Centos 7.8.2003 内核版本: 4.14.129-bbrplus Docker 版本: 19.03.12 使用 Docker 镜像: raymondwong/openwrt_r9:20.1.24-x86_64 网卡说明: 板载螃蟹网卡、绿联 usb3.0 千M 网卡 系统网卡配置 将对应网卡启动混淆模式 1 2 3 4
+    </div>
+    <div class="read-more">
+      <a href="/post/openwrt-docker-multi-net/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/n1-docker/">斐讯N1 docker部署 openwrt系统的使用记录</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2020-11-15 </span>
+      <div class="post-category">
+          <a href="/categories/%E8%BD%AF%E8%B7%AF%E7%94%B1/"> 软路由 </a>
+          </div>
+        <span class="more-meta"> 约 638 字 </span>
+        <span class="more-meta"> 预计阅读 2 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      openWRT 系统无法与宿主机通信问题解决 参考文档 环境说明 小钢炮宿主机 IP：192.168.8.102 Docker 内 openWRT macvlan ip: 192.168.8.111 主路由网关：192.168.8.1 机器
+    </div>
+    <div class="read-more">
+      <a href="/post/n1-docker/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/first-kind/">Kind 部署本地k8s集群的使用记录</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2020-11-15 </span>
+      <div class="post-category">
+          <a href="/categories/kubernetes/"> Kubernetes </a>
+          </div>
+        <span class="more-meta"> 约 344 字 </span>
+        <span class="more-meta"> 预计阅读 1 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      参考资料 Github 地址 参考博客 安装 1 2 3 curl -Lo ./kind &#34;https://kind.sigs.k8s.io/dl/v0.9.0/kind-$(uname)-amd64&#34; chmod +x ./kind mv ./kind /some-dir-in-your-PATH/kind 启动集群 注意启动集群前 请确认 docker 服务是否启动 1 2 3 4 5 6 7 8 9 10 11 12 docker info|grep -A 2 Server # 确认 是否启
+    </div>
+    <div class="read-more">
+      <a href="/post/first-kind/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
     </section>
   
   <nav class="pagination">
@@ -243,10 +310,7 @@
         <i class="iconfont icon-left"></i>
         <span class="prev-text">上一页</span>
       </a>
-    <a class="next" href="/page/3/">
-        <span class="next-text">下一页</span>
-        <i class="iconfont icon-right"></i>
-      </a>
+    
   </nav>
         </div>
         
