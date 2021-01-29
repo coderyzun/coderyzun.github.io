@@ -127,7 +127,7 @@ body {
 .post {
 	padding: 1em 1em;
     margin: 1.5em 0;
-	box-shadow: 0 8px 8px rgba(10,16,20,.24), 0 0 8px rgba(10,16,20,.12);
+	box-shadow: 0 8px 8px rgba(10,16,20,.24), 0 0 8px rgba(78, 124, 155, 0.12);
 	-webkit-box-shadow: box-shadow: 0 8px 8px rgba(10,16,20,.24), 0 0 8px rgba(10,16,20,.12);
 }
 
