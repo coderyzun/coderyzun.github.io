@@ -8,12 +8,13 @@ on:
      - master
 
 jobs:
-  push_to_registry:
-    name: Push Docker image to Docker Hub
+  build:
+    name: Push Docker image to Docker Hub & Base Upgrade Install 
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
+
       - name: Push to Docker Hub
         uses: docker/build-push-action@v1
         with:
@@ -21,3 +22,16 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: yangzun/private-hugo-blog
           tag_with_ref: true
+
+      - name: ssh pipelines
+        uses: cross-the-world/ssh-pipeline@master
+        env:
+          WELCOME: "ssh pipeline"
+        with:
+          host: ${{ secrets.BASE_HOST }}
+          user: ${{ secrets.BASE_USER }}
+          pass: ${{ secrets.BASE_PASS }}
+          port: ${{ secrets.BASE_PORT }}
+          connect_timeout: 10s
+          script: |
+            echo test
