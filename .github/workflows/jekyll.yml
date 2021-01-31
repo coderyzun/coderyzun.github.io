@@ -15,6 +15,10 @@ jobs:
         name: Checkout
         uses: actions/checkout@v2
       -
+        name: Set Environment Variables
+        run: |
+          echo "GITHUB_RUN_NUMBER=GITHUB_RUN_NUMBER" >> $GITHUB_ENV
+      -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       -
