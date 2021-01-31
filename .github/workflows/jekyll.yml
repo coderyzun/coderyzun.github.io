@@ -17,8 +17,8 @@ jobs:
 
       - name: Set Environment Variables
         run: |
-          IMG=nginx-coustom
-          OWNER=private-hugo-blog
+          IMG=private-hugo-blog
+          OWNER=yangzun
           echo "BUILD_VER=1.0.$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
           echo "IMG=${IMG}" >> $GITHUB_ENV
           echo "IMAGE=${OWNER}/${IMG}" >> $GITHUB_ENV
