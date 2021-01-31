@@ -17,8 +17,8 @@ jobs:
 
       - name: Set Environment Variables
         run: |
-          IMG=private-hugo-blog
-          OWNER=yangzun
+          IMG='private-hugo-blog'
+          OWNER='yangzun'
           echo "BUILD_VER=1.0.$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
           echo "IMG=${IMG}" >> $GITHUB_ENV
           echo "IMAGE=${OWNER}/${IMG}" >> $GITHUB_ENV
@@ -44,6 +44,8 @@ jobs:
           context: .
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm/v7,linux/arm64
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
           push: true
           labels: |
             org.opencontainers.image.authors=${{ github.repository_owner }}
