@@ -54,7 +54,8 @@ jobs:
             ${{ env.IMAGE }}:${{ env.GIT_REF }}
             ${{ env.IMAGE }}:${{ env.GIT_SHA }}
             ${{ env.IMAGE }}:${{ env.BUILD_VER }}
-
+          push: true
+          
       - name: ssh pipelines
         uses: cross-the-world/ssh-pipeline@master
         env:
