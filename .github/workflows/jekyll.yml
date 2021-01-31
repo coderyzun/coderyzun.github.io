@@ -32,11 +32,11 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          platforms: linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/s390x
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: |
             yangzun/private-hugo-blog:latest
-            yangzun/private-hugo-blog:1.0.0
+            yangzun/private-hugo-blog:1.0.${{ env.GITHUB_RUN_NUMBER }}
       -
         name: ssh pipelines
         uses: cross-the-world/ssh-pipeline@master
@@ -49,4 +49,6 @@ jobs:
           port: ${{ secrets.BASE_PORT }}
           connect_timeout: 10s
           script: |
-            echo test
+            cd /root/blog-upgrade/
+            kubectl apply -f .
+            cat blog-deploy.yaml | sed "s#sed#\'${{ GITHUB_RUN_NUMBER }}\'#g" | kubectl apply -f -
