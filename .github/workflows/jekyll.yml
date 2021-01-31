@@ -43,10 +43,8 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          platforms: linux/amd64,linux/arm/v7,linux/arm64
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
           push: true
+          platforms: linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/s390x
           labels: |
             org.opencontainers.image.authors=${{ github.repository_owner }}
             org.opencontainers.image.created=${{ env.BUILD_DATE }}
@@ -56,10 +54,10 @@ jobs:
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.version=${{ env.BUILD_VER }}
           tags: |
-            ${{ env.IMAGE }}:latest
-            ${{ env.IMAGE }}:${{ env.GIT_REF }}
-            ${{ env.IMAGE }}:${{ env.GIT_SHA }}
-            ${{ env.IMAGE }}:${{ env.BUILD_VER }}
+            yangzun/private-hugo-blog:latest
+            # yangzun/private-hugo-blog:${{ env.GIT_REF }}
+            # yangzun/private-hugo-blog:${{ env.GIT_SHA }}
+            # yangzun/private-hugo-blog:${{ env.BUILD_VER }}
 
       - name: ssh pipelines
         uses: cross-the-world/ssh-pipeline@master
