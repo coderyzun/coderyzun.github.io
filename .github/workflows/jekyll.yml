@@ -54,10 +54,10 @@ jobs:
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.version=${{ env.BUILD_VER }}
           tags: |
-            yangzun/private-hugo-blog:${{ env.IMAGE }}:latest
-            yangzun/private-hugo-blog:${{ env.IMAGE }}:${{ env.GIT_REF }}
-            yangzun/private-hugo-blog:${{ env.IMAGE }}:${{ env.GIT_SHA }}
-            yangzun/private-hugo-blog:${{ env.IMAGE }}:${{ env.BUILD_VER }}
+            ${{ env.IMAGE }}:latest
+            ${{ env.IMAGE }}:${{ env.GIT_REF }}
+            ${{ env.IMAGE }}:${{ env.GIT_SHA }}
+            ${{ env.IMAGE }}:${{ env.BUILD_VER }}
 
       - name: ssh pipelines
         uses: cross-the-world/ssh-pipeline@master
