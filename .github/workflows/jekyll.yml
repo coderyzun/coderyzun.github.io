@@ -22,8 +22,10 @@ jobs:
           file: ./Dockerfile
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          tags: yangzun/private-hugo-blog:0.1.${GITHUB_RUN_NUMBER}
+          repository: yangzun/private-hugo-blog
+          tags: 0.1.${GITHUB_RUN_NUMBER}
           platforms: linux/amd64,linux/arm/v8
+
 
       - name: ssh pipelines
         uses: cross-the-world/ssh-pipeline@master
