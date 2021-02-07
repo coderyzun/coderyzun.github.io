@@ -36,7 +36,7 @@
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 <link href="/sass/main.min.91b78bab4c910ea45e74055931eb07bc62ca00397c55fe2771b7cac293130699.css" rel="stylesheet">
-<link rel="stylesheet" href="https://coderyzun-image.peng55.xyz/blog-css/jquery.fancybox.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" crossorigin="anonymous">
 <link rel="stylesheet" href="/css/custom.css">
 
 
@@ -64,11 +64,11 @@
 <![endif]-->
 
 <!--[if lt IE 9]>
-  <script src="https://coderyzun-image.peng55.xyz/blog-js/html5shiv.min.js"></script>
-  <script src="https://coderyzun-image.peng55.xyz/blog-js/respond.min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
 <![endif]-->
 
-<link rel="stylesheet" href="https://coderyzun-image.peng55.xyz/blog-css/docsearch.min.css" />
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/docsearch.min.css" />
 </head>
 <body>
   <div id="mobile-navbar" class="mobile-navbar">
@@ -189,7 +189,7 @@
     <div class="post-content">
       <h1 id="traefik-基础概念说明">Traefik 基础概念说明</h1>
 <p>Traefik 是一个 <a href="https://github.com/traefik/traefik">开源</a> 的边缘路由器，使发布服务变得有趣而轻松，是你整个平台的大门，拦截并匹配每一个传入的请求：它掌管着所有的匹配逻辑和路由规则，这些规则确定哪些服务处理哪些请求；传统的反向代理需要一个配置文件，其中包含路由到你服务的所有可能路由，而 Traefik 会实时检测服务并自动更新路由规则，并且可以 <code>自动服务发现</code>功能。</p>
-<p><img src="https://coderyzun-image.peng55.xyz/img/traefik-architecture.png" alt="traefik-architecture"></p>
+<p><img src="https://cdn.treesir.pub/img/traefik-architecture.png" alt="traefik-architecture"></p>
 <p>当启动 Traefik 时，需要定义 <code>entrypoints</code>（即入口点），然后，根据连接到这些 entrypoints 的 <code>路由</code> 来分析传入的请求，来查看他们是否与一组 <code>规则</code> 相匹配，如果匹配，则路由可能会将请求通过一系列 <strong>中间件</strong> 处理过后再转发到你的 <code>服务</code>上去。在了解 Traefik 之前有几个核心概念我们必须要了解：</p>
 <ul>
 <li><code>Providers</code> 用来自动发现平台上的服务，可以是编排工具、容器引擎或者 key-value 存储等，比如 Docker、Kubernetes、File</li>
@@ -351,7 +351,7 @@ traefik-84879ffbd-6kwv5   1/1     Running   <span class="m">0</span>          68
 </div>
 </div></blockquote>
 <p><strong>启动完成后，测试 curl 一下我们绑定的节点的 80 端口, 显示 <code>404 page not found</code> 即为正常。</strong></p>
-<p><img src="https://coderyzun-image.peng55.xyz/img/image-20210117110937322.png" alt="image-20210117110937322"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210117110937322.png" alt="image-20210117110937322"></p>
 <h2 id="暴露-traefik--dashboard">暴露 traefik  dashboard</h2>
 <blockquote>
 <p>因默认的 dashboard，未做任何加密处理，我这里将使用 <code>BasicAuth</code> 中间件来做一层 <code>用户认证</code> 处理</p>
@@ -469,16 +469,16 @@ YWRtaW46JGFwcjEkYVVsUERZT2IkdEREYXUzZDN6dnowb3A2TnJNbzZDMQoK
 </code></pre></td></tr></table>
 </div>
 </div><h2 id="设置域名解析">设置域名解析</h2>
-<p><img src="https://coderyzun-image.peng55.xyz/img/image-20210117114010165.png" alt="image-20210117114010165"></p>
-<p><img src="https://coderyzun-image.peng55.xyz/img/image-20210117114602842.png" alt="image-20210117114602842"></p>
-<p><img src="https://coderyzun-image.peng55.xyz/img/image-20210117114623277.png" alt="image-20210117114623277"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210117114010165.png" alt="image-20210117114010165"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210117114602842.png" alt="image-20210117114602842"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210117114623277.png" alt="image-20210117114623277"></p>
 <h1 id="中间件测试">中间件测试</h1>
 <blockquote>
 <p><a href="https://doc.traefik.io/traefik/"><code>参考文档</code></a></p>
 </blockquote>
 <h2 id="原生中间件">原生中间件</h2>
 <h3 id="headers">Headers</h3>
-<p><img src="https://coderyzun-image.peng55.xyz/img/headers.png" alt="headers"></p>
+<p><img src="https://cdn.treesir.pub/img/headers.png" alt="headers"></p>
 <p>创建容器示例，并创建 service 资源</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -664,12 +664,12 @@ YWRtaW46JGFwcjEkYVVsUERZT2IkdEREYXUzZDN6dnowb3A2TnJNbzZDMQoK
 </span><span class="s">EOF</span>
 </code></pre></td></tr></table>
 </div>
-</div><p><img src="https://coderyzun-image.peng55.xyz/img/image-20210117172109153.png" alt="image-20210117172109153"></p>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210117172109153.png" alt="image-20210117172109153"></p>
 <h3 id="ipwhitelist">IPWhiteList</h3>
-<p><img src="https://coderyzun-image.peng55.xyz/img/ipwhitelist.png" alt="ipwhitelist"></p>
+<p><img src="https://cdn.treesir.pub/img/ipwhitelist.png" alt="ipwhitelist"></p>
 <blockquote>
 <p>只允许 <code>192.168.8.153</code>，可访问</p>
-<p><img src="https://coderyzun-image.peng55.xyz/img/image-20210117171701017.png" alt="image-20210117171701017"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210117171701017.png" alt="image-20210117171701017"></p>
 </blockquote>
 <p>创建 Middleware 资源清单</p>
 <div class="highlight"><div class="chroma">
@@ -739,9 +739,9 @@ YWRtaW46JGFwcjEkYVVsUERZT2IkdEREYXUzZDN6dnowb3A2TnJNbzZDMQoK
 </span><span class="s">EOF</span>
 </code></pre></td></tr></table>
 </div>
-</div><p><img src="https://coderyzun-image.peng55.xyz/img/image-20210117175431908.png" alt="image-20210117175431908"></p>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210117175431908.png" alt="image-20210117175431908"></p>
 <p>其他主机 执行 curl</p>
-<p><img src="https://coderyzun-image.peng55.xyz/img/image-20210117175457262.png" alt="image-20210117175457262"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210117175457262.png" alt="image-20210117175457262"></p>
 <h3 id="redirectregex">RedirectRegex</h3>
 <p>创建 <code>v2</code> , deployment 和 service 资源清单</p>
 <div class="highlight"><div class="chroma">
@@ -822,7 +822,7 @@ YWRtaW46JGFwcjEkYVVsUERZT2IkdEREYXUzZDN6dnowb3A2TnJNbzZDMQoK
 </span><span class="s">EOF</span>
 </code></pre></td></tr></table>
 </div>
-</div><p><img src="https://coderyzun-image.peng55.xyz/img/image-20210117180923331.png" alt="image-20210117180923331"></p>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210117180923331.png" alt="image-20210117180923331"></p>
 <p>创建 Middleware 资源清单</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -905,7 +905,7 @@ YWRtaW46JGFwcjEkYVVsUERZT2IkdEREYXUzZDN6dnowb3A2TnJNbzZDMQoK
 </span><span class="s">EOF</span>
 </code></pre></td></tr></table>
 </div>
-</div><p><img src="https://coderyzun-image.peng55.xyz/img/image-20210117180938144.png" alt="image-20210117180938144"></p>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210117180938144.png" alt="image-20210117180938144"></p>
 <p>测试</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -915,7 +915,7 @@ YWRtaW46JGFwcjEkYVVsUERZT2IkdEREYXUzZDN6dnowb3A2TnJNbzZDMQoK
 <pre class="chroma"><code class="language-bash" data-lang="bash">curl -I http://traefik.coderyzun.cyou/redirectregex/v1/1
 </code></pre></td></tr></table>
 </div>
-</div><p><img src="https://coderyzun-image.peng55.xyz/img/image-20210117181500974.png" alt="image-20210117181500974"></p>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210117181500974.png" alt="image-20210117181500974"></p>
 
     </div>
 
@@ -962,8 +962,8 @@ YWRtaW46JGFwcjEkYVVsUERZT2IkdEREYXUzZDN6dnowb3A2TnJNbzZDMQoK
 
   
   <div id="vcomments"></div>
-  <script src="https://coderyzun-image.peng55.xyz/blog-js/av-min.js"></script>
-  <script src="https://coderyzun-image.peng55.xyz/blog-js/Valine.min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
   <script type="text/javascript">
     new Valine({
         el: '#vcomments' ,
@@ -1008,7 +1008,7 @@ YWRtaW46JGFwcjEkYVVsUERZT2IkdEREYXUzZDN6dnowb3A2TnJNbzZDMQoK
   
 
   <span class="copyright-year">
-    <a href="https://beian.miit.gov.cn/" class="busuanzi-footer">湘 ICP 备2021002157号-1</a> <img src="https://coderyzun-image.peng55.xyz/img/icp.png" width="23" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"> </a> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" target="_blank" rel="nofollow"><img src="https://coderyzun-image.peng55.xyz/img/upyun.png" width="56" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"></a>
+    <a href="https://beian.miit.gov.cn/" class="busuanzi-footer">湘 ICP 备2021002157号-1</a> <img src="https://cdn.treesir.pub/img/icp.png" width="23" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"> </a> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" target="_blank" rel="nofollow"><img src="https://cdn.treesir.pub/img/upyun.png" width="56" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"></a>
     &copy; 
     2019 - 
     2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun </span>
@@ -1023,9 +1023,9 @@ YWRtaW46JGFwcjEkYVVsUERZT2IkdEREYXUzZDN6dnowb3A2TnJNbzZDMQoK
     </div>
   </div>
   
-  <script src="https://coderyzun-image.peng55.xyz/blog-js/jquery.min.js" crossorigin="anonymous"></script>
-  <script src="https://coderyzun-image.peng55.xyz/blog-js/slideout.min.js" crossorigin="anonymous"></script>
-  <script src="https://coderyzun-image.peng55.xyz/blog-js/jquery.fancybox.min.js"crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/slideout.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"crossorigin="anonymous"></script>
 
 
 
@@ -1038,7 +1038,7 @@ YWRtaW46JGFwcjEkYVVsUERZT2IkdEREYXUzZDN6dnowb3A2TnJNbzZDMQoK
 
 
 
-<script src="https://coderyzun-image.peng55.xyz/blog-js/docsearch.min.js"></script>
+<script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
 <script>
     docsearch({
     apiKey: "17388eec628e676a77d6235068b458df",
