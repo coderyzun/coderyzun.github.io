@@ -7,14 +7,14 @@ body {
 /* 设置版心 */
 .container {
 	margin: 0 auto;
-	padding-top:150px ;
+	/* padding-top:150px ; */
 }
 
 
 /* 设置a标签样式 */
-/* a {
-	color: rgba(118, 169, 202, 0.8);
-} */
+a {
+	color: rgba(66, 66, 88, 0.86);
+}
 
 /* 设置文章目录单行省略 */
 .toc-link {
@@ -43,9 +43,9 @@ body {
     background: -o-linear-gradient(200deg, #FFFFFF 0%, #EBEBEB 80%); /* Opera 11.1 - 12.0 */
     background: -moz-linear-gradient(200deg, #FFFFFF 0%, #EBEBEB 80%); /* Firefox 3.6 - 15 */
 	background: linear-gradient(200deg, #FFFFFF 0%, #EBEBEB 80%); /* 标准的语法（必须放在最后） */
-	position: fixed;
+	/* position: fixed;
 	top: 0px;
-	left: 0;
+	left: 0; */
 	background-color: #fff;
 	width: 100%;
 	z-index: 999;
