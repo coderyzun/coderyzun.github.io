@@ -6,7 +6,16 @@
     <description>Recent content in Posts on 「Yang&#39;zun」的网志博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 26 Jan 2021 09:26:39 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 21 Feb 2021 10:09:38 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>VMware ESXi Clone 复制虚拟机</title>
+      <link>https://cdryzun.github.io/post/exsi-clone-hosts/</link>
+      <pubDate>Sun, 21 Feb 2021 10:09:38 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/exsi-clone-hosts/</guid>
+      <description>环境说明 vmware exsi 版本: 6.7 被克隆虚拟机机: centos-source 目标克隆主机: jira-confluence 虚拟机文件路径: /vmfs/volumes/1t-data/centos-7-source 具体步骤 exis 开启 ssh 远程管理 开启远程管理后，使用 工具进行终端连接 复制源磁</description>
+    </item>
+    
     <item>
       <title>使用 斐讯n1 &amp; openWrt 搭建 k3s 集群</title>
       <link>https://cdryzun.github.io/post/n1-openwrt-k3s-deploy/</link>

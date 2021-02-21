@@ -2,15 +2,64 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://cdryzun.github.io/about/</loc>
-    <lastmod>2021-01-29T13:18:49+08:00</lastmod>
+    <loc>https://cdryzun.github.io/categories/</loc>
+    <lastmod>2021-02-21T10:09:38+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cdryzun.github.io/categories/</loc>
-    <lastmod>2021-01-26T09:26:39+08:00</lastmod>
+    <loc>https://cdryzun.github.io/tags/exsi/</loc>
+    <lastmod>2021-02-21T10:09:38+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/post/</loc>
+    <lastmod>2021-02-21T10:09:38+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/</loc>
+    <lastmod>2021-02-21T10:09:38+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/categories/vm/</loc>
+    <lastmod>2021-02-21T10:09:38+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/vmware/</loc>
+    <lastmod>2021-02-21T10:09:38+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/post/exsi-clone-hosts/</loc>
+    <lastmod>2021-02-21T10:09:38+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/</loc>
+    <lastmod>2021-02-21T10:09:38+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/about/</loc>
+    <lastmod>2021-01-29T13:18:49+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -38,27 +87,6 @@
   
   <url>
     <loc>https://cdryzun.github.io/tags/openwrt/</loc>
-    <lastmod>2021-01-26T09:26:39+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/post/</loc>
-    <lastmod>2021-01-26T09:26:39+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/tags/</loc>
-    <lastmod>2021-01-26T09:26:39+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/</loc>
     <lastmod>2021-01-26T09:26:39+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

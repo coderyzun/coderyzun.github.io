@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>VMware ESXi Clone 复制虚拟机 - 「Yang&#39;zun」的网志博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="vmware exsi 6.7 克隆虚拟机" /><meta name="keywords" content="vmware, exsi, 克隆复制, 6.7" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.2 with theme even" />
+
+
+<link rel="canonical" href="https://cdryzun.github.io/post/exsi-clone-hosts/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/custom.css">
+
+
+<meta property="og:title" content="VMware ESXi Clone 复制虚拟机" />
+<meta property="og:description" content="vmware exsi 6.7 克隆虚拟机" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdryzun.github.io/post/exsi-clone-hosts/" />
+<meta property="article:published_time" content="2021-02-21T10:09:38+08:00" />
+<meta property="article:modified_time" content="2021-02-21T10:09:38+08:00" />
+<meta itemprop="name" content="VMware ESXi Clone 复制虚拟机">
+<meta itemprop="description" content="vmware exsi 6.7 克隆虚拟机">
+<meta itemprop="datePublished" content="2021-02-21T10:09:38+08:00" />
+<meta itemprop="dateModified" content="2021-02-21T10:09:38+08:00" />
+<meta itemprop="wordCount" content="184">
+
+
+
+<meta itemprop="keywords" content="vmware,exsi," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="VMware ESXi Clone 复制虚拟机"/>
+<meta name="twitter:description" content="vmware exsi 6.7 克隆虚拟机"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
+<![endif]-->
+
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/docsearch.min.css" />
+</head>
+<body>
+  <header id="header" class="header">
+      <div class="logo-wrapper">
+  <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul><li style="display:inline-block;margin-right:10px;">
+    <input type="search" class="docsearch-input" placeholder="Search" />
+  </li></nav>
+
+  </header>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">VMware ESXi Clone 复制虚拟机</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-02-21 </span>
+        <div class="post-category">
+            <a href="/categories/vm/"> Vm </a>
+            </div>
+          <span class="more-meta"> 约 184 字 </span>
+          <span class="more-meta"> 预计阅读 1 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#环境说明">环境说明</a></li>
+    <li><a href="#具体步骤">具体步骤</a>
+      <ul>
+        <li><a href="#exis-开启-ssh-远程管理">exis 开启 ssh 远程管理</a></li>
+        <li><a href="#复制源磁盘">复制源磁盘</a>
+          <ul>
+            <li><a href="#vmkfstools-工具使用参考文档httpskbvmwarecomsarticle1028042langzh_cn"><strong>vmkfstools</strong> 工具使用<a href="https://kb.vmware.com/s/article/1028042?lang=zh_CN"><code>参考文档</code></a></a></li>
+            <li><a href="#clone-虚拟机磁盘">clone 虚拟机磁盘</a></li>
+            <li><a href="#复制-虚拟机元数据">复制 虚拟机元数据</a></li>
+          </ul>
+        </li>
+        <li><a href="#修改元数据文件">修改元数据文件</a></li>
+      </ul>
+    </li>
+    <li><a href="#注册主机">注册主机</a></li>
+    <li><a href="#done">done。。。</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="环境说明">环境说明</h1>
+<ul>
+<li>
+<p>vmware exsi 版本: 6.7</p>
+</li>
+<li>
+<p>被克隆虚拟机机:  <strong>centos-source</strong></p>
+</li>
+<li>
+<p>目标克隆主机: <code>jira-confluence</code></p>
+</li>
+<li>
+<p>虚拟机文件路径:  <code>/vmfs/volumes/1t-data/centos-7-source</code></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210221101709404.png" alt="image-20210221101709404"></p>
+</li>
+</ul>
+<h1 id="具体步骤">具体步骤</h1>
+<h2 id="exis-开启-ssh-远程管理">exis 开启 ssh 远程管理</h2>
+<p><img src="https://cdn.treesir.pub/img/image-20210221102103955.png" alt="image-20210221102103955"></p>
+<blockquote>
+<p>开启远程管理后，使用 <code>工具进行终端连接</code></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210221102208841.png" alt="image-20210221102208841"></p>
+</blockquote>
+<h2 id="复制源磁盘">复制源磁盘</h2>
+<h3 id="vmkfstools-工具使用参考文档httpskbvmwarecomsarticle1028042langzh_cn"><strong>vmkfstools</strong> 工具使用<a href="https://kb.vmware.com/s/article/1028042?lang=zh_CN"><code>参考文档</code></a></h3>
+<p>创建 目标主机目录</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">mkdir -p /vmfs/volumes/1t-data/jira-confluence
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="clone-虚拟机磁盘">clone 虚拟机磁盘</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">vmkfstools -i <span class="s2">&#34;/vmfs/volumes/1t-data/centos-7-source/centos-7-source.vmdk&#34;</span> <span class="s2">&#34;/vmfs/volumes/1t-data/jira-confluence/jira-confluence.vmdk&#34;</span> -d thin -a buslogic
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210221102953651.png" alt="image-20210221102953651"></p>
+<h3 id="复制-虚拟机元数据">复制 虚拟机元数据</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cp /vmfs/volumes/1t-data/centos-7-source/centos-7-source.vmx /vmfs/volumes/1t-data/jira-confluence/jira-confluence.vmx
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>最终文件展示</p>
+<p><img src="https://cdn.treesir.pub/img/image-20210221103201167.png" alt="image-20210221103201167"></p>
+</blockquote>
+<h2 id="修改元数据文件">修改元数据文件</h2>
+<p>修改 及 删除 项:</p>
+<ul>
+<li><code>scsi0:0.fileName</code></li>
+<li><code>displayName</code></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">vi jira-confluence.vmx
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210221103938512.png" alt="image-20210221103938512"></p>
+<h1 id="注册主机">注册主机</h1>
+<p><img src="https://cdn.treesir.pub/img/image-20210221104122066.png" alt="image-20210221104122066"></p>
+<p><code>找到刚才修改的元文件路径，右键注册主机</code></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210221104252834.png" alt="image-20210221104252834"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210221104321096.png" alt="image-20210221104321096"></p>
+<p><code>选择我已复制，确认。</code></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210221104343184.png" alt="image-20210221104343184"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210221104527987.png" alt="image-20210221104527987"></p>
+<h1 id="done">done。。。</h1>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yang'zun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-02-21
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/vmware/">vmware</a>
+          <a href="/tags/exsi/">exsi</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/n1-openwrt-k3s-deploy/">
+            <span class="next-text nav-default">使用 斐讯n1 &amp; openWrt 搭建 k3s 集群</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+  <div id="vcomments"></div>
+  <script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
+        appKey: 'siSAWI3rzA6Ow8Tmiv7V4GO4',
+        notify:  true ,
+        verify:  true ,
+        avatar:'',
+        placeholder: '来留下点什么吧~',
+        visitor:  false 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:amoaloas@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/cdryzun" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdryzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动 
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  
+
+  <span class="copyright-year">
+    <a href="https://beian.miit.gov.cn/" class="busuanzi-footer">湘 ICP 备2021002157号-1</a> <img src="https://cdn.treesir.pub/img/icp.png" width="23" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"> </a> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" target="_blank" rel="nofollow"><img src="https://cdn.treesir.pub/img/upyun.png" width="56" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"></a>
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun </span>
+    </span>
+
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.treesir.pub/blog-js/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/slideout.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
+<script>
+    docsearch({
+    apiKey: "17388eec628e676a77d6235068b458df",
+    indexName: "blog",
+    appId: "KEECS2XKBV",
+    inputSelector: '.docsearch-input',
+    debug: false,
+    });
+</script>
+</body>
+</html>
