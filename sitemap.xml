@@ -3,27 +3,69 @@
   
   <url>
     <loc>https://cdryzun.github.io/categories/</loc>
-    <lastmod>2021-02-21T10:09:38+08:00</lastmod>
+    <lastmod>2021-02-21T11:02:00+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cdryzun.github.io/tags/exsi/</loc>
-    <lastmod>2021-02-21T10:09:38+08:00</lastmod>
+    <loc>https://cdryzun.github.io/tags/confluence/</loc>
+    <lastmod>2021-02-21T11:02:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/categories/devops/</loc>
+    <lastmod>2021-02-21T11:02:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/install/</loc>
+    <lastmod>2021-02-21T11:02:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/jira/</loc>
+    <lastmod>2021-02-21T11:02:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/post/jira-install/</loc>
+    <lastmod>2021-02-21T11:02:00+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdryzun.github.io/post/</loc>
-    <lastmod>2021-02-21T10:09:38+08:00</lastmod>
+    <lastmod>2021-02-21T11:02:00+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdryzun.github.io/tags/</loc>
+    <lastmod>2021-02-21T11:02:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/</loc>
+    <lastmod>2021-02-21T11:02:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/exsi/</loc>
     <lastmod>2021-02-21T10:09:38+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -45,13 +87,6 @@
   
   <url>
     <loc>https://cdryzun.github.io/post/exsi-clone-hosts/</loc>
-    <lastmod>2021-02-21T10:09:38+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/</loc>
     <lastmod>2021-02-21T10:09:38+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -95,13 +130,6 @@
   <url>
     <loc>https://cdryzun.github.io/post/n1-openwrt-k3s-deploy/</loc>
     <lastmod>2021-01-26T09:26:39+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/categories/devops/</loc>
-    <lastmod>2021-01-19T14:54:30+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

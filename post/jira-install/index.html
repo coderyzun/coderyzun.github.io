@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Jira &amp; confluence 安装 并 配置 破解激活 - 「Yang&#39;zun」的网志博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="jira 8.x 和 confluence 安装破解并激活。" /><meta name="keywords" content="jira, 安装, 破解, 破解安装, install, confluence, 8.x" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.2 with theme even" />
+
+
+<link rel="canonical" href="https://cdryzun.github.io/post/jira-install/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/custom.css">
+
+
+<meta property="og:title" content="Jira &amp; confluence 安装 并 配置 破解激活" />
+<meta property="og:description" content="jira 8.x 和 confluence 安装破解并激活。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdryzun.github.io/post/jira-install/" />
+<meta property="article:published_time" content="2021-02-21T11:02:00+08:00" />
+<meta property="article:modified_time" content="2021-02-21T11:02:00+08:00" />
+<meta itemprop="name" content="Jira &amp; confluence 安装 并 配置 破解激活">
+<meta itemprop="description" content="jira 8.x 和 confluence 安装破解并激活。">
+<meta itemprop="datePublished" content="2021-02-21T11:02:00+08:00" />
+<meta itemprop="dateModified" content="2021-02-21T11:02:00+08:00" />
+<meta itemprop="wordCount" content="881">
+
+
+
+<meta itemprop="keywords" content="jira,install,confluence," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Jira &amp; confluence 安装 并 配置 破解激活"/>
+<meta name="twitter:description" content="jira 8.x 和 confluence 安装破解并激活。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
+<![endif]-->
+
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/docsearch.min.css" />
+</head>
+<body>
+  <header id="header" class="header">
+      <div class="logo-wrapper">
+  <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul><li style="display:inline-block;margin-right:10px;">
+    <input type="search" class="docsearch-input" placeholder="Search" />
+  </li></nav>
+
+  </header>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Jira &amp; confluence 安装 并 配置 破解激活</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-02-21 </span>
+        <div class="post-category">
+            <a href="/categories/devops/"> Devops </a>
+            </div>
+          <span class="more-meta"> 约 881 字 </span>
+          <span class="more-meta"> 预计阅读 2 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#环境说明">环境说明</a></li>
+    <li><a href="#环境初始化">环境初始化</a>
+      <ul>
+        <li><a href="#安装-jdk">安装 jdk</a></li>
+        <li><a href="#安装-mysql-57">安装 mysql 5.7</a>
+          <ul>
+            <li><a href="#设置-yum-源">设置 yum 源</a></li>
+            <li><a href="#yum-安装">yum 安装</a></li>
+            <li><a href="#启动并设置开机自启动">启动并设置开机自启动</a></li>
+            <li><a href="#初始化数据库">初始化数据库</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#jira-安装">jira 安装</a>
+      <ul>
+        <li><a href="#jira-添加-mysql-jar-包驱动">jira 添加 mysql jar 包驱动</a></li>
+        <li><a href="#配置-破解补丁">配置 破解补丁</a></li>
+        <li><a href="#修改配置文件">修改配置文件</a></li>
+        <li><a href="#dashboard-初始化配置">dashboard 初始化配置</a></li>
+        <li><a href="#使用工具-获取-license">使用工具 获取 <code>license</code></a></li>
+      </ul>
+    </li>
+    <li><a href="#confluence-安装">confluence 安装</a>
+      <ul>
+        <li><a href="#confluence-安装与-jira-安装不同项展示">confluence 安装与 jira 安装不同项展示</a></li>
+      </ul>
+    </li>
+    <li><a href="#问题记录">问题记录</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="环境说明">环境说明</h1>
+<ul>
+<li>操作系统: Centos</li>
+<li>安装 Jira  版本:  8.13.4</li>
+<li>使用数据库:  Mysql 5.7</li>
+<li>jdk 版本:  openjdk 1.8</li>
+</ul>
+<p><a href="https://www.atlassian.com/zh/software/jira/download">官方 jira 最新版本查看地址</a></p>
+<h1 id="环境初始化">环境初始化</h1>
+<h2 id="安装-jdk">安装 jdk</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">yum install -y java-1.8.0-openjdk
+
+<span class="o">[</span>root@jira ~<span class="o">]</span><span class="c1"># java -version</span>
+openjdk version <span class="s2">&#34;1.8.0_282&#34;</span>
+OpenJDK Runtime Environment <span class="o">(</span>build 1.8.0_282-b08<span class="o">)</span>
+OpenJDK 64-Bit Server VM <span class="o">(</span>build 25.282-b08, mixed mode<span class="o">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="安装-mysql-57">安装 mysql 5.7</h2>
+<h3 id="设置-yum-源">设置 yum 源</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">wget https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm
+
+yum localinstall mysql57-community-release-el7-11.noarch.rpm -y
+
+<span class="o">[</span>root@jira ~<span class="o">]</span><span class="c1"># yum repolist enabled | grep &#34;mysql.*-community.*&#34;  # 检查 yum 源是否生效</span>
+mysql-connectors-community/x86_64 MySQL Connectors Community                 <span class="m">185</span>
+mysql-tools-community/x86_64      MySQL Tools Community                      <span class="m">123</span>
+mysql57-community/x86_64          MySQL 5.7 Community Server                 <span class="m">484</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="yum-安装">yum 安装</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">yum install -y mysql-community-server
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="启动并设置开机自启动">启动并设置开机自启动</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">systemctl start mysqld <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> systemctl status  mysqld
+
+systemctl <span class="nb">enable</span> mysqld
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210221123804575.png" alt="image-20210221123804575"></p>
+<h3 id="初始化数据库">初始化数据库</h3>
+<p>查看日志文件，获取 <code>root</code> 密码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">grep <span class="s1">&#39;temporary password&#39;</span> /var/log/mysqld.log
+2021-02-21T04:37:14.500441Z <span class="m">1</span> <span class="o">[</span>Note<span class="o">]</span> A temporary password is generated <span class="k">for</span> root@localhost: p!o2lkYqNXQu
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>获得密码 <code>p!o2lkYqNXQu</code></p>
+</blockquote>
+<p>使用获取到的 root 密码初始化数据库</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">mysql -uroot -p  <span class="c1"># 连接数据库</span>
+
+
+mysql&gt;  ALTER USER <span class="s1">&#39;root&#39;</span>@<span class="s1">&#39;localhost&#39;</span> IDENTIFIED BY <span class="s1">&#39;new password&#39;</span><span class="p">;</span>  <span class="c1"># 设置新密码</span>
+
+mysql&gt; flush privileges<span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210221124608385.png" alt="image-20210221124608385"></p>
+<p>创建 jira 所使用 db</p>
+<blockquote>
+<p><strong>jira 初始化数据库相关 <a href="https://confluence.atlassian.com/adminjiraserver0813/connecting-jira-applications-to-mysql-5-7-1027137456.html"><code>参考文档</code></a></strong></p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">CREATE DATABASE <span class="sb">`</span>jiradb<span class="sb">`</span> CHARACTER SET utf8mb4 COLLATE utf8mb4_bin<span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>创建 jira 独立连接用户, 提高安全性。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">mysql&gt; <span class="nb">set</span> global <span class="nv">validate_password_policy</span><span class="o">=</span>0<span class="p">;</span>  <span class="c1"># 修改用户密码安装级别</span>
+
+mysql&gt; GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,REFERENCES,ALTER,INDEX on jiradb.* TO jira_user@<span class="s1">&#39;%&#39;</span> IDENTIFIED BY <span class="s1">&#39;12345678&#39;</span><span class="p">;</span>
+
+mysql&gt; flush privileges<span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210221125446095.png" alt="image-20210221125446095"></p>
+<p>mysql 配置文件添加参数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">vi /etc/my.cnf
+
+<span class="o">[</span>mysqld<span class="o">]</span>
+default-storage-engine<span class="o">=</span>INNODB
+<span class="nv">character_set_server</span><span class="o">=</span>utf8mb4
+<span class="nv">innodb_default_row_format</span><span class="o">=</span>DYNAMIC
+<span class="nv">innodb_large_prefix</span><span class="o">=</span>ON
+<span class="nv">innodb_file_format</span><span class="o">=</span>Barracuda
+<span class="nv">innodb_log_file_size</span><span class="o">=</span>2G
+<span class="nv">sql_mode</span><span class="o">=</span>NO_AUTO_VALUE_ON_ZERO
+
+service mysqld restart
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210221134045070.png" alt="image-20210221134045070"></p>
+<h1 id="jira-安装">jira 安装</h1>
+<blockquote>
+<p>配置完上面的 数据库初始化后，我们就可以进行安装 jira 相关的配置了</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">wget https://cdn.treesir.pub/application/jira/atlassian-jira-software-8.13.4-x64.bin <span class="c1"># 下载软件</span>
+
+chmod a+x atlassian-jira-software-8.13.4-x64.bin  <span class="c1"># 添加可执行权限</span>
+
+./atlassian-jira-software-8.13.4-x64.bin
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210221131107289.png" alt="image-20210221131107289"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210221131128890.png" alt="image-20210221131128890"></p>
+<h2 id="jira-添加-mysql-jar-包驱动">jira 添加 mysql jar 包驱动</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">wget https://cdn.treesir.pub/application/jira/mysql-connector-java-5.1.49.tar.gz
+
+tar xf mysql-connector-java-5.1.49.tar.gz
+
+cp  mysql-connector-java-5.1.49/mysql-connector-java-5.1.49-bin.jar /opt/atlassian/jira/atlassian-jira/WEB-INF/lib
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="配置-破解补丁">配置 破解补丁</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">wget https://cdn.treesir.pub/application/jira/atlassian-agent-v1.2.3.zip
+
+yum install unzip -y
+
+unzip atlassian-agent-v1.2.3.zip
+
+mkdir -p /opt/atlassian/jira/jar
+
+cp atlassian-agent-v1.2.3/atlassian-agent.jar  /opt/atlassian/jira/jar/
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="修改配置文件">修改配置文件</h2>
+<blockquote>
+<p>在 <code>JAVA_OPTS</code> 一行中添加 <code>-javaagent:/opt/atlassian/jira/jar/atlassian-agent.jar</code></p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /opt/atlassian/jira/bin
+
+vim setenv.sh
+<span class="nv">JAVA_OPTS</span><span class="o">=</span><span class="s2">&#34;-javaagent:/opt/atlassian/jira/jar/atlassian-agent.jar -Xms</span><span class="si">${</span><span class="nv">JVM_MINIMUM_MEMORY</span><span class="si">}</span><span class="s2"> -Xmx</span><span class="si">${</span><span class="nv">JVM_MAXIMUM_MEMORY</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">JVM_CODE_CACHE_ARGS</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">JAVA_OPTS</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">JVM_REQUIRED_ARGS</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">DISABLE_NOTIFICATIONS</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">JVM_SUPPORT_RECOMMENDED_ARGS</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">JVM_EXTRA_ARGS</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">JIRA_HOME_MINUSD</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">START_JIRA_JAVA_OPTS</span><span class="si">}</span><span class="s2">&#34;</span>
+
+service jira stop <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> service jira start <span class="c1"># 重启服务</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="dashboard-初始化配置">dashboard 初始化配置</h2>
+<p><img src="https://cdn.treesir.pub/img/image-20210221132221317.png" alt="image-20210221132221317"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210221134106904.png" alt="image-20210221134106904"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210221134349334.png" alt="image-20210221134349334"></p>
+<blockquote>
+<p><strong>记住 server id</strong></p>
+</blockquote>
+<h2 id="使用工具-获取-license">使用工具 获取 <code>license</code></h2>
+<blockquote>
+<p><code>复制服务器 id 放至 -s 之后</code></p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /opt/atlassian/jira/jar/
+
+/opt/atlassian/jira/jre/bin/java -jar atlassian-agent.jar -p jira -m aaa@bbb.com -n my_name -o https://zhile.io -s BEVE-RLKR-E429-3JWB
+
+<span class="o">====================================================</span>
+<span class="o">=======</span>        Atlassian Crack <span class="nv">Agent</span>         <span class="o">=======</span>
+<span class="o">=======</span>           https://zhile.io           <span class="o">=======</span>
+<span class="o">=======</span>          QQ Group: <span class="nv">30347511</span>          <span class="o">=======</span>
+<span class="o">====================================================</span>
+
+Your license code<span class="o">(</span>Don<span class="err">&#39;</span>t copy this line!!!<span class="o">)</span>: 
+
+AAABfw0ODAoPeJx9klFrwjAUhd/7Kwp7TrVVnAqBzTaDblWHVfc40nrVjDYtN6mb+/WLths6RQiEh
+JyT75577+JK2k+Q2J5ru51htzdsd20/ntte23OtDQLIbVGWgE4kUpAK5vsSJjwH6k/HYzbzw8fI8
+hG4FoUMuAZ6EJK2R4z8hiQAlaIoDyq6kJnIhYaVndUCO9nbW61LNWy1vrciA0cU1pgLqUFymQL7K
+gXum9/6A9K+N8v6EMh/KdlK1NaTKByHcxZYkypPAKfrhQJUlPzB3fAqsVhVqXYOB6KKtf7kCM6F0
+Y23PNViB1RjBWdZnt43NS+N24HYs9iOZ9UxT7rmmQJrihsuhaqvLnLxC6mNHzP5ZJRz/pAkiZMWe
+c11nfb0/xv4seaoARuMJrAwoFEYxGxCIrfndvr9XqfXdV33LP9rLY8Bd4BGPmJLRmbRy4ywrjcgn
+ee30bVJu+zha4Xpliv4P2enYjBDgiUK1ZRnQOkV2Ca1I2O+f5dm/wFMhgkNMCwCFDyreObHK4tWu
+NBWoOQpy/gWRwsUAhR9tkejACVL+tc1RzzSopum6rxwfg<span class="o">==</span>X02im
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210221134657881.png" alt="image-20210221134657881"></p>
+<h1 id="confluence-安装">confluence 安装</h1>
+<blockquote>
+<p>confluence 安装过程与 jira 安装大致相同 (数据驱动+破解补丁)  如在一台机器上可使用同一个破解补丁，只要保证端口不冲突即可。下面展示与 jira 安装的 <code>不同项</code>。</p>
+</blockquote>
+<h2 id="confluence-安装与-jira-安装不同项展示">confluence 安装与 jira 安装不同项展示</h2>
+<ul>
+<li>
+<p>安装包 下载</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">wget https://cdn.treesir.pub/application/jira/atlassian-confluence-7.4.1-x64.bin
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>数据库隔离级别</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># 编辑 my.cnf 添加配置，修改事务提交级别</span>
+vi /etc/my.cnf
+<span class="o">[</span>mysqld<span class="o">]</span>
+transaction-isolation<span class="o">=</span>READ-COMMITTED
+  
+  
+mysql&gt;  SET GLOBAL <span class="nv">tx_isolation</span><span class="o">=</span><span class="s1">&#39;READ-COMMITTED&#39;</span><span class="p">;</span>
+mysql&gt;  <span class="k">select</span> @@tx_isolation<span class="p">;</span>
+mysql&gt;  CREATE DATABASE <span class="sb">`</span>confluence_db<span class="sb">`</span> CHARACTER SET utf8 COLLATE utf8_bin<span class="p">;</span>
+  
+cp  mysql-connector-java-5.1.49/mysql-connector-java-5.1.49-bin.jar /opt/atlassian/confluence/confluence/WEB-INF/lib
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>setenv.sh 文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># javaagent 为破解补丁地址</span>
+<span class="nb">export</span> <span class="nv">JAVA_OPTS</span><span class="o">=</span><span class="s2">&#34;-javaagent:/opt/atlassian/jira/jar/atlassian-agent.jar </span><span class="si">${</span><span class="nv">JAVA_OPTS</span><span class="si">}</span><span class="s2">&#34;</span>  <span class="c1">#最上边添加这行记录</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>使用破解补丁激活</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">/opt/atlassian/confluence/jre/bin/java -jar /opt/atlassian/jira/jar/atlassian-agent.jar -p conf -m aaa@bbb.com -n my_name -o https://zhile.io -s B6RI-Q8HH-ZDR0-FDZ1 <span class="c1"># -s 后接你服务器id </span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h1 id="问题记录">问题记录</h1>
+<ul>
+<li>
+<p>启动权限问题解决</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">chown confluence:confluence -R /opt/atlassian/confluence/
+sudo chown -R confluence:confluence /opt/atlassian/confluence
+sudo chown -R confluence:confluence /home/confluence
+sudo chmod -R <span class="nv">u</span><span class="o">=</span>rwx,g<span class="o">=</span>rx,o<span class="o">=</span>rx /opt/atlassian/confluence
+sudo chmod -R <span class="nv">u</span><span class="o">=</span>rwx,g<span class="o">=</span>rx,o<span class="o">=</span>rx /home/confluence
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>如安装过程中，需要卸载安装。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">/opt/atlassian/confluence/uninstall 
+rm -rf /var/atlassian/application-data/confluence
+  
+/opt/atlassian/jira/uninstall 
+rm -rf /var/atlassian/application-data/jira
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yang'zun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-02-21
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/jira/">jira</a>
+          <a href="/tags/install/">install</a>
+          <a href="/tags/confluence/">confluence</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/exsi-clone-hosts/">
+            <span class="next-text nav-default">VMware ESXi Clone 复制虚拟机</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+  <div id="vcomments"></div>
+  <script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
+        appKey: 'siSAWI3rzA6Ow8Tmiv7V4GO4',
+        notify:  true ,
+        verify:  true ,
+        avatar:'',
+        placeholder: '来留下点什么吧~',
+        visitor:  false 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:amoaloas@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/cdryzun" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdryzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动 
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  
+
+  <span class="copyright-year">
+    <a href="https://beian.miit.gov.cn/" class="busuanzi-footer">湘 ICP 备2021002157号-1</a> <img src="https://cdn.treesir.pub/img/icp.png" width="23" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"> </a> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" target="_blank" rel="nofollow"><img src="https://cdn.treesir.pub/img/upyun.png" width="56" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"></a>
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun </span>
+    </span>
+
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.treesir.pub/blog-js/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/slideout.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
+<script>
+    docsearch({
+    apiKey: "17388eec628e676a77d6235068b458df",
+    indexName: "blog",
+    appId: "KEECS2XKBV",
+    inputSelector: '.docsearch-input',
+    debug: false,
+    });
+</script>
+</body>
+</html>

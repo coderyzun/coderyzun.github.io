@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>confluence on 「Yang&#39;zun」的网志博客</title>
+    <link>https://cdryzun.github.io/tags/confluence/</link>
+    <description>Recent content in confluence on 「Yang&#39;zun」的网志博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 21 Feb 2021 11:02:00 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/confluence/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Jira &amp; confluence 安装 并 配置 破解激活</title>
+      <link>https://cdryzun.github.io/post/jira-install/</link>
+      <pubDate>Sun, 21 Feb 2021 11:02:00 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/jira-install/</guid>
+      <description>环境说明 操作系统: Centos 安装 Jira 版本: 8.13.4 使用数据库: Mysql 5.7 jdk 版本: openjdk 1.8 官方 jira 最新版本查看地址 环境初始化 安装 jdk 1 2 3 4 5 6 yum install -y java-1.8.0-openjdk [root@jira ~]# java -version openjdk version &amp;#34;1.8.0_282&amp;#34; OpenJDK Runtime Environment</description>
+    </item>
+    
+  </channel>
+</rss>
