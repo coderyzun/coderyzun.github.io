@@ -46,7 +46,7 @@
 <meta property="og:description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://cdryzun.github.io/" />
-<meta property="og:updated_time" content="2021-02-21T11:02:00+08:00" />
+<meta property="og:updated_time" content="2021-02-24T20:54:13+08:00" />
 <meta itemprop="name" content="「Yang&#39;zun」的网志博客">
 <meta itemprop="description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历">
 <meta name="twitter:card" content="summary"/>
@@ -128,6 +128,29 @@
       <div class="content-wrapper">
         <div id="content" class="content">
           <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/raid-megacli/">Raid 阵列卡 Megacli 管理工具的使用记录</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-02-24 </span>
+      <div class="post-category">
+          <a href="/categories/storage/"> storage </a>
+          </div>
+        <span class="more-meta"> 约 214 字 </span>
+        <span class="more-meta"> 预计阅读 1 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      安装 参考文档 示例为： Centos7 中的安装步骤 1 2 3 4 5 6 7 wget https://docs.broadcom.com/docs-and-downloads/raid-controllers/raid-controllers-common-files/8-07-14_MegaCLI.zip unzip 8-07-14_MegaCLI.zip rpm -ivhU Linux/MegaCli-8.07.14-1.noarch.rpm cp -a /opt/MegaRAID/MegaCli/MegaCli64 /usr/local/bin/MegaCli 命令使用记录 将某块物理盘下线/上线 1 2 3 4 5 6 7 8 9 MegaCli -PDOffline -PhysDrv[31:8] -a0 MegaCli -PDRbld -ShowProg -PhysDrv [31:8]
+    </div>
+    <div class="read-more">
+      <a href="/post/raid-megacli/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
     <article class="post">
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/jira-install/">Jira &amp; confluence 安装 并 配置 破解激活</a></h1>
@@ -290,30 +313,6 @@
     </div>
     <div class="read-more">
       <a href="/post/rancher-upgrade-docker/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/delete-container-reset/">记录一次，因误删容器导致的容器恢复过程</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2021-01-14 </span>
-      <div class="post-category">
-          <a href="/categories/docker/"> Docker </a>
-          <a href="/categories/datarecovery/"> DataRecovery </a>
-          </div>
-        <span class="more-meta"> 约 2094 字 </span>
-        <span class="more-meta"> 预计阅读 5 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      环境说明 因在日常维护过程中升级了docker的版本 ，碰到了一个 docker 的一个 bug, 导致 docker 服务无法正常启动。在恢复 docker 服务的过程中把 /var/lib/docker/containers 下的所有文件给 清空 了
-    </div>
-    <div class="read-more">
-      <a href="/post/delete-container-reset/" class="read-more-link">阅读更多</a>
     </div>
   </div>
 </article>
