@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Centos 7 Yum 安装 Jenkins 及常用配置的说明 - 「Yang&#39;zun」的网志博客</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Yang&#39;zun" /><meta name="description" content="Centos7 使用 Yum 安装配置 Jenkins ci/cd平台，并对 Jenkins 做一些进阶配置的说明" /><meta name="keywords" content="centos7, jenkins, ci/cd, devops, yum 安装" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.78.2 with theme even" />
+
+
+<link rel="canonical" href="https://cdryzun.github.io/post/jenkins-install/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.f22292c278cfc32fd041f25ebe31773d6bd8b8d740883ed649a36c1f62d9c020.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/custom.css">
+
+
+<meta property="og:title" content="Centos 7 Yum 安装 Jenkins 及常用配置的说明" />
+<meta property="og:description" content="Centos7 使用 Yum 安装配置 Jenkins ci/cd平台，并对 Jenkins 做一些进阶配置的说明" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cdryzun.github.io/post/jenkins-install/" />
+<meta property="article:published_time" content="2021-03-02T19:31:09+08:00" />
+<meta property="article:modified_time" content="2021-03-02T19:31:09+08:00" />
+<meta itemprop="name" content="Centos 7 Yum 安装 Jenkins 及常用配置的说明">
+<meta itemprop="description" content="Centos7 使用 Yum 安装配置 Jenkins ci/cd平台，并对 Jenkins 做一些进阶配置的说明">
+<meta itemprop="datePublished" content="2021-03-02T19:31:09+08:00" />
+<meta itemprop="dateModified" content="2021-03-02T19:31:09+08:00" />
+<meta itemprop="wordCount" content="1402">
+
+
+
+<meta itemprop="keywords" content="Jenkins,CI/CD,Install," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Centos 7 Yum 安装 Jenkins 及常用配置的说明"/>
+<meta name="twitter:description" content="Centos7 使用 Yum 安装配置 Jenkins ci/cd平台，并对 Jenkins 做一些进阶配置的说明"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
+<![endif]-->
+
+<link rel="stylesheet" href="https://cdn.treesir.pub/blog-css/docsearch.min.css" />
+</head>
+<body>
+  <header id="header" class="header">
+      <div class="logo-wrapper">
+  <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">主页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul><li style="display:inline-block;margin-right:10px;">
+    <input type="search" class="docsearch-input" placeholder="Search" />
+  </li></nav>
+
+  </header>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">「Yang&#39;zun」的网志博客</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">主页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Centos 7 Yum 安装 Jenkins 及常用配置的说明</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-03-02 </span>
+        <div class="post-category">
+            <a href="/categories/devops/"> Devops </a>
+            </div>
+          <span class="more-meta"> 约 1402 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#环境说明">环境说明</a></li>
+    <li><a href="#jenkins-安装">Jenkins 安装</a>
+      <ul>
+        <li><a href="#安装-jdk">安装 jdk</a></li>
+        <li><a href="#配置-jenkins--yum-源">配置 Jenkins  yum 源</a></li>
+        <li><a href="#yum-安装">Yum 安装</a></li>
+      </ul>
+    </li>
+    <li><a href="#jenkins-可选优化配置">Jenkins 可选优化配置</a>
+      <ul>
+        <li><a href="#修改端口号">修改端口号</a></li>
+        <li><a href="#配置代理使用域名形式访问">配置代理使用<code>域名</code>形式访问</a></li>
+        <li><a href="#修改插件更新站点为国内镜像站点">修改插件更新站点为国内镜像站点</a></li>
+        <li><a href="#更新-jenkins-的版本">更新 Jenkins 的版本</a></li>
+      </ul>
+    </li>
+    <li><a href="#常用的插件整理">常用的插件整理</a></li>
+    <li><a href="#进阶配置">进阶配置</a>
+      <ul>
+        <li><a href="#关联-openldap">关联 openLdap</a>
+          <ul>
+            <li><a href="#注销后使用-ldap-用户测试登录">注销后使用 LDAP 用户测试登录</a></li>
+          </ul>
+        </li>
+        <li><a href="#基于角色的权限管理">基于角色的权限管理</a></li>
+        <li><a href="#优化默认主题">优化默认主题</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="环境说明">环境说明</h1>
+<ul>
+<li>操作系统:  CentOS Linux release 7.9.2009 (Core)</li>
+<li>jdk 使用说明: openjdk <code>1.8.0_282</code></li>
+<li>jenkins 版本： 最新 <a href="https://www.jenkins.io/download/">长期支持版本</a></li>
+</ul>
+<h1 id="jenkins-安装">Jenkins 安装</h1>
+<blockquote>
+<p>这里 <code>Jenkins</code> 的安装方式为使用 <code>yum</code> 包管理进行安装，<a href="https://pkg.jenkins.io/redhat-stable/">文档参考</a>。</p>
+</blockquote>
+<h2 id="安装-jdk">安装 jdk</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">yum install -y java-1.8.0-openjdk
+
+<span class="o">[</span>root@jira ~<span class="o">]</span><span class="c1"># java -version</span>
+openjdk version <span class="s2">&#34;1.8.0_282&#34;</span>
+OpenJDK Runtime Environment <span class="o">(</span>build 1.8.0_282-b08<span class="o">)</span>
+OpenJDK 64-Bit Server VM <span class="o">(</span>build 25.282-b08, mixed mode<span class="o">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="配置-jenkins--yum-源">配置 Jenkins  yum 源</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="yum-安装">Yum 安装</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">yum install jenkins -y
+
+systemctl start nginx <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> systemctl <span class="nb">enable</span> nginx   <span class="c1"># 设置服务开机自启</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>安装完成后更具引导进行初始即可，选填为 <code>安装推荐的插件</code>。</strong></p>
+<h1 id="jenkins-可选优化配置">Jenkins 可选优化配置</h1>
+<h2 id="修改端口号">修改端口号</h2>
+<blockquote>
+<p>Jenkins 服务默认监听在机器上的 <code>8080</code>  端口上如机器中出现端口号冲突，此时我们就需要相应的修改一下对应的端口号了。</p>
+</blockquote>
+<p>首先找到对应的配置文件</p>
+<p><img src="https://cdn.treesir.pub/img/image-20210302194914456.png" alt="image-20210302194914456"></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">sed -i <span class="s2">&#34;s#8080#18080#g&#34;</span> /etc/sysconfig/jenkins  <span class="c1"># 执行将端口替换为 18080端口</span>
+
+service jenkins restart <span class="c1"># 重启服务</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://cdn.treesir.pub/img/image-20210302195118303.png" alt="image-20210302195118303"></p>
+<h2 id="配置代理使用域名形式访问">配置代理使用<code>域名</code>形式访问</h2>
+<p><strong>安装 nginx</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">yum install -y nginx
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>nginx 添加虚拟主机</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">vi /etc/nginx/nginx.conf  <span class="c1"># 添加下面配置</span>
+http <span class="o">{</span>
+...
+  server <span class="o">{</span>
+        listen 80<span class="p">;</span>
+        server_name jenkins.treesir.pub<span class="p">;</span>
+        charset    utf-8<span class="p">;</span>
+        location / <span class="o">{</span>
+              proxy_pass       http://127.0.0.1:18080<span class="p">;</span>
+              proxy_redirect    off<span class="p">;</span>
+              proxy_set_header  Host <span class="nv">$http_host</span><span class="p">;</span>
+              proxy_set_header  X-Real-IP  <span class="nv">$remote_addr</span><span class="p">;</span>
+              proxy_set_header  X-Forwarded-For  <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+           <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+nginx -t
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf <span class="nb">test</span> is successful
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>启动 nginx 并设置 开机自启</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">systemctl start nginx <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> systemctl <span class="nb">enable</span> nginx 
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>测试访问</strong></p>
+<blockquote>
+<p>如果没有域名，可在 hosts 文件中添加记录</p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210302203954015.png" alt="image-20210302203954015"></p>
+<p>此时应该页面会提示，<code>反向代理</code> 错误提示，解决方法如下：</p>
+<blockquote>
+<p>manage jenkins =&gt; configure system =&gt;  修改 <code>Jenkins URL</code> 为此时 nginx 代理的地址，即演示中的 <code>http://jenkins.treesir.pub</code> =&gt; 保存后错误提示就会 <strong>消失</strong>。</p>
+</blockquote>
+<h2 id="修改插件更新站点为国内镜像站点">修改插件更新站点为国内镜像站点</h2>
+<blockquote>
+<p>进入Jenkisn工作目录, 一般为<code> /var/lib/jenkins</code> 或 <code> /var/jenkins_home</code>, 使用 Yum 安装时工作目录为 <strong><code>/var/lib/jenkins</code></strong></p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># 进入Jenkisn工作目录, 一般为 /var/lib/jenkins 或 /var/jenkins_home</span>
+<span class="nv">jenkins_home</span><span class="o">=</span>/var/lib/jenkins
+
+sed -i.bak <span class="s1">&#39;s#https://updates.jenkins.io#https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates#g&#39;</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">jenkins_home</span><span class="si">}</span><span class="s2">&#34;</span>/hudson.model.UpdateCenter.xml
+sed -i.bak <span class="s1">&#39;s/http:\/\/updates.jenkins-ci.org\/download/https:\/\/mirrors.tuna.tsinghua.edu.cn\/jenkins/g&#39;</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">jenkins_home</span><span class="si">}</span><span class="s2">&#34;</span>/updates/default.json 
+sed -i.bak <span class="s1">&#39;s/http:\/\/www.google.com/https:\/\/www.baidu.com/g&#39;</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">jenkins_home</span><span class="si">}</span><span class="s2">&#34;</span>/updates/default.json
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>Jenkins =&gt; 插件管理 =&gt; 高级 =&gt; 升级站点 url 替换为清华源:</strong> <code>https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/update-center.json</code></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210302201455084.png" alt="image-20210302201455084"></p>
+<blockquote>
+<p>使用 <code>容器化部署</code> 时，添加下面的环境变量即可</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">JENKINS_UC</span><span class="o">=</span>https://mirrors.tuna.tsinghua.edu.cn
+<span class="nv">JENKINS_UC_DOWNLOAD</span><span class="o">=</span>https://mirrors.tuna.tsinghua.edu.cn/jenkins
+<span class="nv">JENKINS_OPTS</span><span class="o">=</span><span class="s2">&#34;-Djava.awt.headless=true -Duser.timezone=Asia/Shanghai -Dhudson.model.UpdateCenter.updateCenterUrl=https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/update-center.json&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<h2 id="更新-jenkins-的版本">更新 Jenkins 的版本</h2>
+<p>右击，选择复制链接即获取到：<code>https://updates.jenkins.io/download/war/2.281/jenkins.war</code></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210302201751849.png" alt="image-20210302201751849"></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /usr/lib/jenkins/ 
+
+<span class="se">\m</span>v jenkins.war<span class="o">{</span>,.bak<span class="o">}</span> <span class="c1"># 执行备份，如更新后版本存在问题时，可以进行回滚。</span>
+
+wget https://updates.jenkins.io/download/war/2.281/jenkins.war <span class="c1"># 粘贴刚才复制到的链接, 如果速度很慢的话可以修改为 国内的阿里云地址</span>
+
+<span class="c1"># wget https://mirrors.aliyun.com/jenkins/war/2.281/jenkins.war</span>
+
+service jenkins restart  <span class="c1"># war 包下载完成后，执行一下重启。</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="常用的插件整理">常用的插件整理</h1>
+<blockquote>
+<p>下面的插件列表为我自己在 <code>生产实践</code> 中，使用到的一些插件整理，<code>不一定适用于你们的环境</code>，请更具情况选择。。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">插件名称</th>
+<th>插件说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><a href="https://plugins.jenkins.io/kubernetes">Kubernetes plugin</a></td>
+<td>kubernetes 容器云插件，可以使用动态 agent 功能</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://plugins.jenkins.io/ldap">LDAP Plugin</a></td>
+<td>使用与 ldap 服务，进行认证的插件</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://link.jianshu.com/?t=https://wiki.jenkins-ci.org/display/JENKINS/Green+Balls">Green Balls</a></td>
+<td>Pipeline 构建成功状态默认为灰蓝色，使用此插件后可将插件替换为绿色</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://plugins.jenkins.io/rebuild">Rebuilder</a></td>
+<td>流水线重构插件，同时会使用 <code>上一次的构建参数</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://plugins.jenkins.io/gitlab-oauth">Gitlab Authentication</a></td>
+<td>与 Gitlab 认证进行集成，使用Gitlab中的用户进行登录</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://plugins.jenkins.io/sonar">SonarQube Scanner</a></td>
+<td>与 Sonarqube 代码质检集成插件</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://plugins.jenkins.io/build-monitor-plugin">Build Monitor View</a></td>
+<td>构建状态视图</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://plugins.jenkins.io/blueocean">Blue Ocean</a></td>
+<td>重构版的主题插件</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://plugins.jenkins.io/periodicbackup">Periodic Backup</a></td>
+<td>版本备份插件</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://plugins.jenkins.io/generic-webhook-trigger">Generic Webhook Trigger Plugin</a></td>
+<td>通用 webhook 触发器 (功能强大)</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://plugins.jenkins.io/simple-theme-plugin">Simple Theme Plugin</a></td>
+<td>主题添加自定义的 css &amp; js</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://plugins.jenkins.io/dingding-notifications">DingTalk</a></td>
+<td>消息通知与钉钉机器人集成插件</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://plugins.jenkins.io/http_request">HTTP Request Plugin</a></td>
+<td>http 请求插件，与其他应用的 api 集成时 <code>常用</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://plugins.jenkins.io/locale">Locale plugin</a></td>
+<td>控制 Jenkins 的地区语言</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://plugins.jenkins.io/localization-zh-cn">Localization: Chinese (Simplified)</a></td>
+<td>简体中文语言包</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://plugins.jenkins.io/pipeline-utility-steps">Pipeline Utility Steps</a></td>
+<td>Jenkins 扩展工具</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="https://plugins.jenkins.io/role-strategy">Role-based Authorization Strategy</a></td>
+<td>基于角色的权限管理</td>
+</tr>
+</tbody>
+</table>
+<h1 id="进阶配置">进阶配置</h1>
+<h2 id="关联-openldap">关联 openLdap</h2>
+<p>此操作需安装 <code>LDAP Plugin </code> 插件 及事先准备好 <code>openLdap</code>，ldap 结构及管理步骤如下所示:</p>
+<p><img src="https://cdn.treesir.pub/img/image-20210303100044191.png" alt="image-20210303100044191"></p>
+<p>Manage Jenkins =&gt; Configure Global Security =&gt; LDAP</p>
+<p>Server:  <code>ldap://192.168.8.112:54453</code></p>
+<p>root DN: <code>dc=ldap,dc=devops</code></p>
+<p>User search filter: <code>uid={0}</code></p>
+<p>Search for LDAP groups containing user (选择) : <code>ou=users,dc=ldap,dc=devops</code></p>
+<p>Manager DN： <code>cn=admin,dc=ldap,dc=devops</code></p>
+<p>Manager Password: <code>pass</code></p>
+<p>Display Name LDAP attribute: <code>displayname</code></p>
+<p>Email Address LDAP attribute: <code>mail</code></p>
+<h3 id="注销后使用-ldap-用户测试登录">注销后使用 LDAP 用户测试登录</h3>
+<p><img src="https://cdn.treesir.pub/img/image-20210303100342139.png" alt="image-20210303100342139"></p>
+<h2 id="基于角色的权限管理">基于角色的权限管理</h2>
+<p>此操作需安装 <code>Role-based Authorization Strategy </code> 插件</p>
+<p>步骤一</p>
+<blockquote>
+<p>Manage Jenkins =&gt; Configure Global Security =&gt; Authorization =&gt;  Role-Based Strategy</p>
+<p>如开启参数后提示警告，选择忽略即可。</p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210303102611821.png" alt="image-20210303102611821"></p>
+<p>步骤二</p>
+<p><strong>权限管理</strong></p>
+<p>创建只读用户</p>
+<blockquote>
+<p>Manage Jenkins =&gt; Manage and Assign Roles =&gt; Manage Roles =&gt; Role to add</p>
+</blockquote>
+<p>添加后保存<img src="https://cdn.treesir.pub/img/image-20210303103022143.png" alt="image-20210303103022143"></p>
+<h2 id="优化默认主题">优化默认主题</h2>
+<blockquote>
+<p>此处优化主题实现方式为使用 <a href="http://afonsof.com/jenkins-material-theme/"><code>jenkins-material-theme</code> </a> 为默认的主题添加 <code>css 样式文件</code>。</p>
+</blockquote>
+<p>安装 <code>Simple Theme Plugin</code> 插件后, 并在<a href="http://afonsof.com/jenkins-material-theme/"><code>jenkins-material-theme</code> </a> 控制台中生成了自定义的 css</p>
+<blockquote>
+<p>Manage Jenkins =&gt; Configure System =&gt; Theme elements add =&gt; Extra CSS =&gt; 粘贴生成的 css</p>
+</blockquote>
+<p><img src="https://cdn.treesir.pub/img/image-20210303104809646.png" alt="image-20210303104809646"></p>
+<p><img src="https://cdn.treesir.pub/img/image-20210303105432114.png" alt="image-20210303105432114"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Yang'zun</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-03-02
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/jenkins/">Jenkins</a>
+          <a href="/tags/ci/cd/">CI/CD</a>
+          <a href="/tags/install/">Install</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/raid-megacli/">
+            <span class="next-text nav-default">Raid 阵列卡 Megacli 管理工具的使用记录</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+  <div id="vcomments"></div>
+  <script src="https://cdn.treesir.pub/blog-js/av-min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/Valine.min.js"></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
+        appKey: 'siSAWI3rzA6Ow8Tmiv7V4GO4',
+        notify:  true ,
+        verify:  true ,
+        avatar:'',
+        placeholder: '来留下点什么吧~',
+        visitor:  false 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:amoaloas@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/cdryzun" class="iconfont icon-github" title="github"></a>
+  <a href="https://cdryzun.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动 
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  
+
+  <span class="copyright-year">
+    <a href="https://beian.miit.gov.cn/" class="busuanzi-footer">湘 ICP 备2021002157号-1</a> <img src="https://cdn.treesir.pub/img/icp.png" width="23" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"> </a> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" target="_blank" rel="nofollow"><img src="https://cdn.treesir.pub/img/upyun.png" width="56" height="28" style="margin: -25px 2px" alt="upai" class=" ls-is-cached lazyloaded"></a>
+    &copy; 
+    2019 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Yang'zun </span>
+    </span>
+
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.treesir.pub/blog-js/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/slideout.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
+<script>
+    docsearch({
+    apiKey: "17388eec628e676a77d6235068b458df",
+    indexName: "blog",
+    appId: "KEECS2XKBV",
+    inputSelector: '.docsearch-input',
+    debug: false,
+    });
+</script>
+</body>
+</html>

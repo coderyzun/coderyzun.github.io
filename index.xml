@@ -6,14 +6,23 @@
     <description>Recent content on 「Yang&#39;zun」的网志博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 24 Feb 2021 20:54:13 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 02 Mar 2021 19:31:09 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Centos 7 Yum 安装 Jenkins 及常用配置的说明</title>
+      <link>https://cdryzun.github.io/post/jenkins-install/</link>
+      <pubDate>Tue, 02 Mar 2021 19:31:09 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/jenkins-install/</guid>
+      <description>环境说明 操作系统: CentOS Linux release 7.9.2009 (Core) jdk 使用说明: openjdk 1.8.0_282 jenkins 版本： 最新 长期支持版本 Jenkins 安装 这里 Jenkins 的安装方式为使用 yum 包管理进行安装，文档参考。 安装 jdk 1 2 3 4 5</description>
+    </item>
+    
     <item>
       <title>Raid 阵列卡 Megacli 管理工具的使用记录</title>
       <link>https://cdryzun.github.io/post/raid-megacli/</link>
       <pubDate>Wed, 24 Feb 2021 20:54:13 +0800</pubDate>
       
       <guid>https://cdryzun.github.io/post/raid-megacli/</guid>
-      <description>安装 参考文档 示例为： Centos7 中的安装步骤 1 2 3 4 5 6 7 wget https://docs.broadcom.com/docs-and-downloads/raid-controllers/raid-controllers-common-files/8-07-14_MegaCLI.zip unzip 8-07-14_MegaCLI.zip rpm -ivhU Linux/MegaCli-8.07.14-1.noarch.rpm cp -a /opt/MegaRAID/MegaCli/MegaCli64 /usr/local/bin/MegaCli 命令使用记录 将某块物理盘下线/上线 1 2 3 4 5 6 7 8 9 MegaCli -PDOffline -PhysDrv[31:8] -a0 MegaCli -PDRbld -ShowProg -PhysDrv [31:8]</description>
+      <description>安装 参考文档 示例为： Centos7 中的安装步骤 1 2 3 4 5 6 7 wget https://docs.broadcom.com/docs-and-downloads/raid-controllers/raid-controllers-common-files/8-07-14_MegaCLI.zip unzip 8-07-14_MegaCLI.zip rpm -ivhU Linux/MegaCli-8.07.14-1.noarch.rpm cp -a /opt/MegaRAID/MegaCli/MegaCli64 /usr/local/bin/MegaCli 命令使用记录 将某块物理盘下线/上线 1 2 3 4 5 6 7 8 9 MegaCli -PDOffline -PhysDrv[31:8] -a0 MegaCli -PDRbld -ShowProg -PhysDrv[31:8] -aAll</description>
     </item>
     
     <item>

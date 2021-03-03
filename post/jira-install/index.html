@@ -50,7 +50,7 @@
 <meta itemprop="description" content="jira 8.x 和 confluence 安装破解并激活。">
 <meta itemprop="datePublished" content="2021-02-21T11:02:00+08:00" />
 <meta itemprop="dateModified" content="2021-02-21T11:02:00+08:00" />
-<meta itemprop="wordCount" content="884">
+<meta itemprop="wordCount" content="910">
 
 
 
@@ -143,7 +143,7 @@
         <div class="post-category">
             <a href="/categories/devops/"> Devops </a>
             </div>
-          <span class="more-meta"> 约 884 字 </span>
+          <span class="more-meta"> 约 910 字 </span>
           <span class="more-meta"> 预计阅读 2 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -266,7 +266,7 @@ systemctl <span class="nb">enable</span> mysqld
 </div>
 </div><p><img src="https://cdn.treesir.pub/img/image-20210221123804575.png" alt="image-20210221123804575"></p>
 <h3 id="初始化数据库">初始化数据库</h3>
-<p>查看日志文件，获取 <code>root</code> 密码</p>
+<p>查看日志文件，获取 mysql <code>root</code> 密码</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
@@ -309,7 +309,7 @@ mysql&gt; flush privileges<span class="p">;</span>
 <pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">CREATE DATABASE <span class="sb">`</span>jiradb<span class="sb">`</span> CHARACTER SET utf8mb4 COLLATE utf8mb4_bin<span class="p">;</span>
+<pre class="chroma"><code class="language-bash" data-lang="bash">mysql&gt; CREATE DATABASE <span class="sb">`</span>jiradb<span class="sb">`</span> CHARACTER SET utf8mb4 COLLATE utf8mb4_bin<span class="p">;</span>  <span class="c1"># 创建 db</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>创建 jira 独立连接用户, 提高安全性。</p>
@@ -324,7 +324,7 @@ mysql&gt; flush privileges<span class="p">;</span>
 <td class="lntd">
 <pre class="chroma"><code class="language-bash" data-lang="bash">mysql&gt; <span class="nb">set</span> global <span class="nv">validate_password_policy</span><span class="o">=</span>0<span class="p">;</span>  <span class="c1"># 临时修改用户密码的安全级别</span>
 
-mysql&gt; GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,REFERENCES,ALTER,INDEX on jiradb.* TO jira_user@<span class="s1">&#39;%&#39;</span> IDENTIFIED BY <span class="s1">&#39;12345678&#39;</span><span class="p">;</span>
+mysql&gt; GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,REFERENCES,ALTER,INDEX on jiradb.* TO jira_user@<span class="s1">&#39;%&#39;</span> IDENTIFIED BY <span class="s1">&#39;12345678&#39;</span><span class="p">;</span>  <span class="c1"># 新建 用户 及 设置用户密码</span>
 
 mysql&gt; flush privileges<span class="p">;</span>
 </code></pre></td></tr></table>
@@ -443,7 +443,7 @@ cp atlassian-agent-v1.2.3/atlassian-agent.jar  /opt/atlassian/jira/jar/
 <td class="lntd">
 <pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">cd</span> /opt/atlassian/jira/bin
 
-vim setenv.sh
+vim setenv.sh  <span class="c1"># 编辑配置文件</span>
 <span class="nv">JAVA_OPTS</span><span class="o">=</span><span class="s2">&#34;-javaagent:/opt/atlassian/jira/jar/atlassian-agent.jar -Xms</span><span class="si">${</span><span class="nv">JVM_MINIMUM_MEMORY</span><span class="si">}</span><span class="s2"> -Xmx</span><span class="si">${</span><span class="nv">JVM_MAXIMUM_MEMORY</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">JVM_CODE_CACHE_ARGS</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">JAVA_OPTS</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">JVM_REQUIRED_ARGS</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">DISABLE_NOTIFICATIONS</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">JVM_SUPPORT_RECOMMENDED_ARGS</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">JVM_EXTRA_ARGS</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">JIRA_HOME_MINUSD</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">START_JIRA_JAVA_OPTS</span><span class="si">}</span><span class="s2">&#34;</span>
 
 service jira stop <span class="se">\
@@ -565,12 +565,12 @@ cp  mysql-connector-java-5.1.49/mysql-connector-java-5.1.49-bin.jar /opt/atlassi
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># javaagent 为破解补丁地址</span>
-<span class="nb">export</span> <span class="nv">JAVA_OPTS</span><span class="o">=</span><span class="s2">&#34;-javaagent:/opt/atlassian/jira/jar/atlassian-agent.jar </span><span class="si">${</span><span class="nv">JAVA_OPTS</span><span class="si">}</span><span class="s2">&#34;</span>  <span class="c1">#最上边添加这行记录</span>
+<span class="nb">export</span> <span class="nv">JAVA_OPTS</span><span class="o">=</span><span class="s2">&#34;-javaagent:/opt/atlassian/jira/jar/atlassian-agent.jar </span><span class="si">${</span><span class="nv">JAVA_OPTS</span><span class="si">}</span><span class="s2">&#34;</span>  <span class="c1">#最上边添加这行配置</span>
 </code></pre></td></tr></table>
 </div>
 </div></li>
 <li>
-<p>使用破解补丁激活</p>
+<p>使用破解补丁获取 license</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1

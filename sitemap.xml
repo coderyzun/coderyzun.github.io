@@ -3,14 +3,56 @@
   
   <url>
     <loc>https://cdryzun.github.io/categories/</loc>
-    <lastmod>2021-02-24T20:54:13+08:00</lastmod>
+    <lastmod>2021-03-02T19:31:09+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/post/jenkins-install/</loc>
+    <lastmod>2021-03-02T19:31:09+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/categories/devops/</loc>
+    <lastmod>2021-03-02T19:31:09+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/install/</loc>
+    <lastmod>2021-03-02T19:31:09+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/jenkins/</loc>
+    <lastmod>2021-03-02T19:31:09+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cdryzun.github.io/post/</loc>
-    <lastmod>2021-02-24T20:54:13+08:00</lastmod>
+    <lastmod>2021-03-02T19:31:09+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/</loc>
+    <lastmod>2021-03-02T19:31:09+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/</loc>
+    <lastmod>2021-03-02T19:31:09+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -44,35 +86,7 @@
   </url>
   
   <url>
-    <loc>https://cdryzun.github.io/tags/</loc>
-    <lastmod>2021-02-24T20:54:13+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/</loc>
-    <lastmod>2021-02-24T20:54:13+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://cdryzun.github.io/tags/confluence/</loc>
-    <lastmod>2021-02-21T11:02:00+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/categories/devops/</loc>
-    <lastmod>2021-02-21T11:02:00+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/tags/install/</loc>
     <lastmod>2021-02-21T11:02:00+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -380,13 +394,6 @@
   </url>
   
   <url>
-    <loc>https://cdryzun.github.io/categories/nexus3/</loc>
-    <lastmod>2020-12-22T09:24:55+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://cdryzun.github.io/categories/nginxingress/</loc>
     <lastmod>2020-12-22T09:24:55+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -395,13 +402,6 @@
   
   <url>
     <loc>https://cdryzun.github.io/post/docker-deploy-nexus3-upgrade/</loc>
-    <lastmod>2020-12-22T09:24:55+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cdryzun.github.io/categories/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/</loc>
     <lastmod>2020-12-22T09:24:55+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -536,6 +536,12 @@
   <url>
     <loc>https://cdryzun.github.io/post/first-kind/</loc>
     <lastmod>2020-11-15T14:24:42+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cdryzun.github.io/tags/ci/cd/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

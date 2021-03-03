@@ -17,15 +17,6 @@
     </item>
     
     <item>
-      <title>使用 Docker 部署 Nexus3 私服的详细记录总结</title>
-      <link>https://cdryzun.github.io/post/docker-deploy-nexus3-upgrade/</link>
-      <pubDate>Tue, 22 Dec 2020 09:24:55 +0800</pubDate>
-      
-      <guid>https://cdryzun.github.io/post/docker-deploy-nexus3-upgrade/</guid>
-      <description>Nexus3.x 说明 功能介绍 Nexus3, 是一款支持仓库种类繁多的私服管理工具，目前大众所知晓的仓库类型如：go、pypi、docker、maven、yum、git、</description>
-    </item>
-    
-    <item>
       <title>部署 Nginx-Ingress 并配置暴露 kubernetes dashboard</title>
       <link>https://cdryzun.github.io/post/ingress-to-dashboard/</link>
       <pubDate>Tue, 22 Dec 2020 09:24:55 +0800</pubDate>

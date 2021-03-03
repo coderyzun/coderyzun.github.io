@@ -50,7 +50,7 @@
 <meta itemprop="description" content="Raid 阵列卡 Megacli 管理工具的使用记录">
 <meta itemprop="datePublished" content="2021-02-24T20:54:13+08:00" />
 <meta itemprop="dateModified" content="2021-02-24T20:54:13+08:00" />
-<meta itemprop="wordCount" content="214">
+<meta itemprop="wordCount" content="212">
 
 
 
@@ -143,7 +143,7 @@
         <div class="post-category">
             <a href="/categories/storage/"> storage </a>
             </div>
-          <span class="more-meta"> 约 214 字 </span>
+          <span class="more-meta"> 约 212 字 </span>
           <span class="more-meta"> 预计阅读 1 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -214,10 +214,10 @@ cp -a /opt/MegaRAID/MegaCli/MegaCli64 /usr/local/bin/MegaCli
 <td class="lntd">
 <pre class="chroma"><code class="language-fallback" data-lang="fallback">MegaCli -PDOffline -PhysDrv[31:8] -a0
 
-MegaCli -PDRbld -ShowProg  -PhysDrv [31:8] -a0  # 查看 rebuild 状态
+MegaCli -PDRbld -ShowProg  -PhysDrv[31:8] -aAll  # 查看 rebuild 状态
 
 
-MegaCli -pdrbld -progdsply -physdrv [31:8] -aALL  # 进度条显示 rebuild 状态
+MegaCli -pdrbld -progdsply -physdrv[31:8] -aALL  # 进度条显示 rebuild 状态
 
 
 MegaCli -PDOnline -PhysDrv [1:4] -a0
@@ -315,7 +315,11 @@ MegaCli -PDOnline -PhysDrv <span class="o">[</span>252:3<span class="o">]</span>
           <a href="/tags/stroage/">stroage</a>
           </div>
       <nav class="post-nav">
-        
+        <a class="prev" href="/post/jenkins-install/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Centos 7 Yum 安装 Jenkins 及常用配置的说明</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
         <a class="next" href="/post/jira-install/">
             <span class="next-text nav-default">Jira &amp; confluence 安装 并 配置 破解激活</span>
             <span class="next-text nav-mobile">下一篇</span>

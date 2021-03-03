@@ -46,7 +46,7 @@
 <meta property="og:description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://cdryzun.github.io/" />
-<meta property="og:updated_time" content="2021-02-24T20:54:13+08:00" />
+<meta property="og:updated_time" content="2021-03-02T19:31:09+08:00" />
 <meta itemprop="name" content="「Yang&#39;zun」的网志博客">
 <meta itemprop="description" content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历">
 <meta name="twitter:card" content="summary"/>
@@ -130,6 +130,30 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/rancher-upgrade-docker/">Rancher 单机部署，进行升级后，导致docker无法正常启动</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2021-01-16 </span>
+      <div class="post-category">
+          <a href="/categories/rancher/"> Rancher </a>
+          <a href="/categories/%E9%94%99%E8%AF%AF%E4%BF%AE%E5%A4%8D/"> 错误修复 </a>
+          </div>
+        <span class="more-meta"> 约 619 字 </span>
+        <span class="more-meta"> 预计阅读 2 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      环境说明 操作系统: Centos 7.9.2009 Docker Version: 18.09.9 模拟复现 rancher 安装 1 2 3 4 5 6 7 8 docker pull rancher/rancher:v2.3.5 docker run -d \ --restart=unless-stopped \ --name rancher \ -p 80:80 -p 443:443 \ --privileged \ rancher/rancher:v2.3.5 升级 rancher 示例将 v2.3.5 升级至 v2.5.0 创建备份 1 2 3 4 5 docker
+    </div>
+    <div class="read-more">
+      <a href="/post/rancher-upgrade-docker/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/delete-container-reset/">记录一次，因误删容器导致的容器恢复过程</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2021-01-14 </span>
@@ -182,9 +206,8 @@
     <div class="post-meta">
       <span class="post-time"> 2020-12-22 </span>
       <div class="post-category">
-          <a href="/categories/nexus3/"> Nexus3 </a>
           <a href="/categories/docker/"> Docker </a>
-          <a href="/categories/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/"> 持续集成 </a>
+          <a href="/categories/devops/"> Devops </a>
           </div>
         <span class="more-meta"> 约 3011 字 </span>
         <span class="more-meta"> 预计阅读 7 分钟 </span>
@@ -293,29 +316,6 @@
     </div>
     <div class="read-more">
       <a href="/post/flannel-exclusion-records/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/docker-quickstart-redis/">Docker Quickstart Redis Server</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2020-11-30 </span>
-      <div class="post-category">
-          <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"> 数据库 </a>
-          </div>
-        <span class="more-meta"> 约 192 字 </span>
-        <span class="more-meta"> 预计阅读 1 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      环境说明: 系统镜像: Redis:5.x （示例容器为: redis:5.0.4 ） 操作系统: Centos Docker 版本: 19.03.8 具体实现步骤 操作系统简单优化 1 2 3 4 5 6 echo &#39;vm.overcommit_memory=1 net.core.somaxconn=65535&#39; &gt;&gt; /etc/sysctl.conf sysctl -p echo never &gt; /sys/kernel/mm/transparent_hugepage/enable 下载容器 1 docker pull redis:5.0.4
-    </div>
-    <div class="read-more">
-      <a href="/post/docker-quickstart-redis/" class="read-more-link">阅读更多</a>
     </div>
   </div>
 </article>
