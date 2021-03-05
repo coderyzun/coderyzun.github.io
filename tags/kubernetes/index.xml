@@ -13,7 +13,7 @@
       <pubDate>Tue, 19 Jan 2021 14:54:30 +0800</pubDate>
       
       <guid>https://cdryzun.github.io/post/k8s-nfs-strage-class/</guid>
-      <description>环境说明： helm version: v3.4.2 kubernetes version: v1.19.6 nfs server: 192.168.8.66 sub-net: 192.168.8.0/24 nfs 服务端配置 1 2 3 4 5 6 yum install rpcbind nfs-utils -y mkdir -p /data/nfs.sharedir chown -R nfsnobody /data/nfs.sharedir 创建用户 &amp;amp; 数据目录 1 2 3 4 5 6 7 8 9 groupadd -g 2233 nfs-user useradd nfs-user -M -s /sbin/nologin -u 2233 -g</description>
+      <description>环境说明： helm version: v3.4.2 kubernetes version: v1.19.6 nfs server: 192.168.8.66 sub-net: 192.168.8.0/24 nfs 服务端配置 1 yum install rpcbind nfs-utils -y # 安装 nfs server 创建用户 &amp;amp; 数据目录 1 2 3 4 5 6 7 8 9 groupadd -g 2233 nfs-user useradd nfs-user -M -s /sbin/nologin -u 2233 -g nfs-user id nfs-user mkdir -p /data/nfs.sharedir chown</description>
     </item>
     
     <item>

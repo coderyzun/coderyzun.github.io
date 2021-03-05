@@ -50,7 +50,7 @@
 <meta itemprop="description" content="jira 8.x 和 confluence 安装破解并激活。">
 <meta itemprop="datePublished" content="2021-02-21T11:02:00+08:00" />
 <meta itemprop="dateModified" content="2021-02-21T11:02:00+08:00" />
-<meta itemprop="wordCount" content="910">
+<meta itemprop="wordCount" content="1256">
 
 
 
@@ -143,8 +143,8 @@
         <div class="post-category">
             <a href="/categories/devops/"> Devops </a>
             </div>
-          <span class="more-meta"> 约 910 字 </span>
-          <span class="more-meta"> 预计阅读 2 分钟 </span>
+          <span class="more-meta"> 约 1256 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
     </header>
@@ -183,6 +183,7 @@
       </ul>
     </li>
     <li><a href="#问题记录">问题记录</a></li>
+    <li><a href="#配置-nginx-代理">配置 nginx 代理</a></li>
   </ul>
 </nav>
   </div>
@@ -622,6 +623,87 @@ rm -rf /var/atlassian/application-data/jira
 </div>
 </div></li>
 </ul>
+<h1 id="配置-nginx-代理">配置 nginx 代理</h1>
+<blockquote>
+<p>Jira 默认监听在主机中的 <code>8080</code> 端口上, 为了 <code>方便记忆</code> 通常会修改成域名且 <code>不带后面的端口号</code> 的形式进行访问。不带端口号的话，这样就是要使用 <code>80</code> or <code>443</code>端口号了，显然我们这里是内网，不需要什么安全性，只需要使用 80 端口就行。如果让 Jira 监听在 80 端口上的话，显的有些浪费，为了不保证浪费此时我们就可以使用另外一个工具 <code>nginx</code> 配置虚拟机主机来实现反代, 这样就可以同时将 80 端口提供给 <code>多个服务</code>进行使用了。</p>
+</blockquote>
+<ul>
+<li>Jira nginx 配置 <a href="https://confluence.atlassian.com/jirakb/configure-jira-server-to-run-behind-a-nginx-reverse-proxy-426115340.html"><strong>参考文档</strong></a></li>
+</ul>
+<p><strong>修改 Jira 配置文件</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">vi /opt/atlassian/jira/conf/server.xml
+
+        &lt;Connector <span class="nv">port</span><span class="o">=</span><span class="s2">&#34;8080&#34;</span> <span class="nv">relaxedPathChars</span><span class="o">=</span><span class="s2">&#34;[]|&#34;</span> <span class="nv">relaxedQueryChars</span><span class="o">=</span><span class="s2">&#34;[]|{}^&amp;#x5c;&amp;#x60;&amp;quot;&amp;lt;&amp;gt;&#34;</span>
+                   <span class="nv">maxThreads</span><span class="o">=</span><span class="s2">&#34;150&#34;</span> <span class="nv">minSpareThreads</span><span class="o">=</span><span class="s2">&#34;25&#34;</span> <span class="nv">connectionTimeout</span><span class="o">=</span><span class="s2">&#34;20000&#34;</span> <span class="nv">enableLookups</span><span class="o">=</span><span class="s2">&#34;false&#34;</span>
+                   <span class="nv">maxHttpHeaderSize</span><span class="o">=</span><span class="s2">&#34;8192&#34;</span> <span class="nv">protocol</span><span class="o">=</span><span class="s2">&#34;HTTP/1.1&#34;</span> <span class="nv">useBodyEncodingForURI</span><span class="o">=</span><span class="s2">&#34;true&#34;</span> <span class="nv">redirectPort</span><span class="o">=</span><span class="s2">&#34;8443&#34;</span>
+                   <span class="nv">acceptCount</span><span class="o">=</span><span class="s2">&#34;100&#34;</span> <span class="nv">disableUploadTimeout</span><span class="o">=</span><span class="s2">&#34;true&#34;</span> <span class="nv">bindOnInit</span><span class="o">=</span><span class="s2">&#34;false&#34;</span> <span class="nv">proxyName</span><span class="o">=</span><span class="s2">&#34;jira.treesir.pub&#34;</span> <span class="nv">proxyPort</span><span class="o">=</span><span class="s2">&#34;80&#34;</span>/&gt;
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>添加 <code>proxyName</code> &amp; <code>proxyPort</code> 参数后, 重启服务。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">service jira stop <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> service jira start
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<p><strong>Nginx 添加虚拟机主机</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat /etc/nginx/conf.d/jira.conf 
+server <span class="o">{</span>
+    listen 80<span class="p">;</span>
+    server_name jira.treesir.pub<span class="p">;</span>
+    location / <span class="o">{</span>
+        proxy_set_header X-Forwarded-Host <span class="nv">$host</span><span class="p">;</span>
+        proxy_set_header X-Forwarded-Server <span class="nv">$host</span><span class="p">;</span>
+        proxy_set_header X-Forwarded-For <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span> 
+        proxy_pass http://192.168.5.188:8080<span class="p">;</span>
+        client_max_body_size 0<span class="p">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+nginx -t 
+  nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+  nginx: configuration file /etc/nginx/nginx.conf <span class="nb">test</span> is successful     <span class="c1"># 检查配置文件</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p><code>192.168.5.188:8080</code> 为你 Jira 的地址，不要配置 <code>127.0.0.1:8080</code> 这样好像会报错。</p>
+</blockquote>
 
     </div>
 
