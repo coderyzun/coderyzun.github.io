@@ -238,8 +238,8 @@ sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
 <td class="lntd">
 <pre class="chroma"><code class="language-bash" data-lang="bash">yum install jenkins -y
 
-systemctl start nginx <span class="se">\
-</span><span class="se"></span><span class="o">&amp;&amp;</span> systemctl <span class="nb">enable</span> nginx   <span class="c1"># 设置服务开机自启</span>
+systemctl start jenkins <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> systemctl <span class="nb">enable</span> jenkins   <span class="c1"># 设置服务开机自启</span>
 </code></pre></td></tr></table>
 </div>
 </div><p><strong>安装完成后更具引导进行初始即可，选填为 <code>安装推荐的插件</code>。</strong></p>

@@ -50,7 +50,7 @@
 <meta itemprop="description" content="Centos7安装完成后的初始化调优">
 <meta itemprop="datePublished" content="2020-12-21T09:34:01+08:00" />
 <meta itemprop="dateModified" content="2020-12-21T09:34:01+08:00" />
-<meta itemprop="wordCount" content="1522">
+<meta itemprop="wordCount" content="1527">
 
 
 
@@ -144,7 +144,7 @@
             <a href="/categories/centos/"> Centos </a>
             <a href="/categories/docker/"> Docker </a>
             </div>
-          <span class="more-meta"> 约 1522 字 </span>
+          <span class="more-meta"> 约 1527 字 </span>
           <span class="more-meta"> 预计阅读 4 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -385,11 +385,13 @@ sysctl -p <span class="c1"># 使其生效</span>
 </span><span class="lnt">41
 </span><span class="lnt">42
 </span><span class="lnt">43
+</span><span class="lnt">44
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-bash" data-lang="bash">  <span class="c1"># 使用脚本如下所示</span>
   cat update_kernel.sh
   <span class="c1">#!/bin/bash</span>
+  <span class="sb">```</span>
 
   <span class="c1">##########################################################</span>
   <span class="c1"># Author        : Yang&#39;Zun</span>
@@ -491,10 +493,12 @@ sudo grub2-mkconfig -o /boot/grub2/grub.cfg
 <pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
+</span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-bash" data-lang="bash">sed -i <span class="s1">&#39;s#SELINUX=enforcing#SELINUX=disabled#g&#39;</span> /etc/selinux/config
 grep -i  ^selinux<span class="o">=</span> /etc/selinux/config 
+setenforce <span class="m">0</span>
 getenforce
 </code></pre></td></tr></table>
 </div>
